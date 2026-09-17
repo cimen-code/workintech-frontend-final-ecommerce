@@ -18,19 +18,24 @@ function Slider({ slides, renderSlide, autoPlayMs = 6000, className = '' }) {
   return (
     <div className={`relative w-full overflow-hidden ${className}`}>
       <div className="relative w-full">
-        {slides.map((slide, index) => (
-          <div
-            key={slide.id ?? index}
-            className={`w-full transition-opacity duration-700 ease-in-out motion-reduce:transition-none ${
-              index === current
-                ? 'relative flex opacity-100'
-                : 'pointer-events-none absolute inset-0 flex opacity-0'
-            }`}
-            aria-hidden={index !== current}
-          >
-            {renderSlide(slide, index)}
-          </div>
-        ))}
+        {slides.map((slide, index) => {
+          const positionClass =
+            index === current
+              ? 'relative translate-x-0'
+              : index < current
+                ? 'pointer-events-none absolute inset-0 -translate-x-full'
+                : 'pointer-events-none absolute inset-0 translate-x-full'
+
+          return (
+            <div
+              key={slide.id ?? index}
+              className={`flex w-full transition-transform duration-700 ease-in-out motion-reduce:transition-none ${positionClass}`}
+              aria-hidden={index !== current}
+            >
+              {renderSlide(slide, index)}
+            </div>
+          )
+        })}
       </div>
 
       {count > 1 && (
