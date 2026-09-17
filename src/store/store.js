@@ -1,6 +1,6 @@
 import { applyMiddleware, combineReducers, createStore } from 'redux'
 import thunk from 'redux-thunk'
-import logger from 'redux-logger'
+import { createLogger } from 'redux-logger'
 import clientReducer from './reducers/clientReducer.js'
 import productReducer from './reducers/productReducer.js'
 import shoppingCartReducer, { CART_STORAGE_KEY } from './reducers/shoppingCartReducer.js'
@@ -13,7 +13,7 @@ const rootReducer = combineReducers({
 
 const middlewares = [thunk]
 if (import.meta.env.DEV) {
-  middlewares.push(logger)
+  middlewares.push(createLogger({ collapsed: true }))
 }
 
 const store = createStore(rootReducer, applyMiddleware(...middlewares))

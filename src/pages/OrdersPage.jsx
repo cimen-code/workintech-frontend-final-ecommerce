@@ -37,7 +37,7 @@ function OrdersPage() {
 
   return (
     <section className="flex w-full bg-light-gray-1 px-4 py-12">
-      <div className="mx-auto flex w-full max-w-[1050px] flex-col gap-6">
+      <div className="mx-auto flex w-full min-w-0 max-w-[1050px] flex-col gap-6">
         <h1 className="text-2xl font-bold text-text-color">Previous Orders</h1>
 
         {status === 'loading' && (

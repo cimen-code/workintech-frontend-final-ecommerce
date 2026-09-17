@@ -230,7 +230,7 @@ function CreateOrderPage() {
 
   return (
     <section className="flex w-full bg-light-gray-1 px-4 py-12">
-      <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-8 lg:flex-row lg:items-start">
+      <div className="mx-auto flex w-full min-w-0 max-w-[1200px] flex-col gap-8 lg:flex-row lg:items-start">
         <div className="flex w-full min-w-0 flex-col gap-6">
           <div className="flex flex-col gap-3 sm:flex-row">
             <StepTab

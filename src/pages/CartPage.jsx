@@ -35,7 +35,7 @@ function CartPage() {
 
   return (
     <section className="flex w-full bg-light-gray-1 px-4 py-12">
-      <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-8 lg:flex-row lg:items-start">
+      <div className="mx-auto flex w-full min-w-0 max-w-[1200px] flex-col gap-8 lg:flex-row lg:items-start">
         <div className="flex w-full min-w-0 flex-col gap-4">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold text-text-color">

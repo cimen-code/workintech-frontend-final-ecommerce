@@ -9,7 +9,8 @@ function Slider({ slides, renderSlide, autoPlayMs = 6000, className = '' }) {
   const goTo = (index) => setCurrent((index + count) % count)
 
   useEffect(() => {
-    if (!autoPlayMs || count < 2) return undefined
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    if (!autoPlayMs || count < 2 || reduceMotion) return undefined
     const timer = setInterval(() => setCurrent((prev) => (prev + 1) % count), autoPlayMs)
     return () => clearInterval(timer)
   }, [autoPlayMs, count])
@@ -17,7 +18,7 @@ function Slider({ slides, renderSlide, autoPlayMs = 6000, className = '' }) {
   return (
     <div className={`relative w-full overflow-hidden ${className}`}>
       <div
-        className="flex transition-transform duration-700 ease-in-out"
+        className="flex transition-transform duration-700 ease-in-out motion-reduce:transition-none"
         style={{ transform: `translateX(-${current * 100}%)` }}
       >
         {slides.map((slide, index) => (

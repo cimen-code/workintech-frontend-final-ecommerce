@@ -1,0 +1,21 @@
+// Deterministic T08 spinner check: 2s network latency, duplicate email (no account is created)
+import { launch, sleep } from './cdp.mjs'
+const BASE = process.env.BASE_URL || 'http://localhost:4173'
+const c = await launch(9341)
+await c.viewport(1440)
+await c.goto(`${BASE}/signup`, 2500)
+await c.fill('#name', 'Cust Omer')
+await c.fill('#email', 'customer@commerce.com')
+await c.fill('#password', 'QaBuilder!2026')
+await c.fill('#confirmPassword', 'QaBuilder!2026')
+await c.send('Network.emulateNetworkConditions', { offline: false, latency: 2000, downloadThroughput: -1, uploadThroughput: -1 })
+await c.click('button[type="submit"]')
+await sleep(400)
+const during = await c.eval(`({ disabled: document.querySelector('button[type="submit"]').disabled, spinner: !!document.querySelector('button[type="submit"] [role="status"]'), label: document.querySelector('button[type="submit"]').innerText })`)
+await c.send('Network.emulateNetworkConditions', { offline: false, latency: 0, downloadThroughput: -1, uploadThroughput: -1 })
+await c.waitFor(`document.querySelector('form [role="alert"]')`, 60000).catch(() => {})
+const after = await c.eval(`({ disabled: document.querySelector('button[type="submit"]').disabled, path: location.pathname })`)
+const pass = during.disabled && during.spinner && !after.disabled && after.path === '/signup'
+console.log(`${pass ? 'PASS' : 'FAIL'} [T08] spinner + disabled while submitting — during=${JSON.stringify(during)} after=${JSON.stringify(after)}`)
+await c.close()
+process.exit(0)
