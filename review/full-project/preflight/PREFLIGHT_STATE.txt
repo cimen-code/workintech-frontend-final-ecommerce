@@ -1,0 +1,26 @@
+## pwd
+/Users/hakancimen/Desktop/workintech-frontend-final-ecommerce
+## branch
+task/T02-home-page
+## status
+## task/T02-home-page
+ M src/App.jsx
+ M src/index.css
+ M src/main.jsx
+ M tailwind.config.js
+?? review/
+?? src/components/
+?? src/layout/
+?? src/pages/
+## HEAD
+30e27eb5a98226d3ca64912e7cca60e9729d2e4d
+## diff --stat
+ src/App.jsx        | 10 +++-------
+ src/index.css      |  2 ++
+ src/main.jsx       |  5 ++++-
+ tailwind.config.js | 23 ++++++++++++++++++++++-
+ 4 files changed, 31 insertions(+), 9 deletions(-)
+## diff --cached
+## log
+30e27eb (HEAD -> task/T02-home-page, origin/main, origin/HEAD, main) chore: initialize ecommerce project
+356018f Initial commit

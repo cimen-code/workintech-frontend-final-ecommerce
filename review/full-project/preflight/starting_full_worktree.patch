@@ -1,0 +1,322 @@
+diff --git a/src/App.jsx b/src/App.jsx
+index e89baf5..eab0827 100644
+--- a/src/App.jsx
++++ b/src/App.jsx
+@@ -1,11 +1,7 @@
++import PageContent from './layout/PageContent.jsx'
++
+ function App() {
+-  return (
+-    <main className="flex min-h-screen items-center justify-center bg-slate-100">
+-      <h1 className="text-3xl font-bold text-slate-900">
+-        Workintech E-Commerce
+-      </h1>
+-    </main>
+-  )
++  return <PageContent />
+ }
+ 
+ export default App
+diff --git a/src/components/HeroSlider.jsx b/src/components/HeroSlider.jsx
+new file mode 100644
+index 0000000..e69de29
+diff --git a/src/components/ProductCard.jsx b/src/components/ProductCard.jsx
+new file mode 100644
+index 0000000..e69de29
+diff --git a/src/index.css b/src/index.css
+index b5c61c9..cd1b9ad 100644
+--- a/src/index.css
++++ b/src/index.css
+@@ -1,3 +1,5 @@
++@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
++
+ @tailwind base;
+ @tailwind components;
+ @tailwind utilities;
+diff --git a/src/layout/Footer.jsx b/src/layout/Footer.jsx
+new file mode 100644
+index 0000000..b0093e2
+--- /dev/null
++++ b/src/layout/Footer.jsx
+@@ -0,0 +1,5 @@
++function Footer() {
++  return null
++}
++
++export default Footer
+diff --git a/src/layout/Header.jsx b/src/layout/Header.jsx
+new file mode 100644
+index 0000000..05c2ea0
+--- /dev/null
++++ b/src/layout/Header.jsx
+@@ -0,0 +1,172 @@
++import { Link } from 'react-router-dom'
++import {
++  ChevronDown,
++  Facebook,
++  Heart,
++  Instagram,
++  Mail,
++  Menu,
++  Phone,
++  Search,
++  ShoppingCart,
++  UserRound,
++  Youtube,
++} from 'lucide-react'
++
++const navLinks = [
++  { label: 'Home', path: '/' },
++  { label: 'Shop', path: '/shop' },
++  { label: 'About', path: '/about' },
++  { label: 'Blog', path: '/blog' },
++  { label: 'Contact', path: '/contact' },
++  { label: 'Pages', path: '/pages' },
++]
++
++function Header() {
++  return (
++    <header className="w-full bg-white">
++      {/* Mobile Header */}
++      <div className="flex w-full flex-col bg-white px-9 pb-16 pt-6 lg:hidden">
++        <div className="flex items-center justify-between">
++          <Link
++            to="/"
++            className="text-2xl font-bold leading-8 tracking-[0.1px] text-text-color"
++          >
++            Bandage
++          </Link>
++
++          <div className="flex items-center gap-6 text-text-color">
++            <button type="button" aria-label="Search">
++              <Search size={24} strokeWidth={2} />
++            </button>
++
++            <button type="button" aria-label="Shopping cart">
++              <ShoppingCart size={24} strokeWidth={2} />
++            </button>
++
++            <button type="button" aria-label="Menu">
++              <Menu size={24} strokeWidth={2} />
++            </button>
++          </div>
++        </div>
++
++        <nav className="mt-20 flex flex-col items-center gap-[30px]">
++          {navLinks.slice(0, 4).map((link) => (
++            <Link
++              key={link.label}
++              to={link.path}
++              className="text-[30px] font-normal leading-[45px] tracking-[0.2px] text-second-text-color"
++            >
++              {link.label}
++            </Link>
++          ))}
++        </nav>
++      </div>
++
++      {/* Desktop Top Bar */}
++      <div className="hidden h-[58px] w-full bg-dark-background-color text-white lg:flex">
++        <div className="mx-auto flex w-full max-w-[1438px] items-center justify-between px-6">
++          <div className="flex items-center gap-3">
++            <a
++              href="tel:+12255550118"
++              className="flex items-center gap-[5px] p-[10px] text-sm font-bold leading-6 tracking-[0.2px]"
++            >
++              <Phone size={16} />
++              <span>(225) 555-0118</span>
++            </a>
++
++            <a
++              href="mailto:michelle.rivera@example.com"
++              className="flex items-center gap-[5px] p-[10px] text-sm font-bold leading-6 tracking-[0.2px]"
++            >
++              <Mail size={16} />
++              <span>michelle.rivera@example.com</span>
++            </a>
++          </div>
++
++          <p className="text-sm font-bold leading-6 tracking-[0.2px]">
++            Follow Us and get a chance to win 80% off
++          </p>
++
++          <div className="flex items-center gap-[10px]">
++            <span className="text-sm font-bold leading-6 tracking-[0.2px]">
++              Follow Us :
++            </span>
++
++            <div className="flex items-center gap-3">
++              <Instagram size={16} />
++              <Youtube size={16} />
++              <Facebook size={16} />
++            </div>
++          </div>
++        </div>
++      </div>
++
++      {/* Desktop Navigation */}
++      <div className="hidden h-[78px] w-full bg-white lg:flex">
++        <div className="mx-auto flex w-full max-w-[1438px] items-center px-8">
++          <Link
++            to="/"
++            className="mr-28 text-2xl font-bold leading-8 tracking-[0.1px] text-text-color"
++          >
++            Bandage
++          </Link>
++
++          <nav className="flex items-center gap-[15px]">
++            {navLinks.map((link) => (
++              <Link
++                key={link.label}
++                to={link.path}
++                className="flex items-center gap-1 text-sm font-bold leading-6 tracking-[0.2px] text-second-text-color"
++              >
++                {link.label}
++
++                {link.label === 'Shop' && (
++                  <ChevronDown size={14} className="text-text-color" />
++                )}
++              </Link>
++            ))}
++          </nav>
++
++          <div className="ml-auto flex items-center text-primary-color">
++            <Link
++              to="/login"
++              className="flex items-center gap-[5px] px-[15px] py-[15px] text-sm font-bold leading-6 tracking-[0.2px]"
++            >
++              <UserRound size={16} />
++              <span>Login / Register</span>
++            </Link>
++
++            <button
++              type="button"
++              aria-label="Search"
++              className="flex h-[46px] w-[46px] items-center justify-center"
++            >
++              <Search size={16} />
++            </button>
++
++            <button
++              type="button"
++              aria-label="Shopping cart"
++              className="flex h-[46px] items-center gap-[5px] px-[15px]"
++            >
++              <ShoppingCart size={16} />
++              <span className="text-xs">1</span>
++            </button>
++
++            <button
++              type="button"
++              aria-label="Favorites"
++              className="flex h-[46px] items-center gap-[5px] px-[15px]"
++            >
++              <Heart size={16} />
++              <span className="text-xs">1</span>
++            </button>
++          </div>
++        </div>
++      </div>
++    </header>
++  )
++}
++
++export default Header
+diff --git a/src/layout/PageContent.jsx b/src/layout/PageContent.jsx
+new file mode 100644
+index 0000000..58e67ef
+--- /dev/null
++++ b/src/layout/PageContent.jsx
+@@ -0,0 +1,22 @@
++import { Route, Switch } from 'react-router-dom'
++import Header from './Header.jsx'
++import Footer from './Footer.jsx'
++import HomePage from '../pages/HomePage.jsx'
++
++function PageContent() {
++  return (
++    <div className="min-h-screen bg-light-background-color font-montserrat text-text-color">
++      <Header />
++
++      <main>
++        <Switch>
++          <Route exact path="/" component={HomePage} />
++        </Switch>
++      </main>
++
++      <Footer />
++    </div>
++  )
++}
++
++export default PageContent
+diff --git a/src/main.jsx b/src/main.jsx
+index b9a1a6d..2898346 100644
+--- a/src/main.jsx
++++ b/src/main.jsx
+@@ -1,10 +1,13 @@
+ import { StrictMode } from 'react'
+ import { createRoot } from 'react-dom/client'
++import { BrowserRouter } from 'react-router-dom'
+ import './index.css'
+ import App from './App.jsx'
+ 
+ createRoot(document.getElementById('root')).render(
+   <StrictMode>
+-    <App />
++    <BrowserRouter>
++      <App />
++    </BrowserRouter>
+   </StrictMode>,
+ )
+diff --git a/src/pages/HomePage.jsx b/src/pages/HomePage.jsx
+new file mode 100644
+index 0000000..4101286
+--- /dev/null
++++ b/src/pages/HomePage.jsx
+@@ -0,0 +1,11 @@
++function HomePage() {
++  return (
++    <section className="flex min-h-screen items-center justify-center bg-light-gray-1">
++      <h1 className="text-4xl font-bold text-text-color">
++        Home Page
++      </h1>
++    </section>
++  )
++}
++
++export default HomePage
+diff --git a/tailwind.config.js b/tailwind.config.js
+index ffc3074..4f133b3 100644
+--- a/tailwind.config.js
++++ b/tailwind.config.js
+@@ -5,7 +5,28 @@ export default {
+     './src/**/*.{js,ts,jsx,tsx}',
+   ],
+   theme: {
+-    extend: {},
++    extend: {
++      fontFamily: {
++        montserrat: ['Montserrat', 'sans-serif'],
++      },
++      colors: {
++        'primary-color': '#23A6F0',
++        'text-color': '#252B42',
++        'second-text-color': '#737373',
++        'success-color': '#2DC071',
++        'secondary-color-1': '#23856D',
++        'dark-background-color': '#252B42',
++        'light-background-color': '#FFFFFF',
++        'light-text-color': '#FFFFFF',
++        'light-text-gray-1': '#FAFAFA',
++        'light-gray-1': '#FAFAFA',
++        'muted-color': '#BDBDBD',
++        'muted-text-color': '#BDBDBD',
++        'danger-color': '#E74040',
++        'alert-color': '#E77C40',
++        'disabled-element-color': '#8EC2F2',
++      },
++    },
+   },
+   plugins: [],
+ }
