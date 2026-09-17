@@ -73,8 +73,8 @@ function AboutPage() {
               Problems trying to resolve the conflict between the two major realms of Classical physics: Newtonian mechanics
             </p>
           </div>
-          <div className="flex w-full flex-col gap-8 md:flex-row md:gap-[30px]">
-            {teamMembers.slice(0, 3).map((member) => (
+          <div className="flex w-full flex-col gap-8 md:flex-row md:justify-center md:gap-[30px]">
+            {teamMembers.map((member) => (
               <div key={member.id} className="flex w-full md:w-1/3">
                 <TeamCard member={member} />
               </div>

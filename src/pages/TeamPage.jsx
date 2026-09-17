@@ -35,7 +35,7 @@ function TeamPage() {
       <section className="flex w-full py-28">
         <div className="mx-auto flex w-full max-w-[1050px] flex-col items-center gap-28 px-10 lg:px-0">
           <h2 className="text-[40px] font-bold leading-[50px] tracking-[0.2px] text-text-color">Meet Our Team</h2>
-          <div className="flex w-full flex-col gap-8 md:flex-row md:flex-wrap md:gap-x-[30px] md:gap-y-12">
+          <div className="flex w-full flex-col gap-8 md:flex-row md:flex-wrap md:justify-center md:gap-x-[30px] md:gap-y-12">
             {teamMembers.map((member) => (
               <div key={member.id} className="flex w-full md:w-[calc(50%-15px)] lg:w-[calc(33.333%-20px)]">
                 <TeamCard member={member} />
