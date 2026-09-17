@@ -6,10 +6,10 @@ import {
   Heart,
   LogOut,
   Mail,
-  Menu,
   Package,
   Phone,
   Search,
+  TextAlignEnd,
   ShoppingCart,
   UserRound,
   X,
@@ -56,6 +56,7 @@ function Header() {
   const categories = useSelector((state) => state.product.categories)
   const cart = useSelector((state) => state.shoppingCart.cart)
   const [openMenu, setOpenMenu] = useState(null)
+  const [showMobileCategories, setShowMobileCategories] = useState(false)
   const headerRef = useRef(null)
 
   const isLoggedIn = Boolean(user?.email)
@@ -107,16 +108,12 @@ function Header() {
       )}
     </div>
   ) : (
-    <div className="flex items-center gap-1 px-2 py-3 text-sm font-bold text-primary-color md:px-4">
-      <UserRound size={16} className="hidden md:block" />
-      <Link to={loginLink} aria-label="Login" className="flex items-center hover:underline">
-        <UserRound size={24} className="md:hidden" />
-        <span className="hidden md:inline">Login</span>
-      </Link>
-      <span className="hidden md:inline">/</span>
-      <Link to={signupLink} className="hidden hover:underline md:inline">
-        Register
-      </Link>
+    // Figma 414px header shows only search/cart/menu; logged-out users reach Login/Register in the expanded menu
+    <div className="hidden items-center gap-1 px-4 py-3 text-sm font-bold text-primary-color lg:flex">
+      <UserRound size={16} />
+      <Link to={loginLink} className="hover:underline">Login</Link>
+      <span>/</span>
+      <Link to={signupLink} className="hover:underline">Register</Link>
     </div>
   )
 
@@ -147,7 +144,7 @@ function Header() {
       </div>
 
       {/* Main navigation */}
-      <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between px-4 py-4 sm:px-9 lg:px-10">
+      <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between px-7 py-5 lg:px-10 lg:py-4">
         <Link to="/" onClick={close} className="text-2xl font-bold leading-8 tracking-[0.1px] text-text-color">
           Bandage
         </Link>
@@ -188,7 +185,7 @@ function Header() {
           )}
         </nav>
 
-        <div className="flex items-center text-text-color lg:text-primary-color">
+        <div className="flex items-center gap-2 text-text-color lg:gap-0 lg:text-primary-color">
           {userArea}
 
           <button type="button" aria-label="Search" onClick={() => history.push('/shop')} className="flex p-2 md:p-3.5">
@@ -204,7 +201,7 @@ function Header() {
               aria-expanded={openMenu === 'cart'}
             >
               <ShoppingCart size={24} className="lg:h-4 lg:w-4" />
-              <span className="text-xs">{cartCount}</span>
+              <span className={`text-xs ${cartCount === 0 ? 'hidden lg:inline' : ''}`}>{cartCount}</span>
             </button>
             {openMenu === 'cart' && (
               <div className="absolute right-0 top-full z-50 flex">
@@ -225,14 +222,14 @@ function Header() {
             onClick={() => toggle('mobile')}
             className="flex p-2 lg:hidden"
           >
-            {openMenu === 'mobile' ? <X size={24} /> : <Menu size={24} />}
+            {openMenu === 'mobile' ? <X size={24} /> : <TextAlignEnd size={24} />}
           </button>
         </div>
       </div>
 
       {/* Mobile navigation (same navLinks source) */}
       {openMenu === 'mobile' && (
-        <nav className="flex flex-col items-center gap-7 pb-16 pt-12 lg:hidden">
+        <nav className="flex flex-col items-center gap-[30px] pb-24 pt-20 lg:hidden">
           {navLinks.map((link) => (
             <Link
               key={link.path}
@@ -257,6 +254,16 @@ function Header() {
             </Link>
           )}
           {categories.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setShowMobileCategories((current) => !current)}
+              aria-expanded={showMobileCategories}
+              className="flex items-center gap-2 text-base font-bold text-second-text-color"
+            >
+              Shop categories <ChevronDown size={16} className={showMobileCategories ? 'rotate-180' : ''} />
+            </button>
+          )}
+          {categories.length > 0 && showMobileCategories && (
             <div className="flex w-full justify-center px-6">
               <CategoryMenu categories={categories} onNavigate={close} />
             </div>

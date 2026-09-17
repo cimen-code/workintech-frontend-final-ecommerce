@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 import FormField, { inputClass } from './FormField.jsx'
-import { isValidCardNumber } from '../utils/validators.js'
+import { isCardExpired, isValidCardNumber } from '../utils/validators.js'
 
 const currentYear = new Date().getFullYear()
 const MONTHS = Array.from({ length: 12 }, (_, index) => index + 1)
@@ -14,6 +14,7 @@ function CardForm({ initialValues, onSubmit, onCancel }) {
     getValues,
     formState: { errors, isSubmitting },
   } = useForm({
+    mode: 'onChange',
     defaultValues: {
       card_no: initialValues?.card_no || '',
       expire_month: initialValues?.expire_month || '',
@@ -31,13 +32,9 @@ function CardForm({ initialValues, onSubmit, onCancel }) {
       name_on_card: data.name_on_card.trim(),
     })
 
-  const notExpired = () => {
-    const month = Number(getValues('expire_month'))
-    const year = Number(getValues('expire_year'))
-    if (!month || !year) return true
-    const now = new Date()
-    return year > now.getFullYear() || (year === now.getFullYear() && month >= now.getMonth() + 1) || 'Card is expired'
-  }
+  // Shown on the year field; changing the month re-validates it through `deps`, so field order does not matter
+  const notExpired = () =>
+    !isCardExpired(getValues('expire_month'), getValues('expire_year')) || 'Card is expired'
 
   return (
     <form onSubmit={handleSubmit(submit)} noValidate className="flex flex-col gap-4 rounded-md border border-primary-color/40 bg-white p-5">
@@ -57,7 +54,7 @@ function CardForm({ initialValues, onSubmit, onCancel }) {
       </FormField>
       <div className="flex flex-col gap-4 sm:flex-row">
         <FormField id="card-month" label="Expire Month" error={errors.expire_month}>
-          <select id="card-month" className={inputClass} {...register('expire_month', { required: 'Month is required', validate: notExpired })}>
+          <select id="card-month" className={inputClass} {...register('expire_month', { required: 'Month is required', deps: ['expire_year'] })}>
             <option value="">Month</option>
             {MONTHS.map((month) => (
               <option key={month} value={month}>{String(month).padStart(2, '0')}</option>
@@ -65,7 +62,7 @@ function CardForm({ initialValues, onSubmit, onCancel }) {
           </select>
         </FormField>
         <FormField id="card-year" label="Expire Year" error={errors.expire_year}>
-          <select id="card-year" className={inputClass} {...register('expire_year', { required: 'Year is required' })}>
+          <select id="card-year" className={inputClass} {...register('expire_year', { required: 'Year is required', validate: notExpired })}>
             <option value="">Year</option>
             {YEARS.map((year) => (
               <option key={year} value={year}>{year}</option>

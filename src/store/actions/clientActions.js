@@ -26,10 +26,13 @@ export const fetchRolesIfNeeded = () => (dispatch, getState) => {
   })
 }
 
-const storeToken = (token, remember) => {
+// The session header always gets the current token; localStorage keeps it only with "Remember me"
+export const storeToken = (token, remember) => {
   setAuthToken(token)
   if (remember) {
     localStorage.setItem(TOKEN_KEY, token)
+  } else {
+    localStorage.removeItem(TOKEN_KEY)
   }
 }
 

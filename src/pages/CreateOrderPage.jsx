@@ -20,6 +20,10 @@ import {
 import { createOrder, setAddress, setPayment } from '../store/actions/shoppingCartActions.js'
 import { calculateOrderSummary, formatPrice, maskCardNumber } from '../utils/helpers.js'
 
+// T21 says "payment options fetched by card data", but no card-based rule or endpoint is documented.
+// These plans are fixed front-end examples and are NOT derived from the selected card.
+const FIXED_INSTALLMENT_PLANS = [1, 3, 6]
+
 const apiError = (error, fallback) => error.response?.data?.message || fallback
 
 const cardBrand = (cardNo = '') => {
@@ -386,8 +390,11 @@ function CreateOrderPage() {
                     />
                   </div>
                   <fieldset className="flex flex-col gap-2 md:w-2/3">
-                    <legend className="pb-2 text-sm font-bold text-text-color">Payment options ({cardBrand(selectedCard.card_no)})</legend>
-                    {[1, 3, 6].map((count) => (
+                    <legend className="text-sm font-bold text-text-color">Installment options</legend>
+                    <p className="pb-1 text-xs text-second-text-color">
+                      Example plans shown for every card; the API provides no card-specific installment data.
+                    </p>
+                    {FIXED_INSTALLMENT_PLANS.map((count) => (
                       <label key={count} className="flex items-center justify-between rounded-md border border-[#ECECEC] px-4 py-2 text-sm text-second-text-color">
                         <span className="flex items-center gap-2">
                           <input type="radio" name="installment" checked={installment === count} onChange={() => setInstallment(count)} className="accent-primary-color" />

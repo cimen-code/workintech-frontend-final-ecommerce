@@ -7,7 +7,7 @@ import ProductCard from '../components/ProductCard.jsx'
 import Spinner from '../components/Spinner.jsx'
 import api from '../api/axiosInstance.js'
 import { editorsPick, fallbackProducts, featuredPosts, heroSlides, vitaSlides } from '../data/homeData.js'
-import { categoryPath, formatPrice, productImage, productPath } from '../utils/helpers.js'
+import { formatPrice, productImage, productPath } from '../utils/helpers.js'
 
 function SectionTitle({ tag, title, text }) {
   return (
@@ -41,8 +41,6 @@ function HomePage() {
       active = false
     }
   }, [])
-
-  const topCategories = [...categories].sort((a, b) => b.rating - a.rating).slice(0, 5)
 
   return (
     <div className="flex w-full flex-col">
@@ -97,30 +95,6 @@ function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* T12: top 5 categories by rating */}
-      {topCategories.length > 0 && (
-        <section className="flex w-full bg-white pt-20">
-          <div className="mx-auto flex w-full max-w-[1050px] flex-col items-center gap-10 px-11 lg:px-0">
-            <SectionTitle tag="Top Categories" title="SHOP BY CATEGORY" text="Top 5 categories by customer rating" />
-            <div className="flex w-full flex-col gap-4 md:flex-row md:flex-wrap md:justify-center lg:flex-nowrap">
-              {topCategories.map((category) => (
-                <Link
-                  key={category.id}
-                  to={categoryPath(category)}
-                  className="group relative flex h-[300px] w-full overflow-hidden md:w-[calc(50%-8px)] lg:h-[223px] lg:w-[198px]"
-                >
-                  <img src={category.img} alt={category.title} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
-                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-black/25 text-white">
-                    <h3 className="text-base font-bold uppercase">{category.title}</h3>
-                    <p className="text-sm">{category.gender === 'e' ? 'Erkek' : 'Kadın'} · ★ {category.rating}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* Bestseller products */}
       <section className="flex w-full bg-white py-20">
