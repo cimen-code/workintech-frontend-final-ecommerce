@@ -1,11 +1,21 @@
+import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import PageContent from './layout/PageContent.jsx'
+import { verifyToken } from './store/actions/clientActions.js'
+import { fetchCategoriesIfNeeded } from './store/actions/productActions.js'
+
 function App() {
-  return (
-    <main className="flex min-h-screen items-center justify-center bg-slate-100">
-      <h1 className="text-3xl font-bold text-slate-900">
-        Workintech E-Commerce
-      </h1>
-    </main>
-  )
+  const dispatch = useDispatch()
+  const [authChecked, setAuthChecked] = useState(false)
+
+  useEffect(() => {
+    // T11: auto login with the token saved in localStorage
+    dispatch(verifyToken()).finally(() => setAuthChecked(true))
+    // T12: categories are used by the header dropdown and the shop page
+    dispatch(fetchCategoriesIfNeeded())
+  }, [dispatch])
+
+  return <PageContent authChecked={authChecked} />
 }
 
 export default App

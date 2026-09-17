@@ -1,0 +1,552 @@
+{
+  "info": {
+    "name": "Workintech FE E-Commerce",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Endpoints used by T08–T23. Token is filled by the login request; never commit a real token."
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://workintech-fe-ecommerce.onrender.com"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "addressId",
+      "value": ""
+    },
+    {
+      "key": "cardId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "GET roles",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/roles",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "roles"
+              ]
+            },
+            "description": "T08/T09"
+          }
+        },
+        {
+          "name": "POST signup (customer)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/signup",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "signup"
+              ]
+            },
+            "description": "T08 – change email before sending",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test.user+CHANGE@example.com\",\n  \"password\": \"Test!1234\",\n  \"role_id\": 3\n}"
+            }
+          }
+        },
+        {
+          "name": "POST signup (store)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/signup",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "signup"
+              ]
+            },
+            "description": "T08 – change email before sending",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test Store Owner\",\n  \"email\": \"store.owner+CHANGE@example.com\",\n  \"password\": \"Test!1234\",\n  \"role_id\": 2,\n  \"store\": {\n    \"name\": \"Test Store\",\n    \"phone\": \"05551234567\",\n    \"tax_no\": \"T1234V123456\",\n    \"bank_account\": \"TR330006100519786457841326\"\n  }\n}"
+            }
+          }
+        },
+        {
+          "name": "POST login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "login"
+              ]
+            },
+            "description": "T10 – saves token to collection variable",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"customer@commerce.com\",\n  \"password\": \"123456\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) { pm.collectionVariables.set('token', pm.response.json().token); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET verify",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "description": "raw token, NO Bearer prefix (T11)"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/verify",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "verify"
+              ]
+            },
+            "description": "T11"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Catalog",
+      "item": [
+        {
+          "name": "GET categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "categories"
+              ]
+            },
+            "description": "T12"
+          }
+        },
+        {
+          "name": "GET products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products"
+              ]
+            },
+            "description": "T13"
+          }
+        },
+        {
+          "name": "GET products with params",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products?category=2&filter=siyah&sort=price:desc&limit=25&offset=0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "2"
+                },
+                {
+                  "key": "filter",
+                  "value": "siyah"
+                },
+                {
+                  "key": "sort",
+                  "value": "price:desc"
+                },
+                {
+                  "key": "limit",
+                  "value": "25"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                }
+              ]
+            },
+            "description": "T14/T15"
+          }
+        },
+        {
+          "name": "GET product by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/322",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "products",
+                "322"
+              ]
+            },
+            "description": "T16"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Address",
+      "item": [
+        {
+          "name": "GET addresses",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "description": "raw token, NO Bearer prefix (T11)"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/user/address",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "address"
+              ]
+            },
+            "description": "T20"
+          }
+        },
+        {
+          "name": "POST address",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "description": "raw token, NO Bearer prefix (T11)"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/user/address",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "address"
+              ]
+            },
+            "description": "T20",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"ev adresi\",\n  \"name\": \"Test\",\n  \"surname\": \"User\",\n  \"phone\": \"05550000000\",\n  \"city\": \"istanbul\",\n  \"district\": \"esenler\",\n  \"neighborhood\": \"adres detayları\",\n  \"address\": \"optional multiline detail (accepted by backend)\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PUT address",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "description": "raw token, NO Bearer prefix (T11)"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/user/address",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "address"
+              ]
+            },
+            "description": "T20 – set id",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 0,\n  \"title\": \"ev adresi\",\n  \"name\": \"Test\",\n  \"surname\": \"User\",\n  \"phone\": \"05550000000\",\n  \"city\": \"istanbul\",\n  \"district\": \"esenler\",\n  \"neighborhood\": \"adres detayları\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE address",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "description": "raw token, NO Bearer prefix (T11)"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/user/address/{{addressId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "address",
+                "{{addressId}}"
+              ]
+            },
+            "description": "T20"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Card",
+      "item": [
+        {
+          "name": "GET cards",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "description": "raw token, NO Bearer prefix (T11)"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/user/card",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "card"
+              ]
+            },
+            "description": "T21"
+          }
+        },
+        {
+          "name": "POST card",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "description": "raw token, NO Bearer prefix (T11)"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/user/card",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "card"
+              ]
+            },
+            "description": "T21",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"card_no\": \"4111111111111111\",\n  \"expire_month\": 12,\n  \"expire_year\": 2030,\n  \"name_on_card\": \"Test User\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PUT card",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "description": "raw token, NO Bearer prefix (T11)"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/user/card",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "card"
+              ]
+            },
+            "description": "T21 – set id",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"0\",\n  \"card_no\": \"4111111111111111\",\n  \"expire_month\": 1,\n  \"expire_year\": 2031,\n  \"name_on_card\": \"Test User\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE card",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "description": "raw token, NO Bearer prefix (T11)"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/user/card/{{cardId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "card",
+                "{{cardId}}"
+              ]
+            },
+            "description": "T21"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Order",
+      "item": [
+        {
+          "name": "POST order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "description": "raw token, NO Bearer prefix (T11)"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "order"
+              ]
+            },
+            "description": "T22 – set address_id",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"address_id\": 0,\n  \"order_date\": \"2026-09-17T14:18:30\",\n  \"card_no\": 4111111111111111,\n  \"card_name\": \"Test User\",\n  \"card_expire_month\": 12,\n  \"card_expire_year\": 2030,\n  \"card_ccv\": 321,\n  \"price\": 491.98,\n  \"products\": [\n    {\n      \"product_id\": 322,\n      \"count\": 1,\n      \"detail\": \"gri - m\"\n    }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "GET orders",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "description": "raw token, NO Bearer prefix (T11)"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/order",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "order"
+              ]
+            },
+            "description": "T23"
+          }
+        }
+      ]
+    }
+  ]
+}

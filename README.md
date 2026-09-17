@@ -1,16 +1,48 @@
-# React + Vite
+# Workintech Frontend Final — E-Commerce
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Workintech frontend final project (tasks T01–T23): a React e-commerce application built from the *Figma Ecommerce UI Kit* designs and the Workintech e-commerce API.
 
-Currently, two official plugins are available:
+- API: `https://workintech-fe-ecommerce.onrender.com`
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Stack
 
-## React Compiler
+React 18.2 · Vite 8 · React Router DOM 5.3.4 · Redux 4.2.1 + React Redux 8.1.3 + Redux Thunk 2.4.2 + Redux Logger 3.0.6 · Tailwind CSS 3.4 · Axios · react-hook-form · react-toastify · lucide-react
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Scripts
 
-## Expanding the ESLint configuration
+```bash
+npm install
+npm run dev      # development server
+npm run lint
+npm run build
+npm run preview  # serve the production build
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Structure
+
+```
+src/
+  api/          axios instance (raw token in Authorization header)
+  components/   ProductCard, Slider, Pagination, OrderSummary, forms, ...
+  data/         static Figma content (home, navigation, team, cities)
+  layout/       Header, PageContent (routes), Footer
+  pages/        Home, Shop, ProductDetail, Contact, Team, About, Signup, Login, Cart, CreateOrder, Orders
+  store/        vanilla Redux store, reducers (client, product, shoppingCart), actions/thunks
+  utils/        helpers and validators
+public/images/  local design assets
+postman/        Postman collection for the API endpoints
+vercel.json     SPA rewrite for client-side routes
+```
+
+## Routes
+
+| Path | Page |
+|---|---|
+| `/` | Home |
+| `/shop`, `/shop/:gender/:categoryName/:categoryId` | Shop (query params: `filter`, `sort`, `page`) |
+| `/shop/:gender/:categoryName/:categoryId/:productNameSlug/:productId` | Product detail |
+| `/about`, `/team`, `/contact` | Inner pages |
+| `/signup`, `/login` | Sign up, login |
+| `/cart` | Shopping cart + order summary |
+| `/order` (protected) | Create order: address and card steps |
+| `/orders` (protected) | Previous orders |
