@@ -1,0 +1,176 @@
+=== git status --short --branch
+## builder/full-project-run-20260917-1324
+?? review/full-project/GIT_FINAL.txt
+
+=== git log --oneline --decorate --graph -n 30
+* 8ffe912 (HEAD -> builder/full-project-run-20260917-1324) docs: add GIT_DIFF.patch against 30e27eb
+* f20a87e docs: full-project review artifacts, Postman collection, QA evidence
+* 3df6795 fix: QA findings (logger import, mobile table overflow, reduced motion)
+* 8a871da feat: implement T02-T23 ecommerce scope
+* 121811a chore: checkpoint pre full-project builder
+* 30e27eb (origin/main, origin/HEAD, task/T02-home-page, main) chore: initialize ecommerce project
+* 356018f Initial commit
+
+=== branches (main untouched)
+* builder/full-project-run-20260917-1324 8ffe912 docs: add GIT_DIFF.patch against 30e27eb
+  main                                   30e27eb [origin/main] chore: initialize ecommerce project
+  task/T02-home-page                     30e27eb chore: initialize ecommerce project
+
+=== git diff 30e27eb...HEAD --stat
+ index.html                                         |    2 +-
+ .../workintech-ecommerce.postman_collection.json   |  552 ++
+ public/images/about/hero.png                       |  Bin 0 -> 169206 bytes
+ public/images/about/video.png                      |  Bin 0 -> 329237 bytes
+ public/images/about/work-with-us.png               |  Bin 0 -> 164794 bytes
+ public/images/clients/logos.png                    |  Bin 0 -> 7175 bytes
+ public/images/contact/hero.png                     |  Bin 0 -> 719149 bytes
+ public/images/home/blog-1.png                      |  Bin 0 -> 61743 bytes
+ public/images/home/blog-2.png                      |  Bin 0 -> 49141 bytes
+ public/images/home/blog-3.png                      |  Bin 0 -> 73749 bytes
+ public/images/home/editors-accessories.png         |  Bin 0 -> 54051 bytes
+ public/images/home/editors-kids.png                |  Bin 0 -> 82007 bytes
+ public/images/home/editors-men.png                 |  Bin 0 -> 356245 bytes
+ public/images/home/editors-women.png               |  Bin 0 -> 265324 bytes
+ public/images/home/hero-new-collection.jpg         |  Bin 0 -> 83590 bytes
+ public/images/home/neural-universe.png             |  Bin 0 -> 226886 bytes
+ public/images/home/product-1.jpg                   |  Bin 0 -> 6352 bytes
+ public/images/home/product-2.jpg                   |  Bin 0 -> 16737 bytes
+ public/images/home/product-3.jpg                   |  Bin 0 -> 12605 bytes
+ public/images/home/product-4.jpg                   |  Bin 0 -> 9894 bytes
+ public/images/home/product-5.jpg                   |  Bin 0 -> 10860 bytes
+ public/images/home/product-6.jpg                   |  Bin 0 -> 7617 bytes
+ public/images/home/product-7.jpg                   |  Bin 0 -> 13525 bytes
+ public/images/home/product-8.jpg                   |  Bin 0 -> 8597 bytes
+ public/images/home/vita-classic.png                |  Bin 0 -> 632611 bytes
+ public/images/product/description.png              |  Bin 0 -> 166153 bytes
+ public/images/product/main.png                     |  Bin 0 -> 454487 bytes
+ public/images/product/thumb-1.png                  |  Bin 0 -> 12869 bytes
+ public/images/product/thumb-2.png                  |  Bin 0 -> 13683 bytes
+ public/images/team/hero-1.png                      |  Bin 0 -> 67278 bytes
+ public/images/team/hero-2.png                      |  Bin 0 -> 103489 bytes
+ public/images/team/hero-3.png                      |  Bin 0 -> 56288 bytes
+ public/images/team/hero-4.png                      |  Bin 0 -> 78507 bytes
+ public/images/team/hero-main.png                   |  Bin 0 -> 228487 bytes
+ public/images/team/member-3.png                    |  Bin 0 -> 76536 bytes
+ public/images/team/member-4.png                    |  Bin 0 -> 72619 bytes
+ public/images/team/member-5.png                    |  Bin 0 -> 69553 bytes
+ public/images/team/member-6.png                    |  Bin 0 -> 72497 bytes
+ public/images/team/member-7.png                    |  Bin 0 -> 67476 bytes
+ public/images/team/member-8.png                    |  Bin 0 -> 55111 bytes
+ public/images/team/member-9.png                    |  Bin 0 -> 86595 bytes
+ review/full-project/API_VERIFICATION.md            |   57 +
+ review/full-project/ASSET_MANIFEST.md              |   52 +
+ review/full-project/CHECKS.txt                     |  197 +
+ review/full-project/DEPENDENCY_CHANGES.md          |   25 +
+ .../FULL_PROJECT_IMPLEMENTATION_REPORT.md          |  163 +
+ review/full-project/GIT_DIFF.patch                 | 7860 ++++++++++++++++++++
+ review/full-project/KNOWN_ISSUES.md                |   37 +
+ review/full-project/ROUTES.md                      |   37 +
+ review/full-project/TASK_MATRIX.md                 |   44 +
+ review/full-project/api_probe_notes.txt            |   25 +
+ review/full-project/preflight/PREFLIGHT_STATE.txt  |   26 +
+ .../preflight/checkpoint_build_lint.txt            |   19 +
+ .../preflight/starting_full_worktree.patch         |  322 +
+ .../full-project/preflight/starting_tracked.diff   |   82 +
+ review/full-project/qa-flows.json                  |  335 +
+ review/full-project/qa-routes.json                 |  730 ++
+ review/full-project/screenshots/about-1440.jpg     |  Bin 0 -> 410129 bytes
+ review/full-project/screenshots/about-414.jpg      |  Bin 0 -> 264439 bytes
+ review/full-project/screenshots/cart-1440.jpg      |  Bin 0 -> 138224 bytes
+ review/full-project/screenshots/cart-414.jpg       |  Bin 0 -> 84498 bytes
+ .../screenshots/cart-dropdown-1440.jpg             |  Bin 0 -> 41489 bytes
+ .../full-project/screenshots/cart-empty-1440.jpg   |  Bin 0 -> 85640 bytes
+ review/full-project/screenshots/cart-empty-414.jpg |  Bin 0 -> 56427 bytes
+ .../screenshots/checkout-address-1440.jpg          |  Bin 0 -> 132130 bytes
+ .../screenshots/checkout-address-selected-1440.jpg |  Bin 0 -> 146081 bytes
+ .../screenshots/checkout-card-1440.jpg             |  Bin 0 -> 151064 bytes
+ .../full-project/screenshots/checkout-card-414.jpg |  Bin 0 -> 128133 bytes
+ review/full-project/screenshots/contact-1440.jpg   |  Bin 0 -> 289791 bytes
+ review/full-project/screenshots/contact-414.jpg    |  Bin 0 -> 188110 bytes
+ review/full-project/screenshots/home-1440.jpg      |  Bin 0 -> 1067506 bytes
+ review/full-project/screenshots/home-414.jpg       |  Bin 0 -> 1034476 bytes
+ .../screenshots/home-logged-in-1440.jpg            |  Bin 0 -> 1061125 bytes
+ review/full-project/screenshots/login-1440.jpg     |  Bin 0 -> 93955 bytes
+ review/full-project/screenshots/login-414.jpg      |  Bin 0 -> 59612 bytes
+ review/full-project/screenshots/not-found-1440.jpg |  Bin 0 -> 87595 bytes
+ review/full-project/screenshots/not-found-414.jpg  |  Bin 0 -> 57744 bytes
+ .../screenshots/order-complete-1440.jpg            |  Bin 0 -> 108797 bytes
+ .../screenshots/order-protected-1440.jpg           |  Bin 0 -> 93955 bytes
+ .../screenshots/order-protected-414.jpg            |  Bin 0 -> 59612 bytes
+ review/full-project/screenshots/orders-1440.jpg    |  Bin 0 -> 112313 bytes
+ review/full-project/screenshots/orders-414.jpg     |  Bin 0 -> 67041 bytes
+ .../screenshots/orders-protected-1440.jpg          |  Bin 0 -> 93955 bytes
+ .../screenshots/orders-protected-414.jpg           |  Bin 0 -> 59612 bytes
+ .../screenshots/product-detail-1440.jpg            |  Bin 0 -> 390267 bytes
+ .../screenshots/product-detail-414.jpg             |  Bin 0 -> 415588 bytes
+ review/full-project/screenshots/shop-1440.jpg      |  Bin 0 -> 820701 bytes
+ review/full-project/screenshots/shop-414.jpg       |  Bin 0 -> 968818 bytes
+ .../screenshots/shop-category-query-1440.jpg       |  Bin 0 -> 874810 bytes
+ .../screenshots/shop-category-query-414.jpg        |  Bin 0 -> 842779 bytes
+ .../screenshots/shop-filtered-category-1440.jpg    |  Bin 0 -> 865520 bytes
+ review/full-project/screenshots/signup-1440.jpg    |  Bin 0 -> 109941 bytes
+ review/full-project/screenshots/signup-414.jpg     |  Bin 0 -> 69932 bytes
+ .../full-project/screenshots/signup-error-1440.jpg |  Bin 0 -> 121803 bytes
+ .../screenshots/signup-store-validation-1440.jpg   |  Bin 0 -> 174110 bytes
+ .../screenshots/signup-store-validation-414.jpg    |  Bin 0 -> 122718 bytes
+ review/full-project/screenshots/team-1440.jpg      |  Bin 0 -> 416003 bytes
+ review/full-project/screenshots/team-414.jpg       |  Bin 0 -> 345644 bytes
+ review/full-project/tools/cdp.mjs                  |  174 +
+ review/full-project/tools/pngcrop.py               |   46 +
+ review/full-project/tools/pngstitch.py             |   19 +
+ review/full-project/tools/qa-flows.mjs             |  362 +
+ review/full-project/tools/qa-routes.mjs            |   66 +
+ review/full-project/tools/qa-signup-spinner.mjs    |   21 +
+ review/full-project/tools/unit-checks.mjs          |   24 +
+ src/App.jsx                                        |   24 +-
+ src/api/axiosInstance.js                           |   19 +
+ src/components/AddressForm.jsx                     |   93 +
+ src/components/Breadcrumb.jsx                      |   26 +
+ src/components/CardForm.jsx                        |   99 +
+ src/components/CartDropdown.jsx                    |   59 +
+ src/components/ClientsLogos.jsx                    |   15 +
+ src/components/FormField.jsx                       |   21 +
+ src/components/Gravatar.jsx                        |   27 +
+ src/components/OrderSummary.jsx                    |   50 +
+ src/components/Pagination.jsx                      |   47 +
+ src/components/ProductCard.jsx                     |   41 +
+ src/components/ProtectedRoute.jsx                  |   31 +
+ src/components/Slider.jsx                          |   67 +
+ src/components/SocialIcons.jsx                     |   41 +
+ src/components/Spinner.jsx                         |   17 +
+ src/components/TeamCard.jsx                        |   36 +
+ src/data/cities.js                                 |   22 +
+ src/data/homeData.js                               |   69 +
+ src/data/navigation.js                             |   53 +
+ src/data/teamData.js                               |   26 +
+ src/index.css                                      |    2 +
+ src/layout/Footer.jsx                              |   68 +
+ src/layout/Header.jsx                              |  270 +
+ src/layout/PageContent.jsx                         |   47 +
+ src/main.jsx                                       |   12 +-
+ src/pages/AboutPage.jsx                            |  111 +
+ src/pages/CartPage.jsx                             |  148 +
+ src/pages/ContactPage.jsx                          |   83 +
+ src/pages/CreateOrderPage.jsx                      |  418 ++
+ src/pages/HomePage.jsx                             |  250 +
+ src/pages/LoginPage.jsx                            |   82 +
+ src/pages/NotFoundPage.jsx                         |   15 +
+ src/pages/OrdersPage.jsx                           |  122 +
+ src/pages/ProductDetailPage.jsx                    |  267 +
+ src/pages/ShopPage.jsx                             |  211 +
+ src/pages/SignupPage.jsx                           |  235 +
+ src/pages/TeamPage.jsx                             |   67 +
+ src/store/actions/clientActions.js                 |  106 +
+ src/store/actions/productActions.js                |   90 +
+ src/store/actions/shoppingCartActions.js           |   66 +
+ src/store/reducers/clientReducer.js                |   38 +
+ src/store/reducers/productReducer.js               |   52 +
+ src/store/reducers/shoppingCartReducer.js          |   34 +
+ src/store/store.js                                 |   31 +
+ src/utils/helpers.js                               |   62 +
+ src/utils/validators.js                            |   27 +
+ tailwind.config.js                                 |   23 +-
+ vercel.json                                        |    3 +
+ 154 files changed, 15090 insertions(+), 10 deletions(-)
+
+Full diff: review/full-project/GIT_DIFF.patch (generated at the previous commit; screenshots excluded, binary files listed as 'Binary files differ').
