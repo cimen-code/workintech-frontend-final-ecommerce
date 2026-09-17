@@ -1,13 +1,9 @@
-import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { AlarmClock, ChartArea, ChevronRight } from 'lucide-react'
 import Slider from '../components/Slider.jsx'
 import ProductCard from '../components/ProductCard.jsx'
-import Spinner from '../components/Spinner.jsx'
-import api from '../api/axiosInstance.js'
-import { editorsPick, fallbackProducts, featuredPosts, heroSlides, vitaSlides } from '../data/homeData.js'
-import { formatPrice, productImage, productPath } from '../utils/helpers.js'
+import { bestsellerProducts, editorsPick, featuredPosts, heroSlides, vitaSlides } from '../data/homeData.js'
+import { formatPrice } from '../utils/helpers.js'
 
 function SectionTitle({ tag, title, text }) {
   return (
@@ -20,28 +16,6 @@ function SectionTitle({ tag, title, text }) {
 }
 
 function HomePage() {
-  const categories = useSelector((state) => state.product.categories)
-  const [bestsellers, setBestsellers] = useState([])
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    let active = true
-    api
-      .get('/products?sort=rating:desc&limit=8')
-      .then((res) => {
-        if (active) setBestsellers(res.data.products)
-      })
-      .catch(() => {
-        if (active) setBestsellers([])
-      })
-      .finally(() => {
-        if (active) setLoading(false)
-      })
-    return () => {
-      active = false
-    }
-  }, [])
-
   return (
     <div className="flex w-full flex-col">
       {/* Hero slider */}
@@ -49,8 +23,7 @@ function HomePage() {
         slides={heroSlides}
         renderSlide={(slide) => (
           <div
-            className="flex min-h-[753px] w-full items-center bg-[#00B5E2] bg-cover bg-[70%_center] lg:min-h-[716px] lg:bg-center"
-            style={{ backgroundImage: `url(${slide.image})` }}
+            className="flex min-h-[753px] w-full items-center bg-[#00B5E2] bg-[url('/images/home/hero-new-collection.jpg')] bg-cover bg-[70%_center] lg:min-h-[716px] lg:bg-center"
           >
             <div className="mx-auto flex w-full max-w-[1050px] flex-col items-center gap-9 px-10 py-20 text-center text-white lg:items-start lg:text-left">
               <h5 className="text-base font-bold leading-6 tracking-[0.1px]">{slide.tag}</h5>
@@ -103,30 +76,13 @@ function HomePage() {
             <h4 className="text-xl leading-[30px] tracking-[0.2px] text-second-text-color">Featured Products</h4>
             <SectionTitle title="BESTSELLER PRODUCTS" text="Problems trying to resolve the conflict between" />
           </div>
-          {loading ? (
-            <Spinner size="lg" />
-          ) : (
-            <div className="flex w-full flex-col gap-[30px] md:flex-row md:flex-wrap">
-              {(bestsellers.length ? bestsellers : fallbackProducts).map((product) =>
-                product.images ? (
-                  <div key={product.id} className="flex w-full md:w-[calc(50%-15px)] lg:w-[calc(25%-23px)]">
-                    <ProductCard
-                      to={productPath(product, categories)}
-                      image={productImage(product)}
-                      title={product.name}
-                      department={product.description}
-                      price={product.price}
-                      imageClassName="aspect-[239/427]"
-                    />
-                  </div>
-                ) : (
-                  <div key={product.id} className="flex w-full md:w-[calc(50%-15px)] lg:w-[calc(25%-23px)]">
-                    <ProductCard to="/shop" {...product} imageClassName="aspect-[239/427]" />
-                  </div>
-                ),
-              )}
-            </div>
-          )}
+          <div className="flex w-full flex-col gap-[30px] md:flex-row md:flex-wrap">
+            {bestsellerProducts.map((product) => (
+              <div key={product.id} className="flex w-full md:w-[calc(50%-15px)] lg:w-[calc(25%-23px)]">
+                <ProductCard to="/shop" {...product} imageClassName="aspect-[239/427]" />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

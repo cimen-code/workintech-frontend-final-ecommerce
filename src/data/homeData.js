@@ -1,22 +1,17 @@
 // Static Home content taken from Figma "ecommerce-desktop-1" (2984:6640) / "ecommerce-mobile-1" (2984:6638)
 
+// Figma shows prev/next arrows and a two-position indicator on the hero, but content for only one slide.
+// Both positions therefore render the same canonical Figma slide; no extra copy is invented.
+const heroSlide = {
+  tag: 'SUMMER 2020',
+  title: 'NEW COLLECTION',
+  text: 'We know how large objects will act, but things on a small scale.',
+  cta: 'SHOP NOW',
+}
+
 export const heroSlides = [
-  {
-    id: 'hero-1',
-    tag: 'SUMMER 2020',
-    title: 'NEW COLLECTION',
-    text: 'We know how large objects will act, but things on a small scale.',
-    cta: 'SHOP NOW',
-    image: '/images/home/hero-new-collection.jpg',
-  },
-  {
-    id: 'hero-2',
-    tag: 'WINTER 2021',
-    title: 'NEW SEASON',
-    text: 'We know how large objects will act, but things on a small scale.',
-    cta: 'SHOP NOW',
-    image: '/images/home/hero-new-collection.jpg',
-  },
+  { id: 'hero-1', ...heroSlide },
+  { id: 'hero-2', ...heroSlide },
 ]
 
 export const editorsPick = [
@@ -26,9 +21,10 @@ export const editorsPick = [
   { id: 'kids', label: 'KIDS', image: '/images/home/editors-kids.png', to: '/shop' },
 ]
 
-// Fallback product cards when the API is not reachable
-export const fallbackProducts = Array.from({ length: 8 }, (_, index) => ({
-  id: `figma-${index + 1}`,
+// BESTSELLER PRODUCTS: the eight static demo cards of Figma "desktop-product-cards-10" (2984:7008),
+// in Figma order (product-1..8.jpg are the Figma images in the same order)
+export const bestsellerProducts = Array.from({ length: 8 }, (_, index) => ({
+  id: `bestseller-${index + 1}`,
   title: 'Graphic Design',
   department: 'English Department',
   oldPrice: 16.48,
@@ -36,23 +32,18 @@ export const fallbackProducts = Array.from({ length: 8 }, (_, index) => ({
   image: `/images/home/product-${index + 1}.jpg`,
 }))
 
+// Second carousel: same situation as the hero (arrows + two-position indicator, one canonical slide in Figma)
+const vitaSlide = {
+  tag: 'SUMMER 2020',
+  title: 'Vita Classic Product',
+  text: 'We know how large objects will act, We know how are objects will act, We know',
+  price: 16.48,
+  image: '/images/home/vita-classic.png',
+}
+
 export const vitaSlides = [
-  {
-    id: 'vita-1',
-    tag: 'SUMMER 2020',
-    title: 'Vita Classic Product',
-    text: 'We know how large objects will act, We know how are objects will act, We know',
-    price: 16.48,
-    image: '/images/home/vita-classic.png',
-  },
-  {
-    id: 'vita-2',
-    tag: 'WINTER 2021',
-    title: 'Vita Classic Product',
-    text: 'We know how large objects will act, We know how are objects will act, We know',
-    price: 24.9,
-    image: '/images/home/vita-classic.png',
-  },
+  { id: 'vita-1', ...vitaSlide },
+  { id: 'vita-2', ...vitaSlide },
 ]
 
 export const featuredPosts = [
