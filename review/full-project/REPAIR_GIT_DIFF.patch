@@ -1,0 +1,1224 @@
+diff --git a/review/full-project/ASSET_MANIFEST.md b/review/full-project/ASSET_MANIFEST.md
+index 06de22c..75d2a8b 100644
+--- a/review/full-project/ASSET_MANIFEST.md
++++ b/review/full-project/ASSET_MANIFEST.md
+@@ -1,5 +1,7 @@
+ # Asset Manifest
+ 
++> **Repair wave 1: no asset files changed.** Replacement exports for `home/neural-universe.png` (node `2984:7389`) and `home/blog-1..3.png` (node `2984:7444`) were attempted again on 2026-09-17 and refused by the Figma MCP Starter-plan tool-call limit. The files below are unchanged from the builder run.
++
+ Figma source file: `gJBJsNnMw9D3WHKjbD5tty` (editable copy of *E-commerce UI – Figma Ecommerce UI Kit (Demo Version) (Community)*). Image credits inside the kit: unsplash.com photos, undraw.co illustrations, iconify.design icons (per the kit's INDEX page `258:4638`).
+ 
+ All assets are stored locally under `public/images/`. Production code has **no** Figma MCP URLs (those expire).
+@@ -31,7 +33,7 @@ The Figma MCP Starter plan hit its **tool-call limit** during the run (after 4 o
+ | `product/main.png`, `product/thumb-1..2.png` | Product detail fallback image (only if a product has no images) | desktop-product-1 `3010:28540` | SHOT-CROP | ≈0.95× |
+ | `product/description.png` | Product detail description tab | `3010:28540` | SHOT-CROP | ≈0.95× |
+ | `team/hero-main.png`, `team/hero-1..4.png` | Team page collage | desktop-team-1 `2874:4077` | SHOT-CROP | ≈0.83× |
+-| `team/member-3..9.png` | Team page placeholder member cards | `2874:4077` | SHOT-CROP | ≈0.83× |
++| `team/member-3..9.png` | Team page placeholder cards ("Teammate (to be added)"; not real people) | `2874:4077` | SHOT-CROP | ≈0.83× |
+ | `about/hero.png` | About hero | desktop-about-1 `2865:3805` | SHOT-CROP | ≈0.68× |
+ | `about/video.png` | About video card | `2865:3805` | SHOT-CROP | ≈0.68× |
+ | `about/work-with-us.png` | About "Work with us" | `2865:3805` | SHOT-CROP | ≈0.68× |
+diff --git a/review/full-project/FULL_PROJECT_IMPLEMENTATION_REPORT.md b/review/full-project/FULL_PROJECT_IMPLEMENTATION_REPORT.md
+index 4f27539..04abc58 100644
+--- a/review/full-project/FULL_PROJECT_IMPLEMENTATION_REPORT.md
++++ b/review/full-project/FULL_PROJECT_IMPLEMENTATION_REPORT.md
+@@ -1,5 +1,7 @@
+ # Full Project Implementation Report — Workintech Frontend Final E-Commerce (T02–T23)
+ 
++> **Superseded in parts by `REPAIR_REPORT.md` (repair wave 1).** Current task status: 20 PASS, 3 PARTIAL (T02, T06, T21). Statements below about T21 payment options, the T06 names and the Home category block describe the builder run and were corrected in the repair wave.
++
+ Run date: 2026-09-17 (TRT) · Builder: Claude Code (Opus 5) · Branch: `builder/full-project-run-20260917-1324` · Baseline: `30e27eb`
+ 
+ ## 1. Executive summary
+@@ -78,7 +80,7 @@ Base `https://workintech-fe-ecommerce.onrender.com`. Every endpoint from the han
+ 
+ ## 8. Auth design
+ 
+-- Login (T10): `loginUser` thunk → `POST /login`. The token is stripped from the user object and set on axios `Authorization` for the session. It goes to `localStorage.token` **only if Remember me is checked**. The user is stored in `client.user`, and the header shows name + Gravatar (SHA-256 via Web Crypto).
++- Login (T10): `loginUser` thunk → `POST /login`. The token is stripped from the user object and set on axios `Authorization` for the session. It goes to `localStorage.token` **only if Remember me is checked**. Since repair wave 1, logging in without Remember me also removes any previously stored token. The user is stored in `client.user`, and the header shows name + Gravatar (SHA-256 via Web Crypto).
+ - Auto login (T11): `App` → `verifyToken()`. If a token exists: set header → `GET /verify` → success sets user and renews token in storage + header; failure removes both.
+ - Protected routes: `ProtectedRoute` (v5 `Route` render prop). It shows a spinner until the verify attempt finishes (so a remembered user is not bounced to login on refresh), then renders or `Redirect`s to `/login` with `state.from`. Login and signup return to `state.from`, falling back to `/` (login) or `history.goBack()` / `/` (signup).
+ - Logout clears token, user, address list and cards.
+diff --git a/review/full-project/KNOWN_ISSUES.md b/review/full-project/KNOWN_ISSUES.md
+index e1fb4f2..4df03a0 100644
+--- a/review/full-project/KNOWN_ISSUES.md
++++ b/review/full-project/KNOWN_ISSUES.md
+@@ -1,5 +1,7 @@
+ # Known Issues
+ 
++> Updated in repair wave 1. See `REPAIR_REPORT.md` for the finding-by-finding status.
++
+ The list is not empty. Ordered by importance for review.
+ 
+ ## Blockers encountered (worked around)
+@@ -22,7 +24,7 @@ The list is not empty. Ordered by importance for review.
+ 10. `POST /order` sends `card_no` as a JS Number (per the T22 sample). Card numbers above 9007199254740991 would lose precision. This is a backend contract issue.
+ 11. Address form sends the extra `address` field (accepted and stored by the live API). Remove it in `AddressForm.jsx` if the strict sample payload is preferred.
+ 12. Shipping (29.99) and free-shipping threshold (150) are front-end constants in `src/utils/helpers.js`. There is no backend source for them.
+-13. Instalment "payment options" in step 2 are display-only; the backend has no options endpoint and the order payload has no instalment field.
++13. **T21 spec ambiguity:** "payment options fetched by card data" has no documented rule or endpoint. Step 2 shows fixed example plans `[1, 3, 6]` for every card, labelled as example plans. They are not derived from card data, and the order payload has no installment field.
+ 14. Orders table on 414px scrolls horizontally inside its container (Total column is off-screen until scrolled).
+ 15. Favourites (heart) counter is static `0`; there is no favourites task.
+ 16. The header search icon navigates to `/shop` (filter input lives there); there is no search overlay.
+@@ -35,3 +37,10 @@ The list is not empty. Ordered by importance for review.
+ 20. The signup spinner check in `qa-flows.log` is timing-sensitive (FAIL in the final run because the request resolved within 150 ms; PASS in the first run). The deterministic re-check with 2 s simulated latency is in `qa-signup-spinner.log` (PASS).
+ 21. Full QA runs create a real order on `customer@commerce.com` (#6 and #7) and a synthetic user `qa.builder.<timestamp>@example.com` each time. There are no delete endpoints for these.
+ 22. The user's own `vite` dev server (port 5173) was already running from the repo and was left running. QA ran against `vite preview` of the production build on port 4173.
++
++## Repair wave 1 additions
++
++23. **T06 needs user input:** real teammate names/roles and the student's confirmed display name. Placeholders are labelled "Teammate (to be added)".
++24. Editing a saved card whose expiry year is earlier than the current year: the year `<select>` only offers the current year onwards, so the old year shows as unselected and must be re-chosen. This is intentional, since an expired card cannot be re-saved.
++25. Mobile (414) logged-in header shows the avatar in addition to Search/Cart/Menu. That is required for T10/T23 and differs from the logged-out Figma row.
++26. Repair QA created one temporary card ("QA Repair Temp", id listed in `qa-repair.log`) to render the installment block, and deleted it in the same run. No orders or users were created in the repair wave.
+diff --git a/review/full-project/REPAIR_CHECKS.txt b/review/full-project/REPAIR_CHECKS.txt
+new file mode 100644
+index 0000000..1a4c112
+--- /dev/null
++++ b/review/full-project/REPAIR_CHECKS.txt
+@@ -0,0 +1,187 @@
++WORKINTECH FE FINAL — REPAIR WAVE 1 CHECKS  (2026-09-17 15:51 +03)
++branch: builder/full-project-run-20260917-1324   HEAD: 546cbae   previous builder HEAD: b068f92
++
++=== npm run lint ===
++
++> workintech-frontend-final-ecommerce@0.0.0 lint
++> eslint .
++
++lint exit code: 0
++
++=== npm run build ===
++
++> workintech-frontend-final-ecommerce@0.0.0 build
++> vite build
++
++vite v8.3.0 building client environment for production...
++transforming...
++✓ 2032 modules transformed.
++rendering chunks...
++computing gzip size...
++dist/index.html                   0.48 kB │ gzip:   0.31 kB
++dist/assets/index-BfZaVYkR.css   39.83 kB │ gzip:   8.42 kB
++dist/assets/index-e_YO1fQb.js   414.36 kB │ gzip: 128.26 kB
++
++✓ built in 605ms
++build exit code: 0
++
++=== repair unit checks (node review/full-project/tools/repair-unit-checks.mjs; no network) ===
++PASS R4.1 pre-existing token + login rememberMe=false -> localStorage token removed — stored=null
++PASS R4.2 session axios header still gets the new token
++PASS R4.3 header has no Bearer prefix
++PASS R4.4 user saved without token field
++PASS R4.5 storeToken(token, false) removes stored token
++PASS R4.6 login rememberMe=true -> token stored
++PASS T11.1 verify success renews localStorage token
++PASS T11.2 verify success renews axios header (raw, no Bearer)
++PASS T11.3 verify success returns user
++PASS T11.4 verify failure removes localStorage token
++PASS T11.5 verify failure removes axios header
++PASS T11.6 verify failure returns null
++PASS T11.7 no stored token -> no verify, resolves null
++PASS R5 current year, earlier month (08/2026 in Sep 2026) is expired — got=true
++PASS R5 current year, current month (09/2026 in Sep 2026) is valid — got=false
++PASS R5 current year, later month (12/2026) is valid — got=false
++PASS R5 future year, earlier month (01/2027) is valid — got=false
++PASS R5 past year (12/2025) is expired — got=true
++PASS R5 string inputs from <select> ("8", "2026") are expired — got=true
++PASS R5 January edge: 01/2026 in Jan 2026 is valid — got=false
++PASS R5 incomplete pair (month missing) is not flagged — got=false
++ALL PASS
++
++--- negative control (same test run against the previous clientActions.js from b068f92 via git stash) ---
++FAIL R4.1 pre-existing token + login rememberMe=false -> localStorage token removed — stored=old-token
++(the old module also has no exported storeToken, so the run aborts after R4.1)
++
++=== previous unit checks still pass (node review/full-project/tools/unit-checks.mjs) ===
++PASS IBAN valid TR: true
++PASS IBAN bad checksum: false
++PASS IBAN short TR: false
++PASS IBAN valid DE: true
++PASS phone 05XX: true
++PASS phone +90: true
++PASS phone short: false
++PASS tax ok: true
++PASS tax bad: false
++PASS pwd ok: true
++PASS pwd no special: false
++PASS pwd short: false
++PASS email ok: true
++PASS email bad: false
++PASS slug tr: gri-regular-astar-ayakkabi-sik
++PASS category path: /shop/erkek/ayakkabi/9
++PASS summary: {"productsTotal":100,"shipping":29.99,"discount":0,"grandTotal":129.99}
++ALL PASS
++
++=== focused repair browser QA (review/full-project/tools/qa-repair.mjs, vite preview of this build) ===
++PASS: 32  FAIL: 0
++PASS [R1] Home 414: no extra "SHOP BY CATEGORY" block
++PASS [R1] Home 414: Figma section order present
++PASS [R1] Home 414: no horizontal overflow
++PASS [R1] Home 414: no broken images
++PASS [R1] Home 1440: no extra "SHOP BY CATEGORY" block
++PASS [R1] Home 1440: Figma section order present
++PASS [R1] Home 1440: no horizontal overflow
++PASS [R1] Home 1440: no broken images
++PASS [R1] 414 logged-out top row = Bandage + Search + Cart + Menu — {"search":true,"cart":true,"menu":true,"loginLink":false,"favorites":false,"cartCountText":"hidden"}
++PASS [R1] 414 expanded menu lists nav links + Login/Register — Bandage Home Shop About Team Contact Login / Register Shop categories
++PASS [R1] 414 expanded menu: categories collapsed by default
++PASS [R1] 414 expanded menu: category dropdown still reachable
++PASS [R1] 1440 logged-out header still shows Login / Register
++PASS [R4] pre-existing token + login without Remember Me -> localStorage token absent
++PASS [R4] session is logged in (axios header used in-session)
++PASS [R4] in-session protected request carries raw token (no Bearer) — <RAW TOKEN REDACTED>
++PASS [R4] after full reload without Remember Me -> logged out
++PASS [R4] login with Remember Me -> token stored
++PASS [T11] reload -> GET /verify with raw token (no Bearer) — <RAW TOKEN REDACTED>
++PASS [T11] auto login after reload
++PASS [T10] 414 logged-in: user avatar button visible
++PASS [T23] 414 logged-in: Previous Orders in expanded menu
++PASS [R5] month→year order: 8/2026 shows "Card is expired"
++PASS [R5] expired card cannot be submitted (no POST /user/card)
++PASS [R5] changing only the MONTH to current (9/2026) clears the error
++PASS [R5] year→month order: 8/2026 shows "Card is expired"
++PASS [R5] changing only the YEAR to 2027 clears the error
++PASS [R5] changing the year back to current re-flags the expired pair
++PASS [R3] installment UI no longer labelled with card brand / "fetched"
++PASS [SAFETY] temporary card deleted again — {"deleted":[7],"remaining":0}
++PASS [SAFETY] no POST/PUT/DELETE to /user/address, /order or /signup during repair QA
++PASS [R2] Team shows placeholders explicitly as "Teammate (to be added)" (NEEDS USER INPUT)
++console errors: 0
++
++=== route smoke test re-run (review/full-project/tools/qa-routes.mjs) ===
++PASS: 52  FAIL: 0
++PASS 414 / -> / overflow=false broken=0 errors=0
++PASS 768 / -> / overflow=false broken=0 errors=0
++PASS 1024 / -> / overflow=false broken=0 errors=0
++PASS 1440 / -> / overflow=false broken=0 errors=0
++PASS 414 /shop -> /shop overflow=false broken=0 errors=0
++PASS 768 /shop -> /shop overflow=false broken=0 errors=0
++PASS 1024 /shop -> /shop overflow=false broken=0 errors=0
++PASS 1440 /shop -> /shop overflow=false broken=0 errors=0
++PASS 414 /shop/kadin/ayakkabi/2?filter=siyah&sort=price:desc -> /shop/kadin/ayakkabi/2?filter=siyah&sort=price:desc overflow=false broken=0 errors=0
++PASS 768 /shop/kadin/ayakkabi/2?filter=siyah&sort=price:desc -> /shop/kadin/ayakkabi/2?filter=siyah&sort=price:desc overflow=false broken=0 errors=0
++PASS 1024 /shop/kadin/ayakkabi/2?filter=siyah&sort=price:desc -> /shop/kadin/ayakkabi/2?filter=siyah&sort=price:desc overflow=false broken=0 errors=0
++PASS 1440 /shop/kadin/ayakkabi/2?filter=siyah&sort=price:desc -> /shop/kadin/ayakkabi/2?filter=siyah&sort=price:desc overflow=false broken=0 errors=0
++PASS 414 /shop/kadin/ceket/3/gri-regular-astar/322 -> /shop/kadin/ceket/3/gri-regular-astar/322 overflow=false broken=0 errors=0
++PASS 768 /shop/kadin/ceket/3/gri-regular-astar/322 -> /shop/kadin/ceket/3/gri-regular-astar/322 overflow=false broken=0 errors=0
++PASS 1024 /shop/kadin/ceket/3/gri-regular-astar/322 -> /shop/kadin/ceket/3/gri-regular-astar/322 overflow=false broken=0 errors=0
++PASS 1440 /shop/kadin/ceket/3/gri-regular-astar/322 -> /shop/kadin/ceket/3/gri-regular-astar/322 overflow=false broken=0 errors=0
++PASS 414 /contact -> /contact overflow=false broken=0 errors=0
++PASS 768 /contact -> /contact overflow=false broken=0 errors=0
++PASS 1024 /contact -> /contact overflow=false broken=0 errors=0
++PASS 1440 /contact -> /contact overflow=false broken=0 errors=0
++PASS 414 /team -> /team overflow=false broken=0 errors=0
++PASS 768 /team -> /team overflow=false broken=0 errors=0
++PASS 1024 /team -> /team overflow=false broken=0 errors=0
++PASS 1440 /team -> /team overflow=false broken=0 errors=0
++PASS 414 /about -> /about overflow=false broken=0 errors=0
++PASS 768 /about -> /about overflow=false broken=0 errors=0
++PASS 1024 /about -> /about overflow=false broken=0 errors=0
++PASS 1440 /about -> /about overflow=false broken=0 errors=0
++PASS 414 /signup -> /signup overflow=false broken=0 errors=0
++PASS 768 /signup -> /signup overflow=false broken=0 errors=0
++PASS 1024 /signup -> /signup overflow=false broken=0 errors=0
++PASS 1440 /signup -> /signup overflow=false broken=0 errors=0
++PASS 414 /login -> /login overflow=false broken=0 errors=0
++PASS 768 /login -> /login overflow=false broken=0 errors=0
++PASS 1024 /login -> /login overflow=false broken=0 errors=0
++PASS 1440 /login -> /login overflow=false broken=0 errors=0
++PASS 414 /cart -> /cart overflow=false broken=0 errors=0
++PASS 768 /cart -> /cart overflow=false broken=0 errors=0
++PASS 1024 /cart -> /cart overflow=false broken=0 errors=0
++PASS 1440 /cart -> /cart overflow=false broken=0 errors=0
++PASS 414 /order -> /login overflow=false broken=0 errors=0
++PASS 768 /order -> /login overflow=false broken=0 errors=0
++PASS 1024 /order -> /login overflow=false broken=0 errors=0
++PASS 1440 /order -> /login overflow=false broken=0 errors=0
++PASS 414 /orders -> /login overflow=false broken=0 errors=0
++PASS 768 /orders -> /login overflow=false broken=0 errors=0
++PASS 1024 /orders -> /login overflow=false broken=0 errors=0
++PASS 1440 /orders -> /login overflow=false broken=0 errors=0
++PASS 414 /this-route-does-not-exist -> /this-route-does-not-exist overflow=false broken=0 errors=0
++PASS 768 /this-route-does-not-exist -> /this-route-does-not-exist overflow=false broken=0 errors=0
++PASS 1024 /this-route-does-not-exist -> /this-route-does-not-exist overflow=false broken=0 errors=0
++PASS 1440 /this-route-does-not-exist -> /this-route-does-not-exist overflow=false broken=0 errors=0
++exit 0
++
++=== package.json / lock unchanged vs 30e27eb ===
++(empty = unchanged)
++
++=== forbidden stack / CSS Grid class / temporary Figma URL scan in src/ ===
++none found
++
++=== secret scan (JWT-like / Bearer) in src/ and review/ ===
++none found
++
++=== backend writes during repair wave ===
++orders: 0, users: 0, addresses: 0, cards: 1 temporary card created and deleted in the same run (PASS [SAFETY] temporary card deleted again — {"deleted":[7],"remaining":0})
++Figma export retry: download_assets 2984:7389 -> 'You've reached the Figma MCP tool call limit on the Starter plan.'
++
++=== commits since previous builder HEAD b068f92 ===
++546cbae test: repair wave 1 focused QA, unit checks and updated review docs
++2869805 fix: repair wave 1 (T02 home/header, T06 honesty, T21 labels, remember me, card expiry)
++
++=== git status ===
++## builder/full-project-run-20260917-1324
++?? review/full-project/REPAIR_CHECKS.txt
+diff --git a/review/full-project/REPAIR_REPORT.md b/review/full-project/REPAIR_REPORT.md
+new file mode 100644
+index 0000000..1c48738
+--- /dev/null
++++ b/review/full-project/REPAIR_REPORT.md
+@@ -0,0 +1,49 @@
++# Repair Wave 1 Report
++
++Branch `builder/full-project-run-20260917-1324` · previous builder HEAD `b068f92` · reference archive SHA256 `5f4442effa151b61c5eac5d1941d9717214040146b9a4d26ffc9e2223be021eb` (re-verified before any change)
++Scope: narrow repairs only. No dependency, stack, route or backend-contract changes. `main` untouched; nothing merged, pushed or deployed.
++
++## Finding status
++
++| # | Finding | Status | What changed | Evidence |
++|---|---|---|---|---|
++| 1 | T02 Home visual fidelity | **PARTIAL** (1 of 4 sub-items blocked) | (a) **FIXED:** extra Home "Top Categories / SHOP BY CATEGORY" block removed. T12 top-5 stays on Shop and the Header dropdown is unchanged. (b) **DEFERRED / BLOCKED:** high-quality exports of `2984:7389` and `2984:7444`. The retry was refused by the Figma MCP Starter-plan limit, so the assets are unchanged. (c) **FIXED:** 414 logged-out top row is now Bandage + Search + Cart + Menu, using the Figma align-right glyph (lucide `TextAlignEnd`). The cart count is hidden when 0 below `lg`, and Login/Register moved into the expanded menu. Categories in the expanded menu are collapsed behind "Shop categories". Authenticated users keep the avatar + dropdown (T10/T23). (d) **FIXED:** fresh 414/1440 Home screenshots and the menu-open state | `qa-repair.log` R1 ×13 PASS; `screenshots/repair/home-414.jpg`, `home-1440.jpg`, `home-414-header-compact.png`, `home-414-menu-open.png`, `home-414-menu-open-categories.png`, `home-414-logged-in-menu-open.png`; Figma reference `figma-reference/home_mobile_header.png` |
++| 2 | T06 real Team data | **NEEDS USER INPUT** | No names were invented. The 7 placeholder records are now explicitly labelled "Teammate (to be added) / Role pending" (previously "Team Member / Workintech Student"). The student entry shows the verifiable GitHub handle `cimen-code` as Full Stack Developer until you confirm the display name; the previously inferred "Hakan Çimen" was removed. Gökhan Özdemir stays Project Manager | `qa-repair.log` R2 PASS; `screenshots/repair/team-1440.jpg`; `src/data/teamData.js` header comment |
++| 3 | T21 payment options | **SPEC AMBIGUITY** | Checked the task cards, handoff, raw project JSON, both T21 sample images and the API (`/installment`, `/user/card/installment` → 404). No card-dependent installment rule or endpoint exists. The second sample image only shows a "Taksit Sayısı / Aylık Ödeme" table with "Tek Çekim". The UI keeps the safe fixed plans, now named `FIXED_INSTALLMENT_PLANS = [1, 3, 6]`. The card-brand label was removed from the legend, and the UI states "Example plans shown for every card; the API provides no card-specific installment data." Card CRUD remains **PASS**. The payment-options data source is **unspecified**, and the plans are **not fetched or derived from card data** | `qa-repair.log` R3 PASS; `screenshots/repair/checkout-card-installments-1440.png`; TASK_MATRIX T21 = PARTIAL |
++| 4 | Strict Remember Me | **FIXED** | `storeToken(token, remember)` (now exported) always sets the axios header. It calls `localStorage.setItem` when remember is true and **`localStorage.removeItem`** otherwise. `verifyToken` is unchanged | `repair-unit-checks.log` R4.1–R4.6 PASS, T11.1–T11.7 PASS (renew / remove / raw header). **Negative control:** the same test against the old `clientActions.js` fails R4.1 (`stored=old-token`). Browser `qa-repair.log` R4 ×5 + T11 ×2 PASS: seeded stale token → login without Remember Me → token absent, in-session `/order` request uses the raw token (no Bearer), reload → logged out; with Remember Me → stored, reload → `/verify` raw token → auto login |
++| 5 | Card expiry validation | **FIXED** | New pure `isCardExpired(month, year, now)` in `utils/validators.js`. `CardForm` uses `mode: 'onChange'` and validates the pair on `expire_year`. `expire_month` declares `deps: ['expire_year']`, so changing either field re-evaluates it and field order no longer matters. Submit is blocked while expired | `repair-unit-checks.log` R5 ×8 PASS (08/2026 expired in Sep 2026; 09/2026, 12/2026, 01/2027 valid; 12/2025 expired; string inputs; January edge; incomplete pair). Browser `qa-repair.log` R5 ×6 PASS: month→year and year→month orders both flag 8/2026; changing only the month or only the year clears/re-flags it; the expired pair produced no `POST /user/card`. Screenshot `card-form-expired-1440.png` |
++
++## Home bestseller tradeoff (not changed)
++
++Home bestseller cards remain **live API products** (top 8 by `rating:desc`). The fixed Figma demo cards ("Graphic Design / English Department / $16.48 $6.48") are only the fallback when the API fails.
++
++- Keeping live data makes every card clickable to a real detail page and consistent with T13/T16/T17.
++- Switching to fixed demo cards would match the Figma pixels and text more closely, but the cards would lead to non-existent products.
++
++Nothing in visual grading so far requires the fixed content. Changing it is a one-line decision in `HomePage.jsx` (use `fallbackProducts` unconditionally).
++
++## QA gate
++
++| Gate | Result | Evidence |
++|---|---|---|
++| `npm run lint` | PASS (0 problems) | `REPAIR_CHECKS.txt` |
++| `npm run build` | PASS | `REPAIR_CHECKS.txt` |
++| Focused Home visual QA 414 + 1440 | PASS (checks); visual fidelity still PARTIAL (assets) | `qa-repair.log` R1, `screenshots/repair/` |
++| Mobile expanded-menu screenshot | done | `home-414-menu-open.png` (+ categories and logged-in variants) |
++| Auth: Remember Me + verify raw token / no Bearer | PASS | `repair-unit-checks.log`, `qa-repair.log` R4/T11 |
++| Card form validation | PASS | `repair-unit-checks.log` R5, `qa-repair.log` R5 |
++| Route smoke test (13 routes × 4 widths) | PASS 52/52 | `qa-routes.log`, `qa-routes.json` |
++| Backend writes | 0 orders, 0 users, 0 addresses; 1 temporary card created and deleted | `qa-repair.log` SAFETY |
++
++The builder-run flow suite (`qa-flows.mjs`) was **not** re-run, because it creates a real order and a synthetic user. The repaired areas are covered by the focused suites above, and flows unaffected by the repair (shop params, cart, address CRUD, order, orders) were not changed in source.
++
++## Remaining issues requiring action
++
++1. **T02 assets:** export Figma nodes `2984:7389` (image inside `hero-cover-1`) and `2984:7444` (three Content-card images) once the Figma quota resets or via manual export, and overwrite `public/images/home/neural-universe.png` and `blog-1.png`..`blog-3.png`.
++2. **T06:** supply the real teammate names/roles and confirm the student display name.
++3. **T21:** obtain the intended rule or data source for card-dependent payment options (e.g. BIN/bank table from the instructor).
++4. Carried over from the builder run (unchanged): menu Team vs Blog/Pages, in-house slider, dark top bar on all pages, `address` extra field in T20, `card_no` as Number (T22), front-end shipping constants. See `KNOWN_ISSUES.md`.
++
++## Commits in this wave
++
++See `REPAIR_CHECKS.txt` (commit list + status) and `REPAIR_GIT_DIFF.patch` (diff `b068f92..HEAD`, screenshots excluded).
+diff --git a/review/full-project/ROUTES.md b/review/full-project/ROUTES.md
+index f167ccf..4b291b3 100644
+--- a/review/full-project/ROUTES.md
++++ b/review/full-project/ROUTES.md
+@@ -4,8 +4,8 @@ Defined once in `src/layout/PageContent.jsx` inside a single `<Switch>`; Header
+ 
+ | Path | Component | Access | Task |
+ |---|---|---|---|
+-| `/` | `HomePage` | public | T02, T12 (top 5 categories) |
+-| `/shop` | `ShopPage` | public | T03, T13, T14, T15 |
++| `/` | `HomePage` | public | T02 |
++| `/shop` | `ShopPage` | public | T03, T12 (top 5 categories), T13, T14, T15 |
+ | `/shop/:gender/:categoryName/:categoryId` | `ShopPage` (category from `useParams`) | public | T12, T14 |
+ | `/shop/:gender/:categoryName/:categoryId/:productNameSlug/:productId` | `ProductDetailPage` | public | T04, T16, T17 |
+ | `/contact` | `ContactPage` | public | T05 |
+diff --git a/review/full-project/TASK_MATRIX.md b/review/full-project/TASK_MATRIX.md
+index 3b56f28..ba2be76 100644
+--- a/review/full-project/TASK_MATRIX.md
++++ b/review/full-project/TASK_MATRIX.md
+@@ -1,24 +1,26 @@
+ # Task Acceptance Matrix — T01–T23
+ 
+ Builder branch `builder/full-project-run-20260917-1324` · baseline `30e27eb`
+-Evidence files are in `review/full-project/`: `qa-routes.log/json` (52 route × width checks), `qa-flows.log/json` (55 end-to-end checks), `qa-signup-spinner.log`, `unit-checks.log`, `CHECKS.txt`, `screenshots/`.
++Evidence files are in `review/full-project/`: `qa-routes.log/json` (52 route × width checks, **re-run in repair wave**), `qa-flows.log/json` (55 end-to-end checks, builder run), `qa-signup-spinner.log`, `unit-checks.log`, **`qa-repair.log/json` (32 repair checks)**, **`repair-unit-checks.log` (21 unit checks + negative control)**, `CHECKS.txt`, `REPAIR_CHECKS.txt`, `screenshots/`, `screenshots/repair/`.
++
++> **Updated in repair wave 1** (see `REPAIR_REPORT.md`). Changed rows: T02, T06, T10, T12, T21. Changed totals.
+ 
+ Status legend: **PASS** = every behavioural checkbox implemented and verified with evidence. **PARTIAL** = implemented but with a stated gap. **BLOCKED** = cannot be done because of an external limitation. **NOT DONE**.
+ 
+ | Task | Requirement summary | Status | Key files | Verification evidence | Known deviation / reason |
+ |---|---|---|---|---|---|
+ | T01 Project Setup | repo, Vite, deps, Router v5, Tailwind, deploy | **PASS** (verification only) | `package.json`, `tailwind.config.js`, `postcss.config.js` | deps present at the exact versions (`DEPENDENCY_CHANGES.md`); `https://workintech-frontend-final-ecommerce.vercel.app` → HTTP 200 on 2026-09-17; lint + build PASS | not redone. Production still serves `main` (T01), nothing was deployed |
+-| T02 Home Page | Header/PageContent/Footer layout, one header + one menu, mobile & desktop Home, ProductCard, slider, Router links, icon lib, Flex + Tailwind only | **PARTIAL** | `src/layout/*`, `src/pages/HomePage.jsx`, `src/components/{ProductCard,Slider,SocialIcons}.jsx`, `src/data/{navigation,homeData}.js` | routes QA: 1 header + 1 footer on all 13 routes × 4 widths, no overflow, no broken images; `home-414.jpg`, `home-1440.jpg`; menu source `navLinks` used by desktop + mobile | (1) Neural Universe + Featured Posts images are low-res crops (the Figma MCP quota ran out). (2) Slider is a small in-house component, not a third-party library. (3) Menu is Home/Shop/About/Team/Contact instead of Figma's Blog/Pages, which would be dead links. (4) Bestseller cards show live API products (Figma images are only a fallback). (5) Not pixel-verified against Figma; inline `style` is used only for dynamic values (slider translate, hero background URL, avatar size) |
++| T02 Home Page | Header/PageContent/Footer layout, one header + one menu, mobile & desktop Home, ProductCard, slider, Router links, icon lib, Flex + Tailwind only | **PARTIAL** | `src/layout/*`, `src/pages/HomePage.jsx`, `src/components/{ProductCard,Slider,SocialIcons}.jsx`, `src/data/{navigation,homeData}.js` | routes QA re-run: 1 header + 1 footer on all 13 routes × 4 widths, no overflow, no broken images; repair QA: extra "SHOP BY CATEGORY" block removed, Figma section order present at 414/1440, 414 logged-out top row = Bandage + Search + Cart + Menu (Figma align-right menu glyph), expanded menu screenshot; `screenshots/repair/home-414.jpg`, `home-1440.jpg`, `home-414-header-compact.png`, `home-414-menu-open.png` | **Remaining:** (1) Neural Universe + Featured Posts images are still low-res crops. Replacement exports of `2984:7389`/`2984:7444` were attempted again in the repair wave and blocked by the Figma MCP Starter-plan limit. (2) Slider is an in-house component, not a third-party library. (3) Menu is Home/Shop/About/Team/Contact instead of Figma's Blog/Pages (dead links otherwise). (4) Bestseller cards intentionally stay live API products (fixed Figma demo cards only as fallback). (5) Not pixel-verified. (6) Expanded mobile menu adds Login/Register and a collapsed "Shop categories" toggle below the Figma links |
+ | T03 Shop Page | mobile + desktop Shop, `/shop`, router links | **PASS** | `src/pages/ShopPage.jsx`, `Pagination.jsx`, `ClientsLogos.jsx` | `shop-414.jpg`, `shop-1440.jpg`; Figma `desktop-shop-1 3006:10335` / `mobile-shop-1 3006:10334` sections reproduced (title+breadcrumb, 5 category cards, results/views/sort/filter row, 4-col grid, pagination, clients) | category cards use live `/categories` images, not Figma photos |
+ | T04 Product Detail Page | mobile + desktop detail, card click → detail | **PASS** | `src/pages/ProductDetailPage.jsx` | `product-detail-414.jpg`, `product-detail-1440.jpg`; Figma `desktop-product-1 3010:28540` layout (gallery+thumbs, info, colours, actions, tabs, bestsellers, clients); flow check "card cursor pointer" | "Select Options" button replaced by "Add to Cart" (T17) |
+ | T05 Contact Page | mobile + desktop, router | **PASS** | `src/pages/ContactPage.jsx` | `contact-414.jpg`, `contact-1440.jpg`; Figma `desktop-contact-1 2879:7582` | page uses the single shared Header instead of the inner-page Figma navbar (task requires one header) |
+-| T06 Team Page | mobile + desktop, Gökhan Özdemir as PM, yourself as Full Stack Developer, team members | **PARTIAL** | `src/pages/TeamPage.jsx`, `src/data/teamData.js`, `TeamCard.jsx` | `team-414.jpg`, `team-1440.jpg`; Figma `desktop-team-1 2874:4077` | (1) the student's real teammates are unknown, so 7 cards are labelled "Team Member / Workintech Student" with Figma photos. (2) No LinkedIn photo was scraped; neutral initials avatars are used for Gökhan Özdemir and Hakan Çimen. (3) The name "Hakan Çimen" comes from the local macOS account name; GitHub `cimen-code` is from git config. **User must confirm** |
++| T06 Team Page | mobile + desktop, Gökhan Özdemir as PM, yourself as Full Stack Developer, team members | **PARTIAL — NEEDS USER INPUT** | `src/pages/TeamPage.jsx`, `src/data/teamData.js`, `TeamCard.jsx` | `team-414.jpg`, `team-1440.jpg`, `screenshots/repair/team-1440.jpg`; repair QA R2 | "Add your team members" is **not satisfied**. No real teammate list was supplied, and the 7 cards are explicit placeholders labelled "Teammate (to be added) / Role pending", not people. The student entry shows the verifiable GitHub handle `cimen-code` as Full Stack Developer until the display name is confirmed. Gökhan Özdemir is Project Manager with an initials avatar (no scraped photo) |
+ | T07 About Us Page | mobile + desktop, router | **PASS** | `src/pages/AboutPage.jsx` | `about-414.jpg`, `about-1440.jpg`; Figma `desktop-about-1 2865:3805` | images ~0.68× resolution (quota); shared Header instead of the inner-page navbar |
+ | T08 Sign Up | `/signup`, axios instance, react-hook-form rules, roles from `/roles`, customer default, store fields + TR phone / tax / IBAN, spinner, success → previous page + warning, error stays, exact payload | **PASS** | `src/pages/SignupPage.jsx`, `src/utils/validators.js`, `src/api/axiosInstance.js`, `postman/…collection.json` | flows: roles request, default role 3, store fields, 7 validation messages, success redirect `/about` + "You need to click link in email to activate your account!", duplicate → error on form; `qa-signup-spinner.log` (disabled + spinner under 2 s latency); `unit-checks.log` (IBAN mod-97, phone, tax, password) | 1 synthetic account created per full QA run (see API_VERIFICATION). Postman collection provided as JSON (not exported from the Postman app) |
+ | T09 Redux | redux + thunk + logger, store, reducers with exact fields, basic actions, action creators, roles thunk only when needed | **PASS** | `src/store/store.js`, `src/store/reducers/*`, `src/store/actions/*` | client: `user,addressList,creditCards,roles,theme,language`; product: `categories,productList,total,limit=25,offset=0,filter,fetchState=NOT_FETCHED`; cart: `cart,payment,address`; `fetchRolesIfNeeded` returns cached roles | extensions: `selectedProduct`/`selectedProductFetchState` (T16), `SET_ADDRESS_LIST`/`SET_CREDIT_CARDS` setters (T20/T21). Logger only in dev |
+-| T10 Login | RHF email+password, email validation, POST `/login` via thunk, user in client reducer, redirect previous/home, user in header, gravatar, remember me → localStorage, toast on failure | **PASS** | `src/pages/LoginPage.jsx`, `clientActions.loginUser`, `Header.jsx`, `Gravatar.jsx` | flows: wrong password toast + stays; redirect `/about`; no previous page → `/`; header "Cust Omer" + gravatar img; token saved only with remember me; `home-logged-in-1440.jpg` | Gravatar uses a SHA-256 hash via Web Crypto (no extra library) |
++| T10 Login | RHF email+password, email validation, POST `/login` via thunk, user in client reducer, redirect previous/home, user in header, gravatar, remember me → localStorage, toast on failure | **PASS** | `src/pages/LoginPage.jsx`, `clientActions.loginUser/storeToken`, `Header.jsx`, `Gravatar.jsx` | flows (builder run): wrong password toast + stays; redirect `/about`; no previous page → `/`; header user + gravatar. **Repair wave:** strict Remember Me. Login without it removes any pre-existing stored token (unit R4.1–R4.6, with a negative control against the old code; browser R4: token absent, session still authorised with a raw header, reload → logged out). With it the token is stored and reload triggers `/verify` with a raw token | Gravatar uses a SHA-256 hash via Web Crypto (no extra library). At 414px a logged-in user keeps the avatar in the compact header (T10 "user info on header", T23 menu access) |
+ | T11 Auto login | token in localStorage → axios `Authorization: token` (no Bearer) → GET `/verify` → user + renew token; failure → remove token | **PASS** | `clientActions.verifyToken`, `src/App.jsx`, `ProtectedRoute.jsx` | flows: `/verify` on load with raw token header (`<RAW TOKEN REDACTED>`, not Bearer); auto-logged-in after reload; invalid token removed + logged-out header | protected routes wait for the verify result (spinner) before deciding to redirect |
+-| T12 Categories | thunk → store, `/categories`, links `shop/:gender/:categoryName/:categoryId`, top 5 by rating with images, all in header dropdown | **PASS** | `productActions.fetchCategoriesIfNeeded`, `Header.jsx` `CategoryMenu`, `HomePage.jsx`, `ShopPage.jsx`, `utils/helpers.categoryPath` | dropdown Kadın/Erkek columns (matches the T12 sample image); top-5 cards on Home + Shop; routes e.g. `/shop/kadin/ayakkabi/2` | categoryName slug is derived from `code` (`k:ayakkabi` → `ayakkabi`, Turkish chars transliterated) |
++| T12 Categories | thunk → store, `/categories`, links `shop/:gender/:categoryName/:categoryId`, top 5 by rating with images, all in header dropdown | **PASS** | `productActions.fetchCategoriesIfNeeded`, `Header.jsx` `CategoryMenu`, `ShopPage.jsx`, `utils/helpers.categoryPath` | dropdown Kadın/Erkek columns (matches the T12 sample image; on 414 behind "Shop categories" in the expanded menu); top-5 cards by rating with images on **Shop** (removed from Home in repair wave 1 for T02 fidelity); routes e.g. `/shop/kadin/ayakkabi/2` | categoryName slug is derived from `code` (`k:ayakkabi` → `ayakkabi`, Turkish chars transliterated) |
+ | T13 Products | thunk `/products`, set total + products, list on shop, spinner while fetching | **PASS** | `productActions.fetchProducts`, `ShopPage.jsx`, `Spinner.jsx` | flows: "Showing 25 of 587 results"; fetchState FETCHING → spinner | — |
+ | T14 Query params | category from URL, sort select (4 values), filter input, each change re-fetches and keeps the others | **PASS** | `ShopPage.jsx`, `productActions.buildProductQuery` | real requests: `category=2` → `category=2&filter=siyah` → `category=2&filter=siyah&sort=price:desc`; category change keeps filter + sort; results verified sorted | sort + filter are applied with the "Filter" button (or Enter), and the URL query string is the state holder, so refresh and back/forward work |
+ | T15 Pagination | limit 25 / offset | **PASS** | `Pagination.jsx`, `ShopPage.jsx` | flows: page 2 → `limit=25&offset=25` keeping category + sort | page-number pagination (not infinite scroll); `offset` is also dispatched to the reducer |
+@@ -27,18 +29,19 @@ Status legend: **PASS** = every behavioural checkbox implemented and verified wi
+ | T18 Cart page | data table, +/−, remove, select/deselect, total of selection | **PASS** | `CartPage.jsx`, `shoppingCartActions` | flows: increment/deselect → `$1385.97`, decrement, remove; `cart-1440.jpg`, `cart-414.jpg` (no overflow, table scrolls) | decrement stops at 1 (use the trash icon to remove) |
+ | T19 Order summary | box beside list, products + shipping − discount = grand total, "Create Order" button | **PASS** | `OrderSummary.jsx`, `utils/helpers.calculateOrderSummary` | flows: labels + totals; unit check `129.99`; shipping 29.99, free over $150 (matches the T20 sample image) | button routes to `/order` (T20) rather than "no functionality yet" |
+ | T20 Address step | protected (→ login), token header, GET/POST/PUT/DELETE `/user/address`, add form fields incl. city dropdown, shipping + receipt selection | **PASS** | `CreateOrderPage.jsx`, `AddressForm.jsx`, `data/cities.js`, `ProtectedRoute.jsx` | routes QA `/order` → `/login` when logged out; flows: POST + PUT address, selection; `checkout-address-1440.jpg` | form also sends `address` (multiline detail). Live API stores it; the task's JSON sample omits it (see API_VERIFICATION "T20 ambiguity"). Delete uses `window.confirm` |
+-| T21 Card step | list saved cards, add/update/delete, GET/POST/PUT/DELETE `/user/card`, payment options | **PASS** | `CreateOrderPage.jsx`, `CardForm.jsx` | flows: POST + GET, PUT; `checkout-card-1440.jpg`, `checkout-card-414.jpg` | "payment options" = single/3/6 instalment display derived from the selected card and total (no backend endpoint exists for options); CCV entered per order, never stored |
++| T21 Card step | list saved cards, add/update/delete, GET/POST/PUT/DELETE `/user/card`, payment options fetched by card data | **PARTIAL — SPEC AMBIGUITY** | `CreateOrderPage.jsx`, `CardForm.jsx`, `utils/validators.isCardExpired` | card CRUD **PASS**: flows POST + GET, PUT; delete wired; `checkout-card-1440.jpg`, `checkout-card-414.jpg`. Repair wave: expiry validation re-evaluates on month or year change (unit R5 ×8, browser R5 ×6, expired pair cannot be submitted) | "There will be payment options fetched by card data" is **not implemented as specified**. No card-dependent installment rule or endpoint exists in the task cards, handoff, samples or API (the T21 sample image only shows a "Taksit Sayısı / Aylık Ödeme" table with "Tek Çekim"). The UI shows the fixed example plans `FIXED_INSTALLMENT_PLANS = [1, 3, 6]` for every card, labelled as such; they are **not** fetched or derived from card data. CCV entered per order, never stored |
+ | T22 Complete order | POST `/order` with sample payload shape, congratulate, reset screen + cart items | **PASS** | `CreateOrderPage.completeOrder`, `shoppingCartActions.createOrder` | flows: POST `/order`, congratulations screen, ordered items removed (cart `[]`); `order-complete-1440.jpg` | only **checked** items are ordered/removed; unchecked items stay in the cart |
+ | T23 Previous orders | new protected page, link in user dropdown, GET `/order`, data table, collapsible details | **PASS** | `OrdersPage.jsx`, `Header.jsx` user menu | flows: link in dropdown, table with `#7`, details expand, protected redirect when logged out; `orders-1440.jpg`, `orders-414.jpg` | route is `/orders` |
+ 
+-## Totals
++## Totals (after repair wave 1)
+ 
+-- PASS: 21 (T01, T03–T05, T07–T23)
+-- PARTIAL: 2 (T02 visual/asset fidelity; T06 real team data)
+-- BLOCKED: 0 (Figma quota limits T02 image quality but did not block the task)
++- PASS: 20 (T01, T03–T05, T07–T20, T22, T23)
++- PARTIAL: 3. T02: Home image resolution blocked by the Figma quota, plus stated design deviations. T06: needs user input. T21: payment-options data source unspecified; CRUD passes
++- BLOCKED: 0 (the Figma quota blocks only the T02 asset replacement step)
+ - NOT DONE: 0
+ 
+ ## PARTIAL remediation
+ 
+ - **T02**: when the Figma MCP quota resets (or via a manual Figma export), export nodes `2984:7389` (Neural Universe image) and `2984:7444` (blog images) at 1×/2× and overwrite `public/images/home/neural-universe.png` and `blog-1..3.png`. Optionally do a side-by-side pixel comparison against `review/full-project/figma-raw/*_desktop.png` (not committed). Decide whether the menu should keep Figma's Blog/Pages items (they would need pages).
+-- **T06**: replace the placeholder entries in `src/data/teamData.js` with real teammates and confirm the student's display name. Add a consented photo for Gökhan Özdemir if one is provided.
++- **T06**: the student must supply the real teammate names/roles and confirm the display name. Then replace every `Teammate (to be added)` record and the `cimen-code` name in `src/data/teamData.js`. Photos/social links are optional (only with consent).
++- **T21**: needs a documented rule or endpoint for card-dependent installment options (e.g. by BIN/bank from the instructor). Until then the fixed example plans stay, honestly labelled.
+diff --git a/review/full-project/qa-repair.json b/review/full-project/qa-repair.json
+new file mode 100644
+index 0000000..f3e8b5c
+--- /dev/null
++++ b/review/full-project/qa-repair.json
+@@ -0,0 +1,197 @@
++{
++  "checks": [
++    {
++      "id": "R1",
++      "name": "Home 414: no extra \"SHOP BY CATEGORY\" block",
++      "pass": true,
++      "details": ""
++    },
++    {
++      "id": "R1",
++      "name": "Home 414: Figma section order present",
++      "pass": true,
++      "details": ""
++    },
++    {
++      "id": "R1",
++      "name": "Home 414: no horizontal overflow",
++      "pass": true,
++      "details": ""
++    },
++    {
++      "id": "R1",
++      "name": "Home 414: no broken images",
++      "pass": true,
++      "details": ""
++    },
++    {
++      "id": "R1",
++      "name": "Home 1440: no extra \"SHOP BY CATEGORY\" block",
++      "pass": true,
++      "details": ""
++    },
++    {
++      "id": "R1",
++      "name": "Home 1440: Figma section order present",
++      "pass": true,
++      "details": ""
++    },
++    {
++      "id": "R1",
++      "name": "Home 1440: no horizontal overflow",
++      "pass": true,
++      "details": ""
++    },
++    {
++      "id": "R1",
++      "name": "Home 1440: no broken images",
++      "pass": true,
++      "details": ""
++    },
++    {
++      "id": "R1",
++      "name": "414 logged-out top row = Bandage + Search + Cart + Menu",
++      "pass": true,
++      "details": "{\"search\":true,\"cart\":true,\"menu\":true,\"loginLink\":false,\"favorites\":false,\"cartCountText\":\"hidden\"}"
++    },
++    {
++      "id": "R1",
++      "name": "414 expanded menu lists nav links + Login/Register",
++      "pass": true,
++      "details": "Bandage Home Shop About Team Contact Login / Register Shop categories"
++    },
++    {
++      "id": "R1",
++      "name": "414 expanded menu: categories collapsed by default",
++      "pass": true,
++      "details": ""
++    },
++    {
++      "id": "R1",
++      "name": "414 expanded menu: category dropdown still reachable",
++      "pass": true,
++      "details": ""
++    },
++    {
++      "id": "R1",
++      "name": "1440 logged-out header still shows Login / Register",
++      "pass": true,
++      "details": ""
++    },
++    {
++      "id": "R4",
++      "name": "pre-existing token + login without Remember Me -> localStorage token absent",
++      "pass": true,
++      "details": ""
++    },
++    {
++      "id": "R4",
++      "name": "session is logged in (axios header used in-session)",
++      "pass": true,
++      "details": ""
++    },
++    {
++      "id": "R4",
++      "name": "in-session protected request carries raw token (no Bearer)",
++      "pass": true,
++      "details": "<RAW TOKEN REDACTED>"
++    },
++    {
++      "id": "R4",
++      "name": "after full reload without Remember Me -> logged out",
++      "pass": true,
++      "details": ""
++    },
++    {
++      "id": "R4",
++      "name": "login with Remember Me -> token stored",
++      "pass": true,
++      "details": ""
++    },
++    {
++      "id": "T11",
++      "name": "reload -> GET /verify with raw token (no Bearer)",
++      "pass": true,
++      "details": "<RAW TOKEN REDACTED>"
++    },
++    {
++      "id": "T11",
++      "name": "auto login after reload",
++      "pass": true,
++      "details": ""
++    },
++    {
++      "id": "T10",
++      "name": "414 logged-in: user avatar button visible",
++      "pass": true,
++      "details": ""
++    },
++    {
++      "id": "T23",
++      "name": "414 logged-in: Previous Orders in expanded menu",
++      "pass": true,
++      "details": ""
++    },
++    {
++      "id": "R5",
++      "name": "month→year order: 8/2026 shows \"Card is expired\"",
++      "pass": true,
++      "details": ""
++    },
++    {
++      "id": "R5",
++      "name": "expired card cannot be submitted (no POST /user/card)",
++      "pass": true,
++      "details": ""
++    },
++    {
++      "id": "R5",
++      "name": "changing only the MONTH to current (9/2026) clears the error",
++      "pass": true,
++      "details": ""
++    },
++    {
++      "id": "R5",
++      "name": "year→month order: 8/2026 shows \"Card is expired\"",
++      "pass": true,
++      "details": ""
++    },
++    {
++      "id": "R5",
++      "name": "changing only the YEAR to 2027 clears the error",
++      "pass": true,
++      "details": ""
++    },
++    {
++      "id": "R5",
++      "name": "changing the year back to current re-flags the expired pair",
++      "pass": true,
++      "details": ""
++    },
++    {
++      "id": "R3",
++      "name": "installment UI no longer labelled with card brand / \"fetched\"",
++      "pass": true,
++      "details": ""
++    },
++    {
++      "id": "SAFETY",
++      "name": "temporary card deleted again",
++      "pass": true,
++      "details": "{\"deleted\":[7],\"remaining\":0}"
++    },
++    {
++      "id": "SAFETY",
++      "name": "no POST/PUT/DELETE to /user/address, /order or /signup during repair QA",
++      "pass": true,
++      "details": ""
++    },
++    {
++      "id": "R2",
++      "name": "Team shows placeholders explicitly as \"Teammate (to be added)\" (NEEDS USER INPUT)",
++      "pass": true,
++      "details": ""
++    }
++  ],
++  "consoleErrors": []
++}
+\ No newline at end of file
+diff --git a/review/full-project/tools/qa-repair.mjs b/review/full-project/tools/qa-repair.mjs
+new file mode 100644
+index 0000000..59b47f6
+--- /dev/null
++++ b/review/full-project/tools/qa-repair.mjs
+@@ -0,0 +1,217 @@
++// Focused browser QA for the repair wave. No orders, users or addresses are created; one temporary card is
++// created to render the installment block and deleted again in the same run. Tokens are never printed or saved.
++import { mkdirSync, writeFileSync } from 'node:fs'
++import { launch, sleep } from './cdp.mjs'
++
++const BASE = process.env.BASE_URL || 'http://localhost:4173'
++const API = 'https://workintech-fe-ecommerce.onrender.com'
++const OUT = new URL('../screenshots/repair/', import.meta.url).pathname
++mkdirSync(OUT, { recursive: true })
++
++const checks = []
++const record = (id, name, pass, details = '') => {
++  checks.push({ id, name, pass, details })
++  console.log(`${pass ? 'PASS' : 'FAIL'} [${id}] ${name}${details ? ` — ${details}` : ''}`)
++}
++const c = await launch(9350)
++const visible = (selector) =>
++  c.eval(`(() => { const el = document.querySelector(${JSON.stringify(selector)}); if (!el) return false; const r = el.getBoundingClientRect(); return !!el.offsetParent && r.width > 0 && r.height > 0 })()`)
++const headerText = () => c.eval('document.querySelector("header").innerText')
++const noOverflow = () => c.eval('document.documentElement.scrollWidth <= window.innerWidth')
++
++const login = async (rememberMe) => {
++  await c.goto(`${BASE}/login`, 1500)
++  await c.fill('#login-email', 'customer@commerce.com')
++  await c.fill('#login-password', '123456')
++  if (rememberMe) await c.eval(`document.querySelector('input[name="rememberMe"]').click()`)
++  await c.click('button[type="submit"]')
++  await c.waitFor(`location.pathname !== '/login'`, 30000)
++  await sleep(800)
++}
++
++try {
++  // ---------- Repair 1: Home ----------
++  for (const width of [414, 1440]) {
++    await c.eval('localStorage.clear()').catch(() => {})
++    await c.viewport(width)
++    await c.goto(`${BASE}/`, 2500)
++    const body = await c.eval('document.body.innerText')
++    record('R1', `Home ${width}: no extra "SHOP BY CATEGORY" block`, !/SHOP BY CATEGORY|Top Categories/i.test(body))
++    record('R1', `Home ${width}: Figma section order present`, ['NEW COLLECTION', "EDITOR'S PICK", 'BESTSELLER PRODUCTS', 'Vita Classic Product', 'Part of the Neural Universe', 'Featured Posts'].every((s) => body.includes(s)))
++    record('R1', `Home ${width}: no horizontal overflow`, await noOverflow())
++    record('R1', `Home ${width}: no broken images`, await c.eval('[...document.images].filter(i => i.complete && i.naturalWidth === 0).length === 0'))
++    await c.screenshot(`${OUT}home-${width}.png`)
++  }
++
++  // 414 compact header (logged out)
++  await c.viewport(414)
++  await c.goto(`${BASE}/`, 2000)
++  const compact = {
++    search: await visible('header button[aria-label="Search"]'),
++    cart: await visible('header button[aria-label="Shopping cart"]'),
++    menu: await visible('header button[aria-label="Menu"]'),
++    loginLink: await visible('header a[href="/login"]'),
++    favorites: await visible('header button[aria-label="Favorites"]'),
++    cartCountText: await c.eval(`document.querySelector('header button[aria-label="Shopping cart"] span')?.offsetParent ? 'visible' : 'hidden'`),
++  }
++  record('R1', '414 logged-out top row = Bandage + Search + Cart + Menu', compact.search && compact.cart && compact.menu && !compact.loginLink && !compact.favorites, JSON.stringify(compact))
++  const { data: headerShot } = await c.send('Page.captureScreenshot', { format: 'png', clip: { x: 0, y: 0, width: 414, height: 110, scale: 2 } })
++  writeFileSync(`${OUT}home-414-header-compact.png`, Buffer.from(headerShot, 'base64'))
++
++  await c.click('header button[aria-label="Menu"]')
++  await sleep(600)
++  const menuText = await headerText()
++  record('R1', '414 expanded menu lists nav links + Login/Register', ['Home', 'Shop', 'About', 'Team', 'Contact', 'Login', 'Register'].every((s) => menuText.includes(s)), menuText.replace(/\s+/g, ' ').slice(0, 120))
++  record('R1', '414 expanded menu: categories collapsed by default', !menuText.includes('Kadın'))
++  const { data: menuShot } = await c.send('Page.captureScreenshot', { format: 'png' })
++  writeFileSync(`${OUT}home-414-menu-open.png`, Buffer.from(menuShot, 'base64'))
++  await c.click('text=Shop categories')
++  await sleep(400)
++  record('R1', '414 expanded menu: category dropdown still reachable', (await headerText()).includes('Kadın'))
++  const { data: menuCatShot } = await c.send('Page.captureScreenshot', { format: 'png' })
++  writeFileSync(`${OUT}home-414-menu-open-categories.png`, Buffer.from(menuCatShot, 'base64'))
++
++  record('R1', '1440 logged-out header still shows Login / Register', await (async () => { await c.viewport(1440); await c.goto(`${BASE}/`, 1500); return visible('header a[href="/login"]') })())
++
++  // ---------- Repair 4: Remember Me (browser) ----------
++  await c.viewport(1440)
++  await c.goto(`${BASE}/login`, 1500)
++  await c.eval(`localStorage.setItem('token', 'stale-token-seeded-after-load')`)
++  await c.fill('#login-email', 'customer@commerce.com')
++  await c.fill('#login-password', '123456')
++  await c.click('button[type="submit"]')
++  await c.waitFor(`location.pathname !== '/login'`, 30000)
++  await sleep(800)
++  record('R4', 'pre-existing token + login without Remember Me -> localStorage token absent', await c.eval(`localStorage.getItem('token') === null`))
++  record('R4', 'session is logged in (axios header used in-session)', /Cust Omer/.test(await headerText()))
++  c.requests.length = 0
++  // client-side navigation (a full reload would correctly drop a non-remembered session)
++  await c.click('header button[aria-expanded]')
++  await sleep(300)
++  await c.click('text=Previous Orders')
++  await c.waitFor(`location.pathname === '/orders' && !document.querySelector('[role="status"]')`, 30000)
++  await sleep(500)
++  const ordersReq = c.requests.find((r) => r.method === 'GET' && r.url === `${API}/order`)
++  record('R4', 'in-session protected request carries raw token (no Bearer)', ordersReq?.authorization === '<RAW TOKEN REDACTED>', ordersReq?.authorization)
++  await c.goto(`${BASE}/`, 2500)
++  record('R4', 'after full reload without Remember Me -> logged out', !/Cust Omer/.test(await headerText()))
++
++  await login(true)
++  record('R4', 'login with Remember Me -> token stored', await c.eval(`!!localStorage.getItem('token')`))
++  c.requests.length = 0
++  await c.goto(`${BASE}/`, 3000)
++  const verify = c.requests.find((r) => r.method === 'GET' && r.url === `${API}/verify`)
++  record('T11', 'reload -> GET /verify with raw token (no Bearer)', verify?.authorization === '<RAW TOKEN REDACTED>', verify?.authorization)
++  record('T11', 'auto login after reload', /Cust Omer/.test(await headerText()))
++
++  // logged-in 414 header keeps T10/T23 behaviour
++  await c.viewport(414)
++  await c.goto(`${BASE}/`, 2500)
++  record('T10', '414 logged-in: user avatar button visible', await c.eval(`!!document.querySelector('header img[src*="gravatar.com/avatar/"]')?.offsetParent`))
++  await c.click('header button[aria-label="Menu"]')
++  await sleep(400)
++  record('T23', '414 logged-in: Previous Orders in expanded menu', (await headerText()).includes('Previous Orders'))
++  const { data: loggedMenu } = await c.send('Page.captureScreenshot', { format: 'png' })
++  writeFileSync(`${OUT}home-414-logged-in-menu-open.png`, Buffer.from(loggedMenu, 'base64'))
++
++  // ---------- Repair 5 + 3: card form expiry (never submitted) + installment wording ----------
++  await c.viewport(1440)
++  const product = await c.eval(`fetch('${API}/products/322').then(r => r.json())`)
++  await c.eval(`localStorage.setItem('cart', ${JSON.stringify(JSON.stringify([{ count: 1, checked: true, product }]))})`)
++  await c.goto(`${BASE}/order`, 3000)
++  await c.waitFor(`!document.querySelector('button[disabled]') || document.body.innerText.includes('no saved addresses')`, 30000).catch(() => {})
++  const hasAddress = await c.eval(`!document.body.innerText.includes('You have no saved addresses yet.')`)
++  if (!hasAddress) {
++    record('R5', 'card form reachable (requires an existing saved address on the public account)', false, 'no saved address; skipped to avoid creating data')
++  } else {
++    await c.click('text=Save and Continue')
++    await c.waitFor(`document.body.innerText.includes('Add New Card')`, 30000)
++    await c.click('text=Add New Card')
++    await sleep(400)
++    const now = new Date()
++    const year = String(now.getFullYear())
++    const nextYear = String(now.getFullYear() + 1)
++    const currentMonth = now.getMonth() + 1
++    const expiredText = () => c.eval(`document.body.innerText.includes('Card is expired')`)
++    await c.fill('#card-no', '4111111111111111')
++    await c.fill('#card-name', 'QA Expiry Check')
++
++    if (currentMonth === 1) {
++      record('R5', 'current-year expired month case', true, 'skipped in January (no earlier month in the current year); covered by unit test')
++    } else {
++      const pastMonth = String(currentMonth - 1)
++      // order A: month first, then year
++      await c.fill('#card-month', pastMonth)
++      await c.fill('#card-year', year)
++      await sleep(400)
++      record('R5', `month→year order: ${pastMonth}/${year} shows "Card is expired"`, await expiredText())
++      c.requests.length = 0
++      await c.click('text=Save')
++      await sleep(1500)
++      record('R5', 'expired card cannot be submitted (no POST /user/card)', !c.requests.some((r) => r.method === 'POST' && r.url === `${API}/user/card`) && (await expiredText()))
++      await c.fill('#card-month', String(currentMonth))
++      await sleep(400)
++      record('R5', `changing only the MONTH to current (${currentMonth}/${year}) clears the error`, !(await expiredText()))
++
++      // order B: year first, then month
++      await c.click('text=Cancel')
++      await sleep(300)
++      await c.click('text=Add New Card')
++      await sleep(400)
++      await c.fill('#card-year', year)
++      await c.fill('#card-month', pastMonth)
++      await sleep(400)
++      record('R5', `year→month order: ${pastMonth}/${year} shows "Card is expired"`, await expiredText())
++      await c.fill('#card-year', nextYear)
++      await sleep(400)
++      record('R5', `changing only the YEAR to ${nextYear} clears the error`, !(await expiredText()))
++      await c.fill('#card-year', year)
++      await sleep(400)
++      record('R5', 'changing the year back to current re-flags the expired pair', await expiredText())
++      const { data: cardShot } = await c.send('Page.captureScreenshot', { format: 'png' })
++      writeFileSync(`${OUT}card-form-expired-1440.png`, Buffer.from(cardShot, 'base64'))
++      await c.click('text=Cancel')
++    }
++
++    // temporary card so the installment block renders; deleted again right after (net zero data change)
++    await c.click('text=Add New Card')
++    await sleep(400)
++    await c.fill('#card-no', '4111111111111111')
++    await c.fill('#card-month', '12')
++    await c.fill('#card-year', nextYear)
++    await c.fill('#card-name', 'QA Repair Temp')
++    await c.click('text=Save')
++    await c.waitFor(`document.body.innerText.includes('QA Repair Temp')`, 30000)
++    await sleep(500)
++    const t21 = await c.eval('document.body.innerText')
++    record('R3', 'installment UI no longer labelled with card brand / "fetched"', t21.includes('Installment options') && t21.includes('Example plans shown for every card') && !/Payment options \(/.test(t21))
++    const { data: t21Shot } = await c.send('Page.captureScreenshot', { format: 'png' })
++    writeFileSync(`${OUT}checkout-card-installments-1440.png`, Buffer.from(t21Shot, 'base64'))
++    const removed = await c.eval(`(async () => {
++      const h = { Authorization: localStorage.getItem('token') };
++      const cards = await fetch('${API}/user/card', { headers: h }).then(r => r.json());
++      const temp = cards.filter(x => x.name_on_card === 'QA Repair Temp');
++      for (const x of temp) await fetch('${API}/user/card/' + x.id, { method: 'DELETE', headers: h });
++      const after = await fetch('${API}/user/card', { headers: h }).then(r => r.json());
++      return { deleted: temp.map(x => x.id), remaining: after.filter(x => x.name_on_card === 'QA Repair Temp').length };
++    })()`)
++    record('SAFETY', 'temporary card deleted again', removed.remaining === 0, JSON.stringify(removed))
++    record('SAFETY', 'no POST/PUT/DELETE to /user/address, /order or /signup during repair QA', !c.requests.some((r) => r.method !== 'GET' && r.method !== 'OPTIONS' && /\/(user\/address|order|signup)/.test(r.url)))
++  }
++
++  // ---------- Team (Repair 2 wording) ----------
++  await c.goto(`${BASE}/team`, 2000)
++  const team = await c.eval('document.body.innerText')
++  record('R2', 'Team shows placeholders explicitly as "Teammate (to be added)" (NEEDS USER INPUT)', team.includes('Teammate (to be added)') && !team.includes('Workintech Student'))
++  await c.screenshot(`${OUT}team-1440.png`)
++
++  // logout cleanup
++  await c.eval(`localStorage.removeItem('token'); localStorage.removeItem('cart')`)
++} catch (error) {
++  record('SCRIPT', 'repair QA script error', false, error.message)
++} finally {
++  writeFileSync(new URL('../qa-repair.json', import.meta.url), JSON.stringify({ checks, consoleErrors: c.consoleErrors }, null, 2))
++  console.log(`console errors: ${c.consoleErrors.length}`)
++  await c.close()
++  process.exit(0)
++}
+diff --git a/review/full-project/tools/repair-unit-checks.mjs b/review/full-project/tools/repair-unit-checks.mjs
+new file mode 100644
+index 0000000..366c0e2
+--- /dev/null
++++ b/review/full-project/tools/repair-unit-checks.mjs
+@@ -0,0 +1,76 @@
++// Focused, non-network unit checks for repair wave findings 4 (Remember Me) and 5 (card expiry).
++// Run from repo root: node review/full-project/tools/repair-unit-checks.mjs
++const store = new Map()
++globalThis.localStorage = {
++  getItem: (k) => (store.has(k) ? store.get(k) : null),
++  setItem: (k, v) => store.set(k, String(v)),
++  removeItem: (k) => store.delete(k),
++}
++
++const { default: api, TOKEN_KEY } = await import('../../../src/api/axiosInstance.js')
++const { loginUser, verifyToken, storeToken } = await import('../../../src/store/actions/clientActions.js')
++const { isCardExpired } = await import('../../../src/utils/validators.js')
++
++let failures = 0
++const check = (name, ok, details = '') => {
++  if (!ok) failures += 1
++  console.log(`${ok ? 'PASS' : 'FAIL'} ${name}${details ? ` — ${details}` : ''}`)
++}
++const header = () => api.defaults.headers.common.Authorization
++const actions = []
++const dispatch = (action) => (typeof action === 'function' ? action(dispatch) : actions.push(action))
++
++// ---- Finding 4: Remember Me ----
++api.post = async () => ({ data: { token: 'new-token', name: 'Test', email: 't@example.com', role_id: '3' } })
++
++store.set(TOKEN_KEY, 'old-token')
++await dispatch(loginUser({ email: 't@example.com', password: 'x', rememberMe: false }))
++check('R4.1 pre-existing token + login rememberMe=false -> localStorage token removed', localStorage.getItem(TOKEN_KEY) === null, `stored=${localStorage.getItem(TOKEN_KEY)}`)
++check('R4.2 session axios header still gets the new token', header() === 'new-token')
++check('R4.3 header has no Bearer prefix', !String(header()).startsWith('Bearer'))
++check('R4.4 user saved without token field', actions.some((a) => a.type === 'client/SET_USER' && a.payload.email === 't@example.com' && !('token' in a.payload)))
++
++store.set(TOKEN_KEY, 'old-token')
++storeToken('direct-token', false)
++check('R4.5 storeToken(token, false) removes stored token', localStorage.getItem(TOKEN_KEY) === null)
++
++await dispatch(loginUser({ email: 't@example.com', password: 'x', rememberMe: true }))
++check('R4.6 login rememberMe=true -> token stored', localStorage.getItem(TOKEN_KEY) === 'new-token')
++
++// T11 regression: verify renews token in storage + header
++api.get = async (url) => {
++  if (url !== '/verify') throw new Error('unexpected url')
++  if (header() !== 'new-token') throw Object.assign(new Error('401'), { response: { status: 401 } })
++  return { data: { name: 'Test', email: 't@example.com', role_id: '3', token: 'renewed-token' } }
++}
++const user = await dispatch(verifyToken())
++check('T11.1 verify success renews localStorage token', localStorage.getItem(TOKEN_KEY) === 'renewed-token')
++check('T11.2 verify success renews axios header (raw, no Bearer)', header() === 'renewed-token')
++check('T11.3 verify success returns user', user?.email === 't@example.com')
++
++store.set(TOKEN_KEY, 'bad-token')
++const failed = await dispatch(verifyToken())
++check('T11.4 verify failure removes localStorage token', localStorage.getItem(TOKEN_KEY) === null)
++check('T11.5 verify failure removes axios header', header() === undefined)
++check('T11.6 verify failure returns null', failed === null)
++
++store.delete(TOKEN_KEY)
++check('T11.7 no stored token -> no verify, resolves null', (await dispatch(verifyToken())) === null)
++
++// ---- Finding 5: card expiry (fixed "now" values) ----
++const sept2026 = new Date(2026, 8, 17)
++const jan2026 = new Date(2026, 0, 5)
++const cases = [
++  ['current year, earlier month (08/2026 in Sep 2026) is expired', isCardExpired(8, 2026, sept2026), true],
++  ['current year, current month (09/2026 in Sep 2026) is valid', isCardExpired(9, 2026, sept2026), false],
++  ['current year, later month (12/2026) is valid', isCardExpired(12, 2026, sept2026), false],
++  ['future year, earlier month (01/2027) is valid', isCardExpired(1, 2027, sept2026), false],
++  ['past year (12/2025) is expired', isCardExpired(12, 2025, sept2026), true],
++  ['string inputs from <select> ("8", "2026") are expired', isCardExpired('8', '2026', sept2026), true],
++  ['January edge: 01/2026 in Jan 2026 is valid', isCardExpired(1, 2026, jan2026), false],
++  ['incomplete pair (month missing) is not flagged', isCardExpired('', 2026, sept2026), false],
++]
++cases.forEach(([name, got, expected]) => check(`R5 ${name}`, got === expected, `got=${got}`))
++
++console.log(failures ? `${failures} FAILED` : 'ALL PASS')
++process.exit(failures ? 1 : 0)
+diff --git a/src/components/CardForm.jsx b/src/components/CardForm.jsx
+index 3468da7..882cf27 100644
+--- a/src/components/CardForm.jsx
++++ b/src/components/CardForm.jsx
+@@ -1,6 +1,6 @@
+ import { useForm } from 'react-hook-form'
+ import FormField, { inputClass } from './FormField.jsx'
+-import { isValidCardNumber } from '../utils/validators.js'
++import { isCardExpired, isValidCardNumber } from '../utils/validators.js'
+ 
+ const currentYear = new Date().getFullYear()
+ const MONTHS = Array.from({ length: 12 }, (_, index) => index + 1)
+@@ -14,6 +14,7 @@ function CardForm({ initialValues, onSubmit, onCancel }) {
+     getValues,
+     formState: { errors, isSubmitting },
+   } = useForm({
++    mode: 'onChange',
+     defaultValues: {
+       card_no: initialValues?.card_no || '',
+       expire_month: initialValues?.expire_month || '',
+@@ -31,13 +32,9 @@ function CardForm({ initialValues, onSubmit, onCancel }) {
+       name_on_card: data.name_on_card.trim(),
+     })
+ 
+-  const notExpired = () => {
+-    const month = Number(getValues('expire_month'))
+-    const year = Number(getValues('expire_year'))
+-    if (!month || !year) return true
+-    const now = new Date()
+-    return year > now.getFullYear() || (year === now.getFullYear() && month >= now.getMonth() + 1) || 'Card is expired'
+-  }
++  // Shown on the year field; changing the month re-validates it through `deps`, so field order does not matter
++  const notExpired = () =>
++    !isCardExpired(getValues('expire_month'), getValues('expire_year')) || 'Card is expired'
+ 
+   return (
+     <form onSubmit={handleSubmit(submit)} noValidate className="flex flex-col gap-4 rounded-md border border-primary-color/40 bg-white p-5">
+@@ -57,7 +54,7 @@ function CardForm({ initialValues, onSubmit, onCancel }) {
+       </FormField>
+       <div className="flex flex-col gap-4 sm:flex-row">
+         <FormField id="card-month" label="Expire Month" error={errors.expire_month}>
+-          <select id="card-month" className={inputClass} {...register('expire_month', { required: 'Month is required', validate: notExpired })}>
++          <select id="card-month" className={inputClass} {...register('expire_month', { required: 'Month is required', deps: ['expire_year'] })}>
+             <option value="">Month</option>
+             {MONTHS.map((month) => (
+               <option key={month} value={month}>{String(month).padStart(2, '0')}</option>
+@@ -65,7 +62,7 @@ function CardForm({ initialValues, onSubmit, onCancel }) {
+           </select>
+         </FormField>
+         <FormField id="card-year" label="Expire Year" error={errors.expire_year}>
+-          <select id="card-year" className={inputClass} {...register('expire_year', { required: 'Year is required' })}>
++          <select id="card-year" className={inputClass} {...register('expire_year', { required: 'Year is required', validate: notExpired })}>
+             <option value="">Year</option>
+             {YEARS.map((year) => (
+               <option key={year} value={year}>{year}</option>
+diff --git a/src/data/teamData.js b/src/data/teamData.js
+index a4018df..8862d98 100644
+--- a/src/data/teamData.js
++++ b/src/data/teamData.js
+@@ -1,6 +1,9 @@
+ // T06 team data.
++// NEEDS USER INPUT:
++// - the student's display name is not confirmed yet, so the verifiable GitHub handle (git config) is shown;
++// - the real teammate list was not supplied; the "Teammate (to be added)" cards are explicit placeholders,
++//   not real people, and must be replaced with real names/roles before T06 can be accepted.
+ // Real people use a neutral initials avatar (no scraped profile photos).
+-// Remaining cards are Figma placeholders to be replaced with the student's real team members.
+ export const teamMembers = [
+   {
+     id: 1,
+@@ -11,16 +14,16 @@ export const teamMembers = [
+   },
+   {
+     id: 2,
+-    name: 'Hakan Çimen',
++    name: 'cimen-code',
+     role: 'Full Stack Developer',
+-    initials: 'HÇ',
++    initials: 'CC',
+     avatarClass: 'bg-primary-color',
+     github: 'https://github.com/cimen-code',
+   },
+   ...[3, 4, 5, 6, 7, 8, 9].map((id) => ({
+     id,
+-    name: 'Team Member',
+-    role: 'Workintech Student',
++    name: 'Teammate (to be added)',
++    role: 'Role pending',
+     image: `/images/team/member-${id}.png`,
+   })),
+ ]
+diff --git a/src/layout/Header.jsx b/src/layout/Header.jsx
+index 3f8bb76..8d49c21 100644
+--- a/src/layout/Header.jsx
++++ b/src/layout/Header.jsx
+@@ -6,10 +6,10 @@ import {
+   Heart,
+   LogOut,
+   Mail,
+-  Menu,
+   Package,
+   Phone,
+   Search,
++  TextAlignEnd,
+   ShoppingCart,
+   UserRound,
+   X,
+@@ -56,6 +56,7 @@ function Header() {
+   const categories = useSelector((state) => state.product.categories)
+   const cart = useSelector((state) => state.shoppingCart.cart)
+   const [openMenu, setOpenMenu] = useState(null)
++  const [showMobileCategories, setShowMobileCategories] = useState(false)
+   const headerRef = useRef(null)
+ 
+   const isLoggedIn = Boolean(user?.email)
+@@ -107,16 +108,12 @@ function Header() {
+       )}
+     </div>
+   ) : (
+-    <div className="flex items-center gap-1 px-2 py-3 text-sm font-bold text-primary-color md:px-4">
+-      <UserRound size={16} className="hidden md:block" />
+-      <Link to={loginLink} aria-label="Login" className="flex items-center hover:underline">
+-        <UserRound size={24} className="md:hidden" />
+-        <span className="hidden md:inline">Login</span>
+-      </Link>
+-      <span className="hidden md:inline">/</span>
+-      <Link to={signupLink} className="hidden hover:underline md:inline">
+-        Register
+-      </Link>
++    // Figma 414px header shows only search/cart/menu; logged-out users reach Login/Register in the expanded menu
++    <div className="hidden items-center gap-1 px-4 py-3 text-sm font-bold text-primary-color lg:flex">
++      <UserRound size={16} />
++      <Link to={loginLink} className="hover:underline">Login</Link>
++      <span>/</span>
++      <Link to={signupLink} className="hover:underline">Register</Link>
+     </div>
+   )
+ 
+@@ -147,7 +144,7 @@ function Header() {
+       </div>
+ 
+       {/* Main navigation */}
+-      <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between px-4 py-4 sm:px-9 lg:px-10">
++      <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between px-7 py-5 lg:px-10 lg:py-4">
+         <Link to="/" onClick={close} className="text-2xl font-bold leading-8 tracking-[0.1px] text-text-color">
+           Bandage
+         </Link>
+@@ -188,7 +185,7 @@ function Header() {
+           )}
+         </nav>
+ 
+-        <div className="flex items-center text-text-color lg:text-primary-color">
++        <div className="flex items-center gap-2 text-text-color lg:gap-0 lg:text-primary-color">
+           {userArea}
+ 
+           <button type="button" aria-label="Search" onClick={() => history.push('/shop')} className="flex p-2 md:p-3.5">
+@@ -204,7 +201,7 @@ function Header() {
+               aria-expanded={openMenu === 'cart'}
+             >
+               <ShoppingCart size={24} className="lg:h-4 lg:w-4" />
+-              <span className="text-xs">{cartCount}</span>
++              <span className={`text-xs ${cartCount === 0 ? 'hidden lg:inline' : ''}`}>{cartCount}</span>
+             </button>
+             {openMenu === 'cart' && (
+               <div className="absolute right-0 top-full z-50 flex">
+@@ -225,14 +222,14 @@ function Header() {
+             onClick={() => toggle('mobile')}
+             className="flex p-2 lg:hidden"
+           >
+-            {openMenu === 'mobile' ? <X size={24} /> : <Menu size={24} />}
++            {openMenu === 'mobile' ? <X size={24} /> : <TextAlignEnd size={24} />}
+           </button>
+         </div>
+       </div>
+ 
+       {/* Mobile navigation (same navLinks source) */}
+       {openMenu === 'mobile' && (
+-        <nav className="flex flex-col items-center gap-7 pb-16 pt-12 lg:hidden">
++        <nav className="flex flex-col items-center gap-[30px] pb-24 pt-20 lg:hidden">
+           {navLinks.map((link) => (
+             <Link
+               key={link.path}
+@@ -257,6 +254,16 @@ function Header() {
+             </Link>
+           )}
+           {categories.length > 0 && (
++            <button
++              type="button"
++              onClick={() => setShowMobileCategories((current) => !current)}
++              aria-expanded={showMobileCategories}
++              className="flex items-center gap-2 text-base font-bold text-second-text-color"
++            >
++              Shop categories <ChevronDown size={16} className={showMobileCategories ? 'rotate-180' : ''} />
++            </button>
++          )}
++          {categories.length > 0 && showMobileCategories && (
+             <div className="flex w-full justify-center px-6">
+               <CategoryMenu categories={categories} onNavigate={close} />
+             </div>
+diff --git a/src/pages/CreateOrderPage.jsx b/src/pages/CreateOrderPage.jsx
+index e0d929f..1d761b7 100644
+--- a/src/pages/CreateOrderPage.jsx
++++ b/src/pages/CreateOrderPage.jsx
+@@ -20,6 +20,10 @@ import {
+ import { createOrder, setAddress, setPayment } from '../store/actions/shoppingCartActions.js'
+ import { calculateOrderSummary, formatPrice, maskCardNumber } from '../utils/helpers.js'
+ 
++// T21 says "payment options fetched by card data", but no card-based rule or endpoint is documented.
++// These plans are fixed front-end examples and are NOT derived from the selected card.
++const FIXED_INSTALLMENT_PLANS = [1, 3, 6]
++
+ const apiError = (error, fallback) => error.response?.data?.message || fallback
+ 
+ const cardBrand = (cardNo = '') => {
+@@ -386,8 +390,11 @@ function CreateOrderPage() {
+                     />
+                   </div>
+                   <fieldset className="flex flex-col gap-2 md:w-2/3">
+-                    <legend className="pb-2 text-sm font-bold text-text-color">Payment options ({cardBrand(selectedCard.card_no)})</legend>
+-                    {[1, 3, 6].map((count) => (
++                    <legend className="text-sm font-bold text-text-color">Installment options</legend>
++                    <p className="pb-1 text-xs text-second-text-color">
++                      Example plans shown for every card; the API provides no card-specific installment data.
++                    </p>
++                    {FIXED_INSTALLMENT_PLANS.map((count) => (
+                       <label key={count} className="flex items-center justify-between rounded-md border border-[#ECECEC] px-4 py-2 text-sm text-second-text-color">
+                         <span className="flex items-center gap-2">
+                           <input type="radio" name="installment" checked={installment === count} onChange={() => setInstallment(count)} className="accent-primary-color" />
+diff --git a/src/pages/HomePage.jsx b/src/pages/HomePage.jsx
+index 64e486f..2e633e6 100644
+--- a/src/pages/HomePage.jsx
++++ b/src/pages/HomePage.jsx
+@@ -7,7 +7,7 @@ import ProductCard from '../components/ProductCard.jsx'
+ import Spinner from '../components/Spinner.jsx'
+ import api from '../api/axiosInstance.js'
+ import { editorsPick, fallbackProducts, featuredPosts, heroSlides, vitaSlides } from '../data/homeData.js'
+-import { categoryPath, formatPrice, productImage, productPath } from '../utils/helpers.js'
++import { formatPrice, productImage, productPath } from '../utils/helpers.js'
+ 
+ function SectionTitle({ tag, title, text }) {
+   return (
+@@ -42,8 +42,6 @@ function HomePage() {
+     }
+   }, [])
+ 
+-  const topCategories = [...categories].sort((a, b) => b.rating - a.rating).slice(0, 5)
+-
+   return (
+     <div className="flex w-full flex-col">
+       {/* Hero slider */}
+@@ -98,30 +96,6 @@ function HomePage() {
+         </div>
+       </section>
+ 
+-      {/* T12: top 5 categories by rating */}
+-      {topCategories.length > 0 && (
+-        <section className="flex w-full bg-white pt-20">
+-          <div className="mx-auto flex w-full max-w-[1050px] flex-col items-center gap-10 px-11 lg:px-0">
+-            <SectionTitle tag="Top Categories" title="SHOP BY CATEGORY" text="Top 5 categories by customer rating" />
+-            <div className="flex w-full flex-col gap-4 md:flex-row md:flex-wrap md:justify-center lg:flex-nowrap">
+-              {topCategories.map((category) => (
+-                <Link
+-                  key={category.id}
+-                  to={categoryPath(category)}
+-                  className="group relative flex h-[300px] w-full overflow-hidden md:w-[calc(50%-8px)] lg:h-[223px] lg:w-[198px]"
+-                >
+-                  <img src={category.img} alt={category.title} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+-                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-black/25 text-white">
+-                    <h3 className="text-base font-bold uppercase">{category.title}</h3>
+-                    <p className="text-sm">{category.gender === 'e' ? 'Erkek' : 'Kadın'} · ★ {category.rating}</p>
+-                  </div>
+-                </Link>
+-              ))}
+-            </div>
+-          </div>
+-        </section>
+-      )}
+-
+       {/* Bestseller products */}
+       <section className="flex w-full bg-white py-20">
+         <div className="mx-auto flex w-full max-w-[1124px] flex-col items-center gap-20 px-11 lg:px-0">
+diff --git a/src/store/actions/clientActions.js b/src/store/actions/clientActions.js
+index 5ca1237..65de4e3 100644
+--- a/src/store/actions/clientActions.js
++++ b/src/store/actions/clientActions.js
+@@ -26,10 +26,13 @@ export const fetchRolesIfNeeded = () => (dispatch, getState) => {
+   })
+ }
+ 
+-const storeToken = (token, remember) => {
++// The session header always gets the current token; localStorage keeps it only with "Remember me"
++export const storeToken = (token, remember) => {
+   setAuthToken(token)
+   if (remember) {
+     localStorage.setItem(TOKEN_KEY, token)
++  } else {
++    localStorage.removeItem(TOKEN_KEY)
+   }
+ }
+ 
+diff --git a/src/utils/validators.js b/src/utils/validators.js
+index 6eec861..7465bcc 100644
+--- a/src/utils/validators.js
++++ b/src/utils/validators.js
+@@ -25,3 +25,11 @@ export const isValidIban = (value = '') => {
+ }
+ 
+ export const isValidCardNumber = (value = '') => /^\d{16}$/.test(value.replace(/\s+/g, ''))
++
++// A card is valid through the last day of its expiry month
++export const isCardExpired = (month, year, now = new Date()) => {
++  const m = Number(month)
++  const y = Number(year)
++  if (!m || !y) return false
++  return y < now.getFullYear() || (y === now.getFullYear() && m < now.getMonth() + 1)
++}
