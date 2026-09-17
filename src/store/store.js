@@ -3,7 +3,7 @@ import thunk from 'redux-thunk'
 import { createLogger } from 'redux-logger'
 import clientReducer from './reducers/clientReducer.js'
 import productReducer from './reducers/productReducer.js'
-import shoppingCartReducer, { CART_STORAGE_KEY } from './reducers/shoppingCartReducer.js'
+import shoppingCartReducer from './reducers/shoppingCartReducer.js'
 
 const rootReducer = combineReducers({
   client: clientReducer,
@@ -17,15 +17,5 @@ if (import.meta.env.DEV) {
 }
 
 const store = createStore(rootReducer, applyMiddleware(...middlewares))
-
-// keep the cart after a page refresh
-let lastCart = store.getState().shoppingCart.cart
-store.subscribe(() => {
-  const { cart } = store.getState().shoppingCart
-  if (cart !== lastCart) {
-    lastCart = cart
-    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart))
-  }
-})
 
 export default store

@@ -1,19 +1,8 @@
 import { SET_ADDRESS, SET_CART, SET_PAYMENT } from '../actions/shoppingCartActions.js'
 
-export const CART_STORAGE_KEY = 'cart'
-
-const loadCart = () => {
-  try {
-    const saved = JSON.parse(localStorage.getItem(CART_STORAGE_KEY))
-    return Array.isArray(saved) ? saved : []
-  } catch {
-    return []
-  }
-}
-
 const initialState = {
   // [{ count: 1, checked: true, product: { id, ... } }]
-  cart: loadCart(),
+  cart: [],
   payment: {},
   address: {},
 }

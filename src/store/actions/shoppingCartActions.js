@@ -55,11 +55,10 @@ export const toggleAllCartItems = (checked) => (dispatch, getState) => {
   dispatch(setCart(cart.map((item) => ({ ...item, checked }))))
 }
 
-// T22: create order, then remove ordered (checked) items from the cart
-export const createOrder = (orderPayload) => (dispatch, getState) =>
+// T22: create order, then reset the current shopping cart
+export const createOrder = (orderPayload) => (dispatch) =>
   api.post('/order', orderPayload).then((res) => {
-    const { cart } = getState().shoppingCart
-    dispatch(setCart(cart.filter((item) => !item.checked)))
+    dispatch(setCart([]))
     dispatch(setPayment({}))
     dispatch(setAddress({}))
     return res.data
