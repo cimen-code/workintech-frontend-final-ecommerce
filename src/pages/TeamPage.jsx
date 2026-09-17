@@ -17,15 +17,15 @@ function TeamPage() {
       </section>
 
       <section className="flex w-full flex-col gap-2.5 lg:h-[530px] lg:flex-row">
-        <img src="/images/team/hero-main.png" alt="Fashion model in a floral dress" className="h-[530px] w-full object-cover lg:h-full lg:w-1/2" />
-        <div className="flex w-full flex-col gap-2.5 lg:w-1/2">
+        <img src="/images/team/hero-main.png" alt="Fashion model in a floral dress" className="h-[530px] w-full object-cover lg:h-full lg:w-[calc(50%-5px)]" />
+        <div className="flex w-full flex-col gap-2.5 lg:w-[calc(50%-5px)]">
           {[
             ['/images/team/hero-1.png', '/images/team/hero-2.png'],
             ['/images/team/hero-3.png', '/images/team/hero-4.png'],
           ].map((row) => (
             <div key={row[0]} className="flex h-[260px] gap-2.5 lg:h-1/2">
               {row.map((src) => (
-                <img key={src} src={src} alt="Fashion collection" className="h-full w-1/2 object-cover" />
+                <img key={src} src={src} alt="Fashion collection" className="h-full w-[calc(50%-5px)] object-cover" />
               ))}
             </div>
           ))}

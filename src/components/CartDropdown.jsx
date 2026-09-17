@@ -8,8 +8,10 @@ function CartDropdown({ onNavigate }) {
   const itemCount = cart.reduce((sum, item) => sum + item.count, 0)
   const total = cart.reduce((sum, item) => sum + item.count * item.product.price, 0)
 
+  // The dropdown is right-aligned to the cart button, so it may only grow leftwards: at mobile
+  // widths the controls after that button take 76px, hence the 100vw-96px clamp (20px cushion).
   return (
-    <div className="flex w-[min(360px,calc(100vw-32px))] flex-col gap-4 rounded-md border border-light-gray-1 bg-white p-4 text-left text-text-color shadow-xl">
+    <div className="flex w-[min(360px,calc(100vw-96px))] flex-col gap-4 rounded-md border border-light-gray-1 bg-white p-4 text-left text-text-color shadow-xl">
       <p className="text-sm font-bold">
         My Cart <span className="font-normal text-second-text-color">({itemCount} items)</span>
       </p>

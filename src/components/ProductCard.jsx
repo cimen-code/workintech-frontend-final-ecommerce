@@ -23,7 +23,7 @@ function ProductCard({ to, image, title, department, oldPrice, price, colors = D
         <h5 className="line-clamp-1 text-base font-bold leading-6 tracking-[0.1px] text-text-color">{title}</h5>
         <p className="line-clamp-1 text-sm font-bold leading-6 tracking-[0.2px] text-second-text-color">{department}</p>
         <div className="flex items-center gap-1.5 px-1 py-1 text-base font-bold leading-6 tracking-[0.1px]">
-          {oldPrice !== undefined && <span className="text-muted-color line-through">{formatPrice(oldPrice)}</span>}
+          {oldPrice !== undefined && <span className="text-muted-color">{formatPrice(oldPrice)}</span>}
           <span className="text-secondary-color-1">{formatPrice(price)}</span>
         </div>
         {colors.length > 0 && (

@@ -22,10 +22,17 @@ import { logoutUser } from '../store/actions/clientActions.js'
 import { categoryPath } from '../utils/helpers.js'
 
 function CategoryMenu({ categories, onNavigate }) {
+  const location = useLocation()
   const groups = [
     { title: 'Kadın', items: categories.filter((category) => category.gender === 'k') },
     { title: 'Erkek', items: categories.filter((category) => category.gender === 'e') },
   ]
+
+  // T14: changing the category keeps the other parameters (same rule as the shop page category cards)
+  const searchParams = new URLSearchParams(location.search)
+  const sort = searchParams.get('sort') || ''
+  const filter = searchParams.get('filter') || ''
+  const preservedSearch = new URLSearchParams({ ...(filter && { filter }), ...(sort && { sort }) }).toString()
 
   return (
     <div className="flex gap-12 rounded-md bg-white px-8 py-6 text-left shadow-xl">
@@ -35,7 +42,7 @@ function CategoryMenu({ categories, onNavigate }) {
           {group.items.map((category) => (
             <Link
               key={category.id}
-              to={categoryPath(category)}
+              to={{ pathname: categoryPath(category), search: preservedSearch }}
               onClick={onNavigate}
               className="text-sm font-bold text-second-text-color hover:text-primary-color"
             >

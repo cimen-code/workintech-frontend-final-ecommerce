@@ -70,6 +70,8 @@ function ContactPage() {
       </section>
 
       <section className="flex w-full flex-col items-center gap-9 px-10 pb-28 pt-10 text-center">
+        {/* Decorative arrow of the Figma contact frame (exported from the saved reference at its native 64px) */}
+        <img src="/images/contact/arrow.png" alt="" aria-hidden="true" className="h-16 w-16" />
         <h6 className="text-base font-bold leading-6 tracking-[0.1px] text-text-color">WE Can&apos;t WAIT TO MEET YOU</h6>
         <h2 className="text-[40px] font-bold leading-[50px] tracking-[0.2px] text-text-color lg:text-[58px] lg:leading-[80px]">Let&apos;s Talk</h2>
         <Link to="/signup" className="rounded-[5px] bg-primary-color px-10 py-4 text-sm font-bold leading-[22px] tracking-[0.2px] text-white hover:opacity-90">

@@ -53,14 +53,14 @@ function HomePage() {
                 to={item.to}
                 className={`group flex h-[500px] w-full overflow-hidden ${index === 0 ? 'lg:w-[510px]' : 'lg:w-[240px]'}`}
               >
-                <img src={item.image} alt={item.label} className="h-full w-full object-cover object-left-bottom transition duration-500 group-hover:scale-105" />
+                <img src={item.image} alt={item.label} className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-105" />
                 <span className="sr-only">{item.label}</span>
               </Link>
             ))}
             <div className="flex w-full flex-col gap-4 lg:w-[240px]">
               {[editorsPick[2], editorsPick[3]].map((item) => (
                 <Link key={item.id} to={item.to} className="group flex h-[242px] w-full overflow-hidden">
-                  <img src={item.image} alt={item.label} className="h-full w-full object-cover object-left-bottom transition duration-500 group-hover:scale-105" />
+                  <img src={item.image} alt={item.label} className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-105" />
                   <span className="sr-only">{item.label}</span>
                 </Link>
               ))}

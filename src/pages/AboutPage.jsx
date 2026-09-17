@@ -46,7 +46,7 @@ function AboutPage() {
       </section>
 
       <section className="flex w-full">
-        <div className="mx-auto flex w-full max-w-[1050px] flex-col items-center gap-24 px-10 py-20 md:flex-row md:justify-between lg:px-0">
+        <div className="mx-auto flex w-full max-w-[1050px] flex-col items-center gap-24 px-10 py-20 md:flex-row md:justify-between md:gap-10 lg:gap-24 lg:px-0">
           {stats.map((stat) => (
             <div key={stat.label} className="flex flex-col items-center gap-2 text-center">
               <span className="text-[58px] font-bold leading-[80px] tracking-[0.2px] text-text-color">{stat.value}</span>

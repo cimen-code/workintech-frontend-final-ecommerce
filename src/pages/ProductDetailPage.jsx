@@ -12,6 +12,12 @@ import { FETCH_STATES, fetchProduct } from '../store/actions/productActions.js'
 import { addToCart } from '../store/actions/shoppingCartActions.js'
 import { categoryPath, formatPrice, productImage, productPath } from '../utils/helpers.js'
 
+// T04: third description column of the Figma product detail frame — two headings whose bullet
+// lists hold 4 and 3 identical items (read from review/full-project/figma-raw/product_desktop.png)
+const DESCRIPTION_HEADING = 'the quick fox jumps over'
+const DESCRIPTION_BULLET = 'the quick fox jumps over the lazy dog'
+const DESCRIPTION_LIST_SIZES = [4, 3]
+
 function RatingStars({ rating }) {
   return (
     <div className="flex items-center gap-1.5" aria-label={`Rating ${rating} of 5`}>
@@ -210,13 +216,30 @@ function ProductDetailPage() {
             <div className="flex flex-col gap-8 py-12 lg:flex-row">
               <img src="/images/product/description.png" alt="Product lifestyle" className="w-full rounded-md object-cover shadow-md lg:w-[316px]" />
               {activeTab === 'description' && (
-                <div className="flex flex-col gap-6 lg:w-1/2">
-                  <h3 className="text-2xl font-bold leading-8 tracking-[0.1px] text-text-color">{product.name}</h3>
-                  <p className="text-sm leading-5 tracking-[0.2px] text-second-text-color">{product.description}</p>
-                  <p className="text-sm leading-5 tracking-[0.2px] text-second-text-color">
-                    Met minim Mollie non desert Alamo est sit cliquey dolor do met sent. RELIT official consequent door ENIM RELIT Mollie. Excitation venial consequent sent nostrum met.
-                  </p>
-                </div>
+                <>
+                  <div className="flex flex-col gap-6 lg:flex-1">
+                    <h3 className="text-2xl font-bold leading-8 tracking-[0.1px] text-text-color">{product.name}</h3>
+                    <p className="text-sm leading-5 tracking-[0.2px] text-second-text-color">{product.description}</p>
+                    <p className="text-sm leading-5 tracking-[0.2px] text-second-text-color">
+                      Met minim Mollie non desert Alamo est sit cliquey dolor do met sent. RELIT official consequent door ENIM RELIT Mollie. Excitation venial consequent sent nostrum met.
+                    </p>
+                  </div>
+                  <div className="flex flex-col gap-8 lg:flex-1">
+                    {DESCRIPTION_LIST_SIZES.map((size) => (
+                      <div key={size} className="flex flex-col gap-5">
+                        <h3 className="text-2xl font-bold leading-8 tracking-[0.1px] text-text-color">{DESCRIPTION_HEADING}</h3>
+                        <ul className="flex flex-col gap-2.5">
+                          {Array.from({ length: size }, (_, index) => (
+                            <li key={index} className="flex items-center gap-2.5 text-sm font-bold leading-5 tracking-[0.2px] text-second-text-color">
+                              <ChevronRight size={16} className="shrink-0 text-muted-color" />
+                              {DESCRIPTION_BULLET}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                </>
               )}
               {activeTab === 'info' && (
                 <ul className="flex flex-col gap-3 text-sm font-bold text-second-text-color lg:w-1/2">
