@@ -1,0 +1,25 @@
+API probe (curl, 2026-09-17 ~13:30 TRT). Tokens redacted; the token was kept only in a chmod-600 temp file and deleted after the run.
+GET /roles -> 200 [{"id":1,"name":"Yönetici","code":"admin"},{"id":2,"name":"Mağaza","code":"store"},{"id":3,"name":"Müşteri","code":"customer"}]
+GET /categories -> 200 array of {id, code "k:tisort", title, img, rating, gender "k"|"e"}
+GET /products?limit=2 -> 200 {products:[...], total:587}
+GET /products?limit=1&offset=25&category=2&sort=price:desc&filter=siyah -> 200 {products:[1], total:52}   (combined params work)
+GET /products?category=999 -> 200 {products:[], total:0}
+GET /products/322 -> 200 product object identical to T16 sample
+GET /products/999999 -> 500 {"message":"Internal server error"}
+POST /login customer@commerce.com/123456 -> 200 {token:<REDACTED>, name:"Cust Omer", email, role_id:"3"}
+POST /login wrong password -> 401 {"message":"Password is not correct!"}
+GET /verify  Authorization: <token> (NO Bearer) -> 200 {name,email,role_id,token:<REDACTED renewed>}
+GET /verify  Authorization: bad -> 401
+GET /user/address without auth -> 401 {"message":"User is not verified"}
+GET /user/address -> 200 array; records contain columns id,user_id,title,name,surname,phone,city,district,neighborhood,address
+POST /user/address canonical T20 payload (no "address") -> 201 {"0":{... "address":null}}   (created id 4)
+POST /user/address canonical + "address":"Test sok. No:1 D:2" -> 201 {"0":{... "address":"Test sok. No:1 D:2"}}   (created id 5)
+PUT /user/address {id:5,...} -> 201 {"0":{updated}}
+DELETE /user/address/4 and /5 -> 201 "Address record deleted!"   (cleanup: both test records removed)
+POST /user/card {card_no:"4111111111111111",expire_month:12,expire_year:2030,name_on_card:"Test Builder"} -> 201 {"0":{id:4,...}}
+PUT /user/card {id:"4",...expire_month:1,expire_year:2031,name_on_card:"Test Builder2"} -> 201
+DELETE /user/card/4 -> 201 "Credit card record deleted!"   (cleanup done)
+GET /order -> 200 []
+POST /signup duplicate email -> 500 {"error":"An error occurred","err":{"errno":19,"code":"SQLITE_CONSTRAINT"}}
+POST /signup with extra field -> 500 {"error":"An error occurred","err":{"errno":1,"code":"SQLITE_ERROR"}}   (confirms strict payload)
+Pre-existing record on shared public account left untouched: address id 3 ("sdf").
