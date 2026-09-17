@@ -1,5 +1,7 @@
 # Full Project Implementation Report — Workintech Frontend Final E-Commerce (T02–T23)
 
+> **Superseded in parts by `REPAIR_REPORT.md` (repair wave 1).** Current task status: 20 PASS, 3 PARTIAL (T02, T06, T21). Statements below about T21 payment options, the T06 names and the Home category block describe the builder run and were corrected in the repair wave.
+
 Run date: 2026-09-17 (TRT) · Builder: Claude Code (Opus 5) · Branch: `builder/full-project-run-20260917-1324` · Baseline: `30e27eb`
 
 ## 1. Executive summary
@@ -78,7 +80,7 @@ Base `https://workintech-fe-ecommerce.onrender.com`. Every endpoint from the han
 
 ## 8. Auth design
 
-- Login (T10): `loginUser` thunk → `POST /login`. The token is stripped from the user object and set on axios `Authorization` for the session. It goes to `localStorage.token` **only if Remember me is checked**. The user is stored in `client.user`, and the header shows name + Gravatar (SHA-256 via Web Crypto).
+- Login (T10): `loginUser` thunk → `POST /login`. The token is stripped from the user object and set on axios `Authorization` for the session. It goes to `localStorage.token` **only if Remember me is checked**. Since repair wave 1, logging in without Remember me also removes any previously stored token. The user is stored in `client.user`, and the header shows name + Gravatar (SHA-256 via Web Crypto).
 - Auto login (T11): `App` → `verifyToken()`. If a token exists: set header → `GET /verify` → success sets user and renews token in storage + header; failure removes both.
 - Protected routes: `ProtectedRoute` (v5 `Route` render prop). It shows a spinner until the verify attempt finishes (so a remembered user is not bounced to login on refresh), then renders or `Redirect`s to `/login` with `state.from`. Login and signup return to `state.from`, falling back to `/` (login) or `history.goBack()` / `/` (signup).
 - Logout clears token, user, address list and cards.

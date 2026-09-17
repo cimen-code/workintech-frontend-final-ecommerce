@@ -1,5 +1,7 @@
 # Asset Manifest
 
+> **Repair wave 1: no asset files changed.** Replacement exports for `home/neural-universe.png` (node `2984:7389`) and `home/blog-1..3.png` (node `2984:7444`) were attempted again on 2026-09-17 and refused by the Figma MCP Starter-plan tool-call limit. The files below are unchanged from the builder run.
+
 Figma source file: `gJBJsNnMw9D3WHKjbD5tty` (editable copy of *E-commerce UI – Figma Ecommerce UI Kit (Demo Version) (Community)*). Image credits inside the kit: unsplash.com photos, undraw.co illustrations, iconify.design icons (per the kit's INDEX page `258:4638`).
 
 All assets are stored locally under `public/images/`. Production code has **no** Figma MCP URLs (those expire).
@@ -31,7 +33,7 @@ The Figma MCP Starter plan hit its **tool-call limit** during the run (after 4 o
 | `product/main.png`, `product/thumb-1..2.png` | Product detail fallback image (only if a product has no images) | desktop-product-1 `3010:28540` | SHOT-CROP | ≈0.95× |
 | `product/description.png` | Product detail description tab | `3010:28540` | SHOT-CROP | ≈0.95× |
 | `team/hero-main.png`, `team/hero-1..4.png` | Team page collage | desktop-team-1 `2874:4077` | SHOT-CROP | ≈0.83× |
-| `team/member-3..9.png` | Team page placeholder member cards | `2874:4077` | SHOT-CROP | ≈0.83× |
+| `team/member-3..9.png` | Team page placeholder cards ("Teammate (to be added)"; not real people) | `2874:4077` | SHOT-CROP | ≈0.83× |
 | `about/hero.png` | About hero | desktop-about-1 `2865:3805` | SHOT-CROP | ≈0.68× |
 | `about/video.png` | About video card | `2865:3805` | SHOT-CROP | ≈0.68× |
 | `about/work-with-us.png` | About "Work with us" | `2865:3805` | SHOT-CROP | ≈0.68× |

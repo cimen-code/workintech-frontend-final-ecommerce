@@ -4,8 +4,8 @@ Defined once in `src/layout/PageContent.jsx` inside a single `<Switch>`; Header 
 
 | Path | Component | Access | Task |
 |---|---|---|---|
-| `/` | `HomePage` | public | T02, T12 (top 5 categories) |
-| `/shop` | `ShopPage` | public | T03, T13, T14, T15 |
+| `/` | `HomePage` | public | T02 |
+| `/shop` | `ShopPage` | public | T03, T12 (top 5 categories), T13, T14, T15 |
 | `/shop/:gender/:categoryName/:categoryId` | `ShopPage` (category from `useParams`) | public | T12, T14 |
 | `/shop/:gender/:categoryName/:categoryId/:productNameSlug/:productId` | `ProductDetailPage` | public | T04, T16, T17 |
 | `/contact` | `ContactPage` | public | T05 |
