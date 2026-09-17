@@ -17,12 +17,17 @@ function Slider({ slides, renderSlide, autoPlayMs = 6000, className = '' }) {
 
   return (
     <div className={`relative w-full overflow-hidden ${className}`}>
-      <div
-        className="flex transition-transform duration-700 ease-in-out motion-reduce:transition-none"
-        style={{ transform: `translateX(-${current * 100}%)` }}
-      >
+      <div className="relative w-full">
         {slides.map((slide, index) => (
-          <div key={slide.id ?? index} className="flex w-full shrink-0" aria-hidden={index !== current}>
+          <div
+            key={slide.id ?? index}
+            className={`w-full transition-opacity duration-700 ease-in-out motion-reduce:transition-none ${
+              index === current
+                ? 'relative flex opacity-100'
+                : 'pointer-events-none absolute inset-0 flex opacity-0'
+            }`}
+            aria-hidden={index !== current}
+          >
             {renderSlide(slide, index)}
           </div>
         ))}
