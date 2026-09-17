@@ -1,5 +1,5 @@
-import { isValidIban, isValidTurkishPhone, PASSWORD_PATTERN, TAX_NO_PATTERN, EMAIL_PATTERN } from '/Users/hakancimen/Desktop/workintech-frontend-final-ecommerce/src/utils/validators.js'
-import { slugify, categoryPath, calculateOrderSummary } from '/Users/hakancimen/Desktop/workintech-frontend-final-ecommerce/src/utils/helpers.js'
+import { isValidIban, isValidTurkishPhone, PASSWORD_PATTERN, TAX_NO_PATTERN, EMAIL_PATTERN } from '../../../src/utils/validators.js'
+import { slugify, categoryPath, calculateOrderSummary } from '../../../src/utils/helpers.js'
 const cases = [
   ['IBAN valid TR', isValidIban('TR33 0006 1005 1978 6457 8413 26'), true],
   ['IBAN bad checksum', isValidIban('TR330006100519786457841327'), false],
