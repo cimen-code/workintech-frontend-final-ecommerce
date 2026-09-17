@@ -52,9 +52,14 @@ export const buildProductQuery = ({ category, filter, sort, limit, offset }) => 
   return params.toString()
 }
 
+// only the latest request may update the list (filter typing can start several requests)
+let latestProductsRequest = 0
+
 export const fetchProducts = (query = {}) => (dispatch, getState) => {
   const { limit, offset } = getState().product
   const params = { limit, offset, ...query }
+  latestProductsRequest += 1
+  const requestId = latestProductsRequest
 
   dispatch(setFetchState(FETCH_STATES.FETCHING))
   if (params.filter !== undefined) dispatch(setFilter(params.filter || ''))
@@ -62,11 +67,13 @@ export const fetchProducts = (query = {}) => (dispatch, getState) => {
   return api
     .get(`/products?${buildProductQuery(params)}`)
     .then((res) => {
+      if (requestId !== latestProductsRequest) return
       dispatch(setProductList(res.data.products))
       dispatch(setTotal(res.data.total))
       dispatch(setFetchState(FETCH_STATES.FETCHED))
     })
     .catch(() => {
+      if (requestId !== latestProductsRequest) return
       dispatch(setProductList([]))
       dispatch(setTotal(0))
       dispatch(setFetchState(FETCH_STATES.FAILED))

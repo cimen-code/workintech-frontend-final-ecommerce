@@ -17,13 +17,14 @@ const SORT_OPTIONS = [
   { value: 'rating:desc', label: 'Rating: High to Low' },
 ]
 
-function ShopFilterForm({ initialSort, initialFilter, onApply }) {
+// T14: typing in the filter input changes the filter state immediately (→ GET);
+// the sort value is applied with the Filter button (→ sort state → GET). Other params are kept.
+function ShopFilterForm({ filter, onFilterChange, initialSort, onApplySort }) {
   const [sort, setSort] = useState(initialSort)
-  const [filter, setFilterText] = useState(initialFilter)
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    onApply({ sort, filter: filter.trim() })
+    onApplySort(sort)
   }
 
   return (
@@ -33,7 +34,7 @@ function ShopFilterForm({ initialSort, initialFilter, onApply }) {
         id="shop-filter"
         type="search"
         value={filter}
-        onChange={(event) => setFilterText(event.target.value)}
+        onChange={(event) => onFilterChange(event.target.value)}
         placeholder="Search products"
         className="w-44 rounded-md border border-[#DDDDDD] bg-light-gray-1 px-4 py-3 text-sm text-text-color outline-none focus:border-primary-color"
       />
@@ -77,17 +78,21 @@ function ShopPage() {
     dispatch(fetchProducts({ category: categoryId, filter, sort, limit, offset }))
   }, [dispatch, categoryId, filter, sort, limit, offset])
 
-  const updateQuery = (changes) => {
+  const updateQuery = (changes, { replace = false } = {}) => {
     const params = new URLSearchParams(location.search)
     Object.entries(changes).forEach(([key, value]) => {
       if (value) params.set(key, value)
       else params.delete(key)
     })
     const query = params.toString()
-    history.push(`${location.pathname}${query ? `?${query}` : ''}`)
+    const url = `${location.pathname}${query ? `?${query}` : ''}`
+    if (replace) history.replace(url)
+    else history.push(url)
   }
 
-  const applyFilters = ({ sort: nextSort, filter: nextFilter }) => updateQuery({ sort: nextSort, filter: nextFilter, page: '' })
+  // replace (not push) while typing, so each keystroke does not add a history entry
+  const changeFilter = (nextFilter) => updateQuery({ filter: nextFilter, page: '' }, { replace: true })
+  const applySort = (nextSort) => updateQuery({ sort: nextSort, page: '' })
 
   const changePage = (nextPage) => {
     updateQuery({ page: nextPage > 1 ? String(nextPage) : '' })
@@ -161,7 +166,7 @@ function ShopPage() {
               <List size={16} />
             </button>
           </div>
-          <ShopFilterForm key={location.search} initialSort={sort} initialFilter={filter} onApply={applyFilters} />
+          <ShopFilterForm key={sort} filter={filter} onFilterChange={changeFilter} initialSort={sort} onApplySort={applySort} />
         </div>
       </section>
 
