@@ -15,10 +15,7 @@ function Gravatar({ email, size = 32, className = '' }) {
   }, [email, size])
 
   return (
-    <span
-      className={`inline-flex shrink-0 overflow-hidden rounded-full bg-light-gray-1 ${className}`}
-      style={{ width: size, height: size }}
-    >
+    <span className={`inline-flex shrink-0 overflow-hidden rounded-full bg-light-gray-1 ${className}`}>
       {src && <img src={src} alt={email} className="h-full w-full object-cover" />}
     </span>
   )

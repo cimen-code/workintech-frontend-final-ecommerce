@@ -92,7 +92,7 @@ function Header() {
         className="flex items-center gap-2 px-2 py-3 text-sm font-bold text-primary-color md:px-4"
         aria-expanded={openMenu === 'user'}
       >
-        <Gravatar email={user.email} size={28} />
+        <Gravatar email={user.email} size={28} className="h-7 w-7" />
         <span className="hidden max-w-[140px] truncate sm:inline">{user.name}</span>
         <ChevronDown size={14} />
       </button>
