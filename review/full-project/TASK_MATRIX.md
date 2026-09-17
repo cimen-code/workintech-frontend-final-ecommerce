@@ -1,7 +1,7 @@
 # Task Acceptance Matrix — T01–T23
 
 Builder branch `builder/full-project-run-20260917-1324` · baseline `30e27eb`
-Evidence files are in `review/full-project/`: `qa-routes.log/json` (52 route × width checks, **re-run in repair wave**), `qa-flows.log/json` (55 end-to-end checks, builder run), `qa-signup-spinner.log`, `unit-checks.log`, **`qa-repair.log/json` (33 repair checks)**, **`repair-unit-checks.log` (21 unit checks + negative control)**, `CHECKS.txt`, `REPAIR_CHECKS.txt`, `screenshots/`, `screenshots/repair/`.
+Evidence files are in `review/full-project/`: `qa-routes.log/json` (52 route × width checks, **re-run in repair wave**), `qa-flows.log/json` (55 end-to-end checks, builder run), `qa-signup-spinner.log`, `unit-checks.log`, **`qa-repair.log/json` (32 repair checks)**, **`repair-unit-checks.log` (21 unit checks + negative control)**, `CHECKS.txt`, `REPAIR_CHECKS.txt`, `screenshots/`, `screenshots/repair/`.
 
 > **Updated in repair wave 1** (see `REPAIR_REPORT.md`). Changed rows: T02, T06, T10, T12, T21. Changed totals.
 
