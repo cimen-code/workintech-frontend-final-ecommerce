@@ -1,0 +1,17 @@
+PASS T17.1 cart initial state is [] even when localStorage has a "cart" key
+PASS T17.2 adding to cart does not write localStorage
+PASS T17.3 same product increments count, item has checked flag
+PASS T22.1 POST /order called with the given payload
+PASS T22.2 whole cart reset after success (unchecked items too)
+PASS T22.3 payment and address reset after success
+PASS T22.4 failed order keeps the cart
+PASS T14.1 slow earlier response does not overwrite the latest result
+PASS T14.2 request keeps category + filter + sort — /products?category=2&filter=siyah&sort=price%3Adesc&limit=25&offset=0
+PASS T14.3 filter stored in product reducer
+PASS T19.1 sample 8448.99: shipping 29.99, discount 29.99, grand total 8448.99 — {"productsTotal":8448.99,"shipping":29.99,"discount":29.99,"grandTotal":8448.99}
+PASS T19.2 below 150: products + shipping − 0 = grand total
+PASS T19.3 nothing selected: all zero
+PASS T02.1 eight static Figma bestseller cards
+PASS T02.2 no invented slide copy (only canonical hero + Vita content)
+PASS T06.1 team is exactly Gökhan Özdemir (PM) + Hakan Çimen (Full Stack Developer)
+ALL PASS

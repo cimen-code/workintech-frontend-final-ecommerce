@@ -1,0 +1,22 @@
+PASS R4.1 pre-existing token + login rememberMe=false -> localStorage token removed — stored=null
+PASS R4.2 session axios header still gets the new token
+PASS R4.3 header has no Bearer prefix
+PASS R4.4 user saved without token field
+PASS R4.5 storeToken(token, false) removes stored token
+PASS R4.6 login rememberMe=true -> token stored
+PASS T11.1 verify success renews localStorage token
+PASS T11.2 verify success renews axios header (raw, no Bearer)
+PASS T11.3 verify success returns user
+PASS T11.4 verify failure removes localStorage token
+PASS T11.5 verify failure removes axios header
+PASS T11.6 verify failure returns null
+PASS T11.7 no stored token -> no verify, resolves null
+PASS R5 current year, earlier month (08/2026 in Sep 2026) is expired — got=true
+PASS R5 current year, current month (09/2026 in Sep 2026) is valid — got=false
+PASS R5 current year, later month (12/2026) is valid — got=false
+PASS R5 future year, earlier month (01/2027) is valid — got=false
+PASS R5 past year (12/2025) is expired — got=true
+PASS R5 string inputs from <select> ("8", "2026") are expired — got=true
+PASS R5 January edge: 01/2026 in Jan 2026 is valid — got=false
+PASS R5 incomplete pair (month missing) is not flagged — got=false
+ALL PASS

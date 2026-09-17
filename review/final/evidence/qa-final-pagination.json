@@ -1,0 +1,29 @@
+{
+  "checks": [
+    {
+      "id": "T15",
+      "name": "page 2 → limit=25&offset=25 keeping category + sort",
+      "pass": true,
+      "details": "/products?category=2&sort=price%3Adesc&limit=25&offset=25"
+    },
+    {
+      "id": "T15",
+      "name": "URL holds page=2 and the active page button is 2",
+      "pass": true,
+      "details": ""
+    },
+    {
+      "id": "T15",
+      "name": "filter change returns to first page (offset=0) keeping category + sort",
+      "pass": true,
+      "details": "/products?category=2&filter=siyah&sort=price%3Adesc&limit=25&offset=0"
+    },
+    {
+      "id": "T15",
+      "name": "direct URL page=3 → offset=50",
+      "pass": true,
+      "details": "/products?limit=25&offset=50"
+    }
+  ],
+  "consoleErrors": []
+}

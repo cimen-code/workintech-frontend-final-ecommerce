@@ -1,0 +1,5 @@
+PASS [T15] page 2 → limit=25&offset=25 keeping category + sort — /products?category=2&sort=price%3Adesc&limit=25&offset=25
+PASS [T15] URL holds page=2 and the active page button is 2
+PASS [T15] filter change returns to first page (offset=0) keeping category + sort — /products?category=2&filter=siyah&sort=price%3Adesc&limit=25&offset=0
+PASS [T15] direct URL page=3 → offset=50 — /products?limit=25&offset=50
+console errors: 0
