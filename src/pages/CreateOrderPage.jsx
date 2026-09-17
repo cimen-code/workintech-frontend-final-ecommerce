@@ -20,10 +20,6 @@ import {
 import { createOrder, setAddress, setPayment } from '../store/actions/shoppingCartActions.js'
 import { calculateOrderSummary, formatPrice, maskCardNumber } from '../utils/helpers.js'
 
-// T21 says "payment options fetched by card data", but no card-based rule or endpoint is documented.
-// These plans are fixed front-end examples and are NOT derived from the selected card.
-const FIXED_INSTALLMENT_PLANS = [1, 3, 6]
-
 const apiError = (error, fallback) => error.response?.data?.message || fallback
 
 const cardBrand = (cardNo = '') => {
@@ -98,7 +94,6 @@ function CreateOrderPage() {
   const [cardId, setCardId] = useState(null)
   const [cardForm, setCardForm] = useState(null)
   const [ccv, setCcv] = useState('')
-  const [installment, setInstallment] = useState(1)
   const [submitting, setSubmitting] = useState(false)
   const [completedOrder, setCompletedOrder] = useState(null)
 
@@ -185,7 +180,7 @@ function CreateOrderPage() {
     }
 
     setSubmitting(true)
-    dispatch(setPayment({ card_id: selectedCard.id, installment }))
+    dispatch(setPayment({ card_id: selectedCard.id }))
     try {
       const result = await dispatch(createOrder(payload))
       setCompletedOrder({ id: result?.id, price: payload.price, itemCount: payload.products.length })
@@ -389,21 +384,29 @@ function CreateOrderPage() {
                       placeholder="123"
                     />
                   </div>
-                  <fieldset className="flex flex-col gap-2 md:w-2/3">
-                    <legend className="text-sm font-bold text-text-color">Installment options</legend>
-                    <p className="pb-1 text-xs text-second-text-color">
-                      Example plans shown for every card; the API provides no card-specific installment data.
-                    </p>
-                    {FIXED_INSTALLMENT_PLANS.map((count) => (
-                      <label key={count} className="flex items-center justify-between rounded-md border border-[#ECECEC] px-4 py-2 text-sm text-second-text-color">
-                        <span className="flex items-center gap-2">
-                          <input type="radio" name="installment" checked={installment === count} onChange={() => setInstallment(count)} className="accent-primary-color" />
-                          {count === 1 ? 'Single payment' : `${count} installments`}
-                        </span>
-                        <span className="font-bold text-text-color">{formatPrice(summary.grandTotal / count)}{count > 1 ? ' / month' : ''}</span>
-                      </label>
-                    ))}
-                  </fieldset>
+                  {/* T21 sample shows a single "Tek Çekim" row; no installment plans are documented */}
+                  <div className="flex flex-col gap-2 md:w-2/3">
+                    <p className="text-sm font-bold text-text-color">Payment Option</p>
+                    <table className="w-full rounded-md border border-[#ECECEC] text-left text-sm">
+                      <thead className="bg-light-gray-1 text-xs uppercase text-second-text-color">
+                        <tr>
+                          <th className="px-4 py-2">Installments</th>
+                          <th className="px-4 py-2">Monthly Payment</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr className="border-t border-[#ECECEC]">
+                          <td className="px-4 py-3">
+                            <label className="flex items-center gap-2 font-bold text-text-color">
+                              <input type="radio" name="payment-option" checked readOnly className="accent-primary-color" />
+                              Single Payment (Tek Çekim)
+                            </label>
+                          </td>
+                          <td className="px-4 py-3 font-bold text-primary-color">{formatPrice(summary.grandTotal)}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               )}
             </div>

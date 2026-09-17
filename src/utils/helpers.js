@@ -37,10 +37,12 @@ export const gravatarUrl = async (email = '', size = 64) => {
   return `https://www.gravatar.com/avatar/${hash}?s=${size}&d=identicon`
 }
 
+// Values from the canonical T19 sample image ("Sipariş Özeti"): "Kargo Toplam 29,99" and
+// "150 TL ve Üzeri Kargo Bedava (Satıcı Karşılar) -29,99" (repeated in the T20/T21 samples)
 export const SHIPPING_PRICE = 29.99
 export const FREE_SHIPPING_LIMIT = 150
 
-// T19: summary of checked items
+// T19: products total + shipping - discount = grand total (checked items only)
 export const calculateOrderSummary = (cart) => {
   const productsTotal = cart
     .filter((item) => item.checked)

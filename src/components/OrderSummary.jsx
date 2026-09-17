@@ -21,7 +21,6 @@ function OrderSummary({ summary, buttonLabel, onButtonClick, buttonDisabled = fa
 
   return (
     <aside className="flex w-full flex-col gap-4 lg:w-[320px] lg:shrink-0">
-      {button}
       <div className="flex flex-col gap-4 rounded-md border border-[#ECECEC] bg-white p-6 shadow-sm">
         <h2 className="text-xl font-bold text-text-color">Order Summary</h2>
         {rows.map((row) => (
