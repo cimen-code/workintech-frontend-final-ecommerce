@@ -1,0 +1,63 @@
+=== commits since previous builder HEAD b068f92
+6f6147f docs: add REPAIR_GIT_DIFF.patch (b068f92..HEAD)
+b524859 docs: repair wave 1 report and checks
+546cbae test: repair wave 1 focused QA, unit checks and updated review docs
+2869805 fix: repair wave 1 (T02 home/header, T06 honesty, T21 labels, remember me, card expiry)
+
+=== git status --short --branch
+## builder/full-project-run-20260917-1324
+?? review/full-project/REPAIR_GIT_STATUS.txt
+
+=== branches (main untouched)
+* builder/full-project-run-20260917-1324 6f6147f docs: add REPAIR_GIT_DIFF.patch (b068f92..HEAD)
+  main                                   30e27eb [origin/main] chore: initialize ecommerce project
+  task/T02-home-page                     30e27eb chore: initialize ecommerce project
+
+=== git diff b068f92..HEAD --stat (includes screenshots)
+ review/full-project/ASSET_MANIFEST.md              |    4 +-
+ .../FULL_PROJECT_IMPLEMENTATION_REPORT.md          |    4 +-
+ review/full-project/KNOWN_ISSUES.md                |   11 +-
+ review/full-project/REPAIR_CHECKS.txt              |  187 +++
+ review/full-project/REPAIR_GIT_DIFF.patch          | 1224 ++++++++++++++++++++
+ review/full-project/REPAIR_REPORT.md               |   49 +
+ review/full-project/ROUTES.md                      |    4 +-
+ review/full-project/TASK_MATRIX.md                 |   25 +-
+ review/full-project/qa-repair.json                 |  197 ++++
+ review/full-project/screenshots/about-1440.jpg     |  Bin 410129 -> 410580 bytes
+ review/full-project/screenshots/about-414.jpg      |  Bin 264439 -> 264240 bytes
+ review/full-project/screenshots/cart-empty-414.jpg |  Bin 56427 -> 55776 bytes
+ review/full-project/screenshots/contact-414.jpg    |  Bin 188110 -> 187459 bytes
+ review/full-project/screenshots/home-1440.jpg      |  Bin 1067506 -> 985111 bytes
+ review/full-project/screenshots/home-414.jpg       |  Bin 1034476 -> 912557 bytes
+ review/full-project/screenshots/login-414.jpg      |  Bin 59612 -> 58961 bytes
+ review/full-project/screenshots/not-found-414.jpg  |  Bin 57744 -> 57093 bytes
+ .../screenshots/order-protected-414.jpg            |  Bin 59612 -> 58961 bytes
+ .../screenshots/orders-protected-414.jpg           |  Bin 59612 -> 58961 bytes
+ .../screenshots/product-detail-1440.jpg            |  Bin 390267 -> 389755 bytes
+ .../screenshots/product-detail-414.jpg             |  Bin 415588 -> 413684 bytes
+ .../screenshots/repair/card-form-expired-1440.png  |  Bin 0 -> 84514 bytes
+ .../repair/checkout-card-installments-1440.png     |  Bin 0 -> 100954 bytes
+ .../full-project/screenshots/repair/home-1440.jpg  |  Bin 0 -> 985120 bytes
+ .../screenshots/repair/home-414-header-compact.png |  Bin 0 -> 8899 bytes
+ .../repair/home-414-logged-in-menu-open.png        |  Bin 0 -> 53702 bytes
+ .../repair/home-414-menu-open-categories.png       |  Bin 0 -> 32774 bytes
+ .../screenshots/repair/home-414-menu-open.png      |  Bin 0 -> 56456 bytes
+ .../full-project/screenshots/repair/home-414.jpg   |  Bin 0 -> 912560 bytes
+ .../full-project/screenshots/repair/team-1440.jpg  |  Bin 0 -> 417242 bytes
+ review/full-project/screenshots/shop-1440.jpg      |  Bin 820701 -> 810584 bytes
+ review/full-project/screenshots/shop-414.jpg       |  Bin 968818 -> 1067261 bytes
+ .../screenshots/shop-category-query-1440.jpg       |  Bin 874810 -> 865433 bytes
+ .../screenshots/shop-category-query-414.jpg        |  Bin 842779 -> 1150773 bytes
+ review/full-project/screenshots/signup-414.jpg     |  Bin 69932 -> 69281 bytes
+ review/full-project/screenshots/team-1440.jpg      |  Bin 416003 -> 420156 bytes
+ review/full-project/screenshots/team-414.jpg       |  Bin 345644 -> 348531 bytes
+ review/full-project/tools/qa-repair.mjs            |  217 ++++
+ review/full-project/tools/repair-unit-checks.mjs   |   76 ++
+ src/components/CardForm.jsx                        |   17 +-
+ src/data/teamData.js                               |   13 +-
+ src/layout/Header.jsx                              |   39 +-
+ src/pages/CreateOrderPage.jsx                      |   11 +-
+ src/pages/HomePage.jsx                             |   28 +-
+ src/store/actions/clientActions.js                 |    5 +-
+ src/utils/validators.js                            |    8 +
+ 46 files changed, 2042 insertions(+), 77 deletions(-)
