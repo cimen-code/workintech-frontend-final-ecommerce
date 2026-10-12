@@ -81,7 +81,7 @@ function HomePage() {
           <div className="flex w-full flex-col gap-[30px] md:flex-row md:flex-wrap">
             {bestsellerProducts.map((product) => (
               <div key={product.id} className="flex w-full md:w-[calc(50%-15px)] lg:w-[calc(25%-23px)]">
-                <ProductCard to="/shop" {...product} imageClassName="aspect-[348/427] lg:aspect-[239/427]" />
+                <ProductCard to="/shop" {...product} imageLoading="eager" imageClassName="aspect-[348/427] lg:aspect-[239/427]" />
               </div>
             ))}
           </div>
@@ -94,13 +94,16 @@ function HomePage() {
         autoPlayMs={8000}
         renderSlide={(slide) => (
           <div className="flex w-full bg-secondary-color-1">
-            <div className="mx-auto flex w-full max-w-[1050px] flex-col items-center gap-8 px-10 pt-28 text-center text-white lg:flex-row lg:items-end lg:justify-between lg:pt-0 lg:text-left">
-              <div className="flex flex-col items-center gap-8 lg:items-start lg:self-center lg:py-28">
+            <div className="mx-auto flex w-full max-w-[1050px] flex-col items-center gap-8 px-10 pt-[196px] text-center text-white lg:flex-row lg:items-end lg:justify-between lg:pt-0 lg:text-left">
+              <div className="flex flex-col items-center gap-9 lg:items-start lg:self-center lg:gap-8 lg:py-28">
                 <h5 className="text-xl leading-[30px] tracking-[0.2px]">{slide.tag}</h5>
                 <h2 className="max-w-[300px] text-[40px] font-bold leading-[50px] tracking-[0.2px] lg:max-w-[510px] lg:text-[58px] lg:leading-[80px]">
                   {slide.title}
                 </h2>
-                <p className="max-w-[341px] text-sm leading-5 tracking-[0.2px]">{slide.text}</p>
+                <p className="max-w-[291px] text-xl leading-[30px] tracking-[0.2px] lg:max-w-[341px] lg:text-sm lg:leading-5">
+                  <span className="lg:hidden">We know how large objects will act, but things on a small scale.</span>
+                  <span className="hidden lg:inline">{slide.text}</span>
+                </p>
                 <div className="flex flex-col items-center gap-6 lg:flex-row">
                   <span className="text-2xl font-bold leading-8 tracking-[0.1px]">{formatPrice(slide.price)}</span>
                   <Link to="/shop" className="rounded-md bg-success-color px-10 py-3.5 text-sm font-bold leading-[22px] tracking-[0.2px] hover:opacity-90">
@@ -108,7 +111,7 @@ function HomePage() {
                   </Link>
                 </div>
               </div>
-              <img src={slide.image} alt={slide.title} className="w-full max-w-[443px] object-contain lg:max-w-[510px]" />
+              <img src={slide.image} alt={slide.title} className="w-[calc(100%+32px)] max-w-none object-contain lg:w-full lg:max-w-[510px]" />
             </div>
           </div>
         )}

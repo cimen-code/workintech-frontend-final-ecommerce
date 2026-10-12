@@ -4,7 +4,7 @@ import { formatPrice } from '../utils/helpers.js'
 const DEFAULT_COLORS = ['bg-primary-color', 'bg-secondary-color-1', 'bg-alert-color', 'bg-dark-background-color']
 
 // Reusable product card (Home bestseller, Shop list, Product detail bestseller)
-function ProductCard({ to, image, mobileImage, title, department, oldPrice, price, colors = DEFAULT_COLORS, imageClassName = 'aspect-[239/300]' }) {
+function ProductCard({ to, image, mobileImage, title, department, oldPrice, price, colors = DEFAULT_COLORS, imageClassName = 'aspect-[239/300]', imageLoading = 'lazy' }) {
   return (
     <Link
       to={to}
@@ -16,7 +16,7 @@ function ProductCard({ to, image, mobileImage, title, department, oldPrice, pric
           <img
             src={image}
             alt={title}
-            loading="lazy"
+            loading={imageLoading}
             className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
           />
         </picture>
