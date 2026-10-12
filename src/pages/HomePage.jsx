@@ -71,15 +71,17 @@ function HomePage() {
 
       {/* Bestseller products */}
       <section className="flex w-full bg-white py-20">
-        <div className="mx-auto flex w-full max-w-[1124px] flex-col items-center gap-20 px-11 lg:px-0">
+        <div className="mx-auto flex w-full max-w-[1124px] flex-col items-center gap-20 px-[33px] lg:px-0">
           <div className="flex flex-col items-center gap-2.5 text-center">
             <h4 className="text-xl leading-[30px] tracking-[0.2px] text-second-text-color">Featured Products</h4>
-            <SectionTitle title="BESTSELLER PRODUCTS" text="Problems trying to resolve the conflict between" />
+            <div className="max-w-[240px] lg:max-w-none">
+              <SectionTitle title="BESTSELLER PRODUCTS" text="Problems trying to resolve the conflict between" />
+            </div>
           </div>
           <div className="flex w-full flex-col gap-[30px] md:flex-row md:flex-wrap">
             {bestsellerProducts.map((product) => (
               <div key={product.id} className="flex w-full md:w-[calc(50%-15px)] lg:w-[calc(25%-23px)]">
-                <ProductCard to="/shop" {...product} imageClassName="aspect-[239/427]" />
+                <ProductCard to="/shop" {...product} imageClassName="aspect-[348/427] lg:aspect-[239/427]" />
               </div>
             ))}
           </div>
@@ -123,11 +125,12 @@ function HomePage() {
               We know how large objects will act, but things on a small scale.
             </p>
             <div className="flex flex-col items-center gap-2.5 sm:flex-row">
-              <Link to="/shop" className="rounded-md bg-success-color px-10 py-4 text-sm font-bold leading-[22px] tracking-[0.2px] text-white hover:opacity-90">
+              <Link to="/shop" className="rounded-md bg-primary-color px-10 py-4 text-sm font-bold leading-[22px] tracking-[0.2px] text-white hover:opacity-90 lg:bg-success-color">
                 BUY NOW
               </Link>
-              <Link to="/about" className="rounded-md border border-success-color px-10 py-4 text-sm font-bold leading-[22px] tracking-[0.2px] text-success-color hover:bg-success-color hover:text-white">
-                READ MORE
+              <Link to="/about" className="rounded-md border border-primary-color px-10 py-4 text-sm font-bold leading-[22px] tracking-[0.2px] text-primary-color hover:bg-primary-color hover:text-white lg:border-success-color lg:text-success-color lg:hover:bg-success-color">
+                <span className="lg:hidden">Learn More</span>
+                <span className="hidden lg:inline">READ MORE</span>
               </Link>
             </div>
           </div>
@@ -139,7 +142,10 @@ function HomePage() {
         <div className="mx-auto flex w-full max-w-[1050px] flex-col items-center gap-20 px-11 lg:px-0">
           <div className="flex flex-col items-center gap-2.5 text-center">
             <h6 className="text-sm font-bold leading-6 tracking-[0.2px] text-primary-color">Practice Advice</h6>
-            <h2 className="text-[40px] font-bold leading-[50px] tracking-[0.2px] text-text-color">Featured Posts</h2>
+            <h2 className="text-[40px] font-bold leading-[50px] tracking-[0.2px] text-text-color">
+              <span className="lg:hidden">Featured Products</span>
+              <span className="hidden lg:inline">Featured Posts</span>
+            </h2>
             <p className="max-w-[469px] text-sm leading-5 tracking-[0.2px] text-second-text-color">
               Problems trying to resolve the conflict between the two major realms of Classical physics: Newtonian mechanics
             </p>
@@ -149,7 +155,10 @@ function HomePage() {
             {featuredPosts.map((post) => (
               <article key={post.id} className="flex w-full flex-col bg-white shadow-[0_2px_4px_rgba(0,0,0,0.1)] lg:w-1/3">
                 <div className="relative flex h-[300px] w-full overflow-hidden">
-                  <img src={post.image} alt={post.title} className="h-full w-full object-cover" />
+                  <picture className="flex h-full w-full">
+                    <source media="(max-width: 1023px)" srcSet={post.mobileImage} />
+                    <img src={post.image} alt={post.title} className="h-full w-full object-cover" />
+                  </picture>
                   <span className="absolute left-5 top-5 rounded-[3px] bg-danger-color px-2.5 text-sm font-bold leading-6 tracking-[0.2px] text-white">NEW</span>
                 </div>
                 <div className="flex flex-col gap-2.5 px-6 pb-9 pt-6">
