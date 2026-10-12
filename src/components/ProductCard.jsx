@@ -4,19 +4,22 @@ import { formatPrice } from '../utils/helpers.js'
 const DEFAULT_COLORS = ['bg-primary-color', 'bg-secondary-color-1', 'bg-alert-color', 'bg-dark-background-color']
 
 // Reusable product card (Home bestseller, Shop list, Product detail bestseller)
-function ProductCard({ to, image, title, department, oldPrice, price, colors = DEFAULT_COLORS, imageClassName = 'aspect-[239/300]' }) {
+function ProductCard({ to, image, mobileImage, title, department, oldPrice, price, colors = DEFAULT_COLORS, imageClassName = 'aspect-[239/300]', imageLoading = 'lazy' }) {
   return (
     <Link
       to={to}
       className="group flex w-full cursor-pointer flex-col items-center bg-white transition duration-300 hover:-translate-y-1 hover:shadow-lg"
     >
       <div className={`flex w-full overflow-hidden bg-light-gray-1 ${imageClassName}`}>
-        <img
-          src={image}
-          alt={title}
-          loading="lazy"
-          className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-        />
+        <picture className="flex h-full w-full">
+          {mobileImage && <source media="(max-width: 767px)" srcSet={mobileImage} />}
+          <img
+            src={image}
+            alt={title}
+            loading={imageLoading}
+            className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+          />
+        </picture>
       </div>
 
       <div className="flex w-full flex-col items-center gap-2.5 px-6 pb-9 pt-6 text-center">

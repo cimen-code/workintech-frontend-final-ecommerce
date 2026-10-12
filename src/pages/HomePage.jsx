@@ -23,7 +23,7 @@ function HomePage() {
         slides={heroSlides}
         renderSlide={(slide) => (
           <div
-            className="flex min-h-[753px] w-full items-center bg-[#00B5E2] bg-[url('/images/home/hero-new-collection.jpg')] bg-cover bg-[70%_center] lg:min-h-[716px] lg:bg-center"
+            className="flex min-h-[753px] w-full items-center bg-[#00B5E2] bg-[url('/images/home/hero-new-collection.jpg')] bg-cover bg-center lg:min-h-[716px]"
           >
             <div className="mx-auto flex w-full max-w-[1050px] flex-col items-center gap-9 px-10 py-20 text-center text-white lg:items-start lg:text-left">
               <h5 className="text-base font-bold leading-6 tracking-[0.1px]">{slide.tag}</h5>
@@ -71,15 +71,17 @@ function HomePage() {
 
       {/* Bestseller products */}
       <section className="flex w-full bg-white py-20">
-        <div className="mx-auto flex w-full max-w-[1124px] flex-col items-center gap-20 px-11 lg:px-0">
+        <div className="mx-auto flex w-full max-w-[1124px] flex-col items-center gap-20 px-[33px] lg:px-0">
           <div className="flex flex-col items-center gap-2.5 text-center">
             <h4 className="text-xl leading-[30px] tracking-[0.2px] text-second-text-color">Featured Products</h4>
-            <SectionTitle title="BESTSELLER PRODUCTS" text="Problems trying to resolve the conflict between" />
+            <div className="max-w-[240px] lg:max-w-none">
+              <SectionTitle title="BESTSELLER PRODUCTS" text="Problems trying to resolve the conflict between" />
+            </div>
           </div>
           <div className="flex w-full flex-col gap-[30px] md:flex-row md:flex-wrap">
             {bestsellerProducts.map((product) => (
               <div key={product.id} className="flex w-full md:w-[calc(50%-15px)] lg:w-[calc(25%-23px)]">
-                <ProductCard to="/shop" {...product} imageClassName="aspect-[239/427]" />
+                <ProductCard to="/shop" {...product} imageLoading="eager" imageClassName="aspect-[348/427] lg:aspect-[239/427]" />
               </div>
             ))}
           </div>
@@ -92,13 +94,16 @@ function HomePage() {
         autoPlayMs={8000}
         renderSlide={(slide) => (
           <div className="flex w-full bg-secondary-color-1">
-            <div className="mx-auto flex w-full max-w-[1050px] flex-col items-center gap-8 px-10 pt-28 text-center text-white lg:flex-row lg:items-end lg:justify-between lg:pt-0 lg:text-left">
-              <div className="flex flex-col items-center gap-8 lg:items-start lg:self-center lg:py-28">
+            <div className="mx-auto flex w-full max-w-[1050px] flex-col items-center gap-8 px-10 pt-[196px] text-center text-white lg:flex-row lg:items-end lg:justify-between lg:pt-0 lg:text-left">
+              <div className="flex flex-col items-center gap-9 lg:items-start lg:self-center lg:gap-8 lg:py-28">
                 <h5 className="text-xl leading-[30px] tracking-[0.2px]">{slide.tag}</h5>
                 <h2 className="max-w-[300px] text-[40px] font-bold leading-[50px] tracking-[0.2px] lg:max-w-[510px] lg:text-[58px] lg:leading-[80px]">
                   {slide.title}
                 </h2>
-                <p className="max-w-[341px] text-sm leading-5 tracking-[0.2px]">{slide.text}</p>
+                <p className="max-w-[291px] text-xl leading-[30px] tracking-[0.2px] lg:max-w-[341px] lg:text-sm lg:leading-5">
+                  <span className="lg:hidden">We know how large objects will act, but things on a small scale.</span>
+                  <span className="hidden lg:inline">{slide.text}</span>
+                </p>
                 <div className="flex flex-col items-center gap-6 lg:flex-row">
                   <span className="text-2xl font-bold leading-8 tracking-[0.1px]">{formatPrice(slide.price)}</span>
                   <Link to="/shop" className="rounded-md bg-success-color px-10 py-3.5 text-sm font-bold leading-[22px] tracking-[0.2px] hover:opacity-90">
@@ -106,7 +111,7 @@ function HomePage() {
                   </Link>
                 </div>
               </div>
-              <img src={slide.image} alt={slide.title} className="w-full max-w-[443px] object-contain lg:max-w-[510px]" />
+              <img src={slide.image} alt={slide.title} className="w-[calc(100%+32px)] max-w-none object-contain lg:w-full lg:max-w-[510px]" />
             </div>
           </div>
         )}
@@ -123,11 +128,12 @@ function HomePage() {
               We know how large objects will act, but things on a small scale.
             </p>
             <div className="flex flex-col items-center gap-2.5 sm:flex-row">
-              <Link to="/shop" className="rounded-md bg-success-color px-10 py-4 text-sm font-bold leading-[22px] tracking-[0.2px] text-white hover:opacity-90">
+              <Link to="/shop" className="rounded-md bg-primary-color px-10 py-4 text-sm font-bold leading-[22px] tracking-[0.2px] text-white hover:opacity-90 lg:bg-success-color">
                 BUY NOW
               </Link>
-              <Link to="/about" className="rounded-md border border-success-color px-10 py-4 text-sm font-bold leading-[22px] tracking-[0.2px] text-success-color hover:bg-success-color hover:text-white">
-                READ MORE
+              <Link to="/about" className="rounded-md border border-primary-color px-10 py-4 text-sm font-bold leading-[22px] tracking-[0.2px] text-primary-color hover:bg-primary-color hover:text-white lg:border-success-color lg:text-success-color lg:hover:bg-success-color">
+                <span className="lg:hidden">Learn More</span>
+                <span className="hidden lg:inline">READ MORE</span>
               </Link>
             </div>
           </div>
@@ -139,7 +145,10 @@ function HomePage() {
         <div className="mx-auto flex w-full max-w-[1050px] flex-col items-center gap-20 px-11 lg:px-0">
           <div className="flex flex-col items-center gap-2.5 text-center">
             <h6 className="text-sm font-bold leading-6 tracking-[0.2px] text-primary-color">Practice Advice</h6>
-            <h2 className="text-[40px] font-bold leading-[50px] tracking-[0.2px] text-text-color">Featured Posts</h2>
+            <h2 className="text-[40px] font-bold leading-[50px] tracking-[0.2px] text-text-color">
+              <span className="lg:hidden">Featured Products</span>
+              <span className="hidden lg:inline">Featured Posts</span>
+            </h2>
             <p className="max-w-[469px] text-sm leading-5 tracking-[0.2px] text-second-text-color">
               Problems trying to resolve the conflict between the two major realms of Classical physics: Newtonian mechanics
             </p>
@@ -149,7 +158,10 @@ function HomePage() {
             {featuredPosts.map((post) => (
               <article key={post.id} className="flex w-full flex-col bg-white shadow-[0_2px_4px_rgba(0,0,0,0.1)] lg:w-1/3">
                 <div className="relative flex h-[300px] w-full overflow-hidden">
-                  <img src={post.image} alt={post.title} className="h-full w-full object-cover" />
+                  <picture className="flex h-full w-full">
+                    <source media="(max-width: 1023px)" srcSet={post.mobileImage} />
+                    <img src={post.image} alt={post.title} className="h-full w-full object-cover" />
+                  </picture>
                   <span className="absolute left-5 top-5 rounded-[3px] bg-danger-color px-2.5 text-sm font-bold leading-6 tracking-[0.2px] text-white">NEW</span>
                 </div>
                 <div className="flex flex-col gap-2.5 px-6 pb-9 pt-6">

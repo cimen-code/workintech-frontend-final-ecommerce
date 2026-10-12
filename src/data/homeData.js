@@ -30,6 +30,7 @@ export const bestsellerProducts = Array.from({ length: 8 }, (_, index) => ({
   oldPrice: 16.48,
   price: 6.48,
   image: `/images/home/product-${index + 1}.jpg`,
+  ...(index >= 4 && { mobileImage: `/images/home/mobile-product-${index + 1}.jpg` }),
 }))
 
 // Second carousel: same situation as the hero (arrows + two-position indicator, one canonical slide in Figma)
@@ -47,9 +48,9 @@ export const vitaSlides = [
 ]
 
 export const featuredPosts = [
-  { id: 1, image: '/images/home/blog-1.png' },
-  { id: 2, image: '/images/home/blog-2.png' },
-  { id: 3, image: '/images/home/blog-3.png' },
+  { id: 1, image: '/images/home/blog-1.png', mobileImage: '/images/home/mobile-blog-1.jpg' },
+  { id: 2, image: '/images/home/blog-2.png', mobileImage: '/images/home/mobile-blog-2.jpg' },
+  { id: 3, image: '/images/home/blog-3.png', mobileImage: '/images/home/mobile-blog-3.jpg' },
 ].map((post) => ({
   ...post,
   tags: ['Google', 'Trending', 'New'],
