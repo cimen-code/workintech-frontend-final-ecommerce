@@ -23,7 +23,7 @@ function HomePage() {
         slides={heroSlides}
         renderSlide={(slide) => (
           <div
-            className="flex min-h-[753px] w-full items-center bg-[#00B5E2] bg-[url('/images/home/hero-new-collection.jpg')] bg-cover bg-[30%_center] lg:min-h-[716px] lg:bg-center"
+            className="flex min-h-[753px] w-full items-center bg-[#00B5E2] bg-[url('/images/home/hero-new-collection.jpg')] bg-cover bg-center lg:min-h-[716px]"
           >
             <div className="mx-auto flex w-full max-w-[1050px] flex-col items-center gap-9 px-10 py-20 text-center text-white lg:items-start lg:text-left">
               <h5 className="text-base font-bold leading-6 tracking-[0.1px]">{slide.tag}</h5>
