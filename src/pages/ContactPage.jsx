@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom'
-import { Mail, MapPin, Phone } from 'lucide-react'
+import { Mail, MapPin, Phone, Send } from 'lucide-react'
 import { FacebookIcon, InstagramIcon, LinkedinIcon, TwitterIcon } from '../components/SocialIcons.jsx'
 
 const offices = [
   { id: 'phone', Icon: Phone, dark: false },
   { id: 'location', Icon: MapPin, dark: true },
-  { id: 'mail', Icon: Mail, dark: false },
+  { id: 'mail', Icon: Mail, MobileIcon: Send, dark: false },
 ]
 
 // Figma: "desktop-contact-1" (2879:7582) / "mobile-contact-1" (2879:7782)
@@ -37,7 +37,7 @@ function ContactPage() {
         </div>
       </section>
 
-      <section className="flex w-full py-20">
+      <section className="flex w-full bg-light-gray-1 py-20 lg:bg-white">
         <div className="mx-auto flex w-full max-w-[1050px] flex-col items-center gap-20 px-10 lg:px-0">
           <div className="flex flex-col items-center gap-2.5 text-center">
             <h6 className="text-sm font-bold leading-6 tracking-[0.2px] text-text-color">VISIT OUR OFFICE</h6>
@@ -45,13 +45,14 @@ function ContactPage() {
               We help small businesses with big ideas
             </h2>
           </div>
-          <div className="flex w-full flex-col lg:flex-row">
-            {offices.map(({ id, Icon, dark }) => (
+          <div className="flex w-full flex-col gap-[30px] lg:flex-row lg:gap-0">
+            {offices.map(({ id, Icon, MobileIcon, dark }) => (
               <div
                 key={id}
-                className={`flex w-full flex-col items-center gap-4 px-10 py-12 text-center lg:w-1/3 lg:py-20 ${dark ? 'bg-dark-background-color text-white' : 'bg-white text-text-color'}`}
+                className={`flex w-full flex-col items-center gap-4 px-10 text-center lg:w-1/3 lg:py-20 ${dark ? 'bg-dark-background-color py-20 text-white' : 'bg-white py-12 text-text-color'}`}
               >
-                <Icon size={72} strokeWidth={1.5} className="text-primary-color" />
+                {MobileIcon && <MobileIcon size={72} strokeWidth={1.5} className="text-primary-color lg:hidden" />}
+                <Icon size={72} strokeWidth={1.5} className={`text-primary-color ${MobileIcon ? 'hidden lg:block' : ''}`} />
                 <div className="flex flex-col text-sm font-bold leading-6 tracking-[0.2px]">
                   <span>georgia.young@example.com</span>
                   <span>georgia.young@ple.com</span>
@@ -59,7 +60,7 @@ function ContactPage() {
                 <h5 className="text-base font-bold leading-6 tracking-[0.1px]">Get Support</h5>
                 <a
                   href="mailto:georgia.young@example.com"
-                  className="rounded-[37px] border border-primary-color px-9 py-4 text-sm font-bold leading-[22px] tracking-[0.2px] text-primary-color hover:bg-primary-color hover:text-white"
+                  className="rounded-[5px] border border-primary-color px-5 py-2.5 text-sm font-bold leading-[22px] tracking-[0.2px] text-primary-color hover:bg-primary-color hover:text-white lg:rounded-[37px] lg:px-9 lg:py-4"
                 >
                   Submit Request
                 </a>
