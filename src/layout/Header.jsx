@@ -128,7 +128,7 @@ function Header() {
     <header ref={headerRef} className="relative z-40 flex w-full flex-col bg-white">
       {/* Top bar (desktop) */}
       <div className="hidden w-full bg-dark-background-color text-white lg:flex">
-        <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between px-6 py-2.5 text-sm font-bold leading-6 tracking-[0.2px]">
+        <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between px-[37px] py-[17px] text-sm font-bold leading-6 tracking-[0.2px]">
           <div className="flex items-center gap-7">
             <a href={contactInfo.phoneHref} className="flex items-center gap-1.5">
               <Phone size={16} />
