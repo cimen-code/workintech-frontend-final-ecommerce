@@ -56,7 +56,7 @@ function AboutPage() {
         </div>
       </section>
 
-      <section className="flex w-full py-12">
+      <section className="flex w-full py-12 lg:order-1">
         <div className="relative mx-auto flex w-full max-w-[989px] overflow-hidden px-10 lg:rounded-[20px] lg:px-0">
           <img src="/images/about/video.png" alt="Mountain lake landscape" className="h-[316px] w-full rounded-[20px] object-cover lg:h-[540px]" />
           <button type="button" aria-label="Play video" className="absolute left-1/2 top-1/2 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-primary-color text-white">
@@ -91,7 +91,7 @@ function AboutPage() {
       </section>
       <ClientsLogos />
 
-      <section className="flex w-full flex-col bg-[#2A7CC7] lg:flex-row">
+      <section className="flex w-full flex-col bg-[#2A7CC7] lg:order-1 lg:flex-row">
         <div className="flex w-full flex-col items-center gap-6 px-10 py-24 text-center text-white lg:w-3/5 lg:items-start lg:pl-[195px] lg:text-left">
           <h5 className="text-base font-bold leading-6 tracking-[0.1px]">WORK WITH US</h5>
           <h2 className="text-[40px] font-bold leading-[50px] tracking-[0.2px]">Now Let&apos;s grow Yours</h2>

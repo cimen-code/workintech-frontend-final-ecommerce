@@ -44,20 +44,20 @@ function Slider({ slides, renderSlide, autoPlayMs = 6000, className = '' }) {
             type="button"
             aria-label="Previous slide"
             onClick={() => goTo(current - 1)}
-            className="absolute left-2 top-1/2 flex -translate-y-1/2 p-2 text-white md:left-8"
+            className="absolute left-3 top-1/2 flex -translate-y-1/2 text-white"
           >
-            <ChevronLeft size={48} strokeWidth={1.5} />
+            <ChevronLeft size={80} strokeWidth={0.9} />
           </button>
           <button
             type="button"
             aria-label="Next slide"
             onClick={() => goTo(current + 1)}
-            className="absolute right-2 top-1/2 flex -translate-y-1/2 p-2 text-white md:right-8"
+            className="absolute right-1.5 top-1/2 flex -translate-y-1/2 text-white"
           >
-            <ChevronRight size={48} strokeWidth={1.5} />
+            <ChevronRight size={80} strokeWidth={0.9} />
           </button>
 
-          <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2">
+          <div className="absolute bottom-12 left-1/2 hidden -translate-x-1/2 md:flex">
             {slides.map((slide, index) => (
               <button
                 key={slide.id ?? index}
