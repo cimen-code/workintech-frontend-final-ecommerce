@@ -93,8 +93,8 @@ function HomePage() {
         slides={vitaSlides}
         autoPlayMs={8000}
         renderSlide={(slide) => (
-          <div className="flex w-full bg-secondary-color-1">
-            <div className="mx-auto flex w-full max-w-[1050px] flex-col items-center gap-8 px-10 pt-[196px] text-center text-white lg:flex-row lg:items-end lg:justify-between lg:pt-0 lg:text-left">
+          <div className="flex w-full overflow-hidden bg-secondary-color-1">
+            <div className="mx-auto flex w-full max-w-[1050px] flex-col items-center gap-[30px] px-10 pt-[207px] text-center text-white lg:h-[709px] lg:flex-row lg:items-end lg:justify-between lg:gap-8 lg:pt-0 lg:text-left">
               <div className="flex flex-col items-center gap-9 lg:items-start lg:self-center lg:gap-8 lg:py-28">
                 <h5 className="text-xl leading-[30px] tracking-[0.2px]">{slide.tag}</h5>
                 <h2 className="max-w-[300px] text-[40px] font-bold leading-[50px] tracking-[0.2px] lg:max-w-[510px] lg:text-[58px] lg:leading-[80px]">
@@ -104,14 +104,14 @@ function HomePage() {
                   <span className="lg:hidden">We know how large objects will act, but things on a small scale.</span>
                   <span className="hidden lg:inline">{slide.text}</span>
                 </p>
-                <div className="flex flex-col items-center gap-6 lg:flex-row">
+                <div className="flex flex-col items-center gap-[17px] lg:flex-row lg:gap-6">
                   <span className="text-2xl font-bold leading-8 tracking-[0.1px]">{formatPrice(slide.price)}</span>
-                  <Link to="/shop" className="rounded-md bg-success-color px-10 py-3.5 text-sm font-bold leading-[22px] tracking-[0.2px] hover:opacity-90">
+                  <Link to="/shop" className="rounded-md bg-success-color px-10 py-[15px] text-sm font-bold leading-[22px] tracking-[0.2px] hover:opacity-90 lg:py-3.5">
                     ADD TO CART
                   </Link>
                 </div>
               </div>
-              <img src={slide.image} alt={slide.title} className="w-[calc(100%+32px)] max-w-none object-contain lg:w-full lg:max-w-[510px]" />
+              <img src={slide.image} alt={slide.title} className="aspect-[422/565] w-[calc(100%+88px)] max-w-none object-cover object-top lg:h-[598px] lg:w-[444px]" />
             </div>
           </div>
         )}
