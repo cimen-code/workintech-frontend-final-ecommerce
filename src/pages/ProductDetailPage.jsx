@@ -74,7 +74,6 @@ function ProductDetailPage() {
   // T16: fetch product by thunk and keep it in product reducer
   useEffect(() => {
     dispatch(fetchProduct(productId))
-    window.scrollTo(0, 0)
   }, [dispatch, productId])
 
   useEffect(() => {

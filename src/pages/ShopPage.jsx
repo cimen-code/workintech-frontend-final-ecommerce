@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom'
 import { ChevronDown, LayoutGrid, List } from 'lucide-react'
@@ -65,6 +65,7 @@ function ShopPage() {
   const history = useHistory()
   const location = useLocation()
   const { categoryId } = useParams()
+  const filterRowRef = useRef(null)
   const { categories, productList, total, limit, fetchState } = useSelector((state) => state.product)
 
   const searchParams = new URLSearchParams(location.search)
@@ -98,6 +99,7 @@ function ShopPage() {
 
   const changePage = (nextPage) => {
     updateQuery({ page: nextPage > 1 ? String(nextPage) : '' })
+    filterRowRef.current?.scrollIntoView()
   }
 
   const topCategories = [...categories].sort((a, b) => b.rating - a.rating).slice(0, 5)
@@ -139,7 +141,7 @@ function ShopPage() {
       </section>
 
       {/* Filter row */}
-      <section className="flex w-full bg-white">
+      <section ref={filterRowRef} className="flex w-full bg-white">
         <div className="mx-auto flex w-full max-w-[1048px] flex-col items-center gap-6 px-8 pt-[25px] lg:flex-row lg:gap-0 lg:px-0 lg:pb-6 lg:pt-6">
           <p className="text-sm font-bold leading-6 tracking-[0.2px] text-second-text-color lg:w-[395px]">
             Showing {productList.length} of {total} results

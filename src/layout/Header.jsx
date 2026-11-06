@@ -96,7 +96,7 @@ function Header() {
       <button
         type="button"
         onClick={() => toggle('user')}
-        className="flex items-center gap-2 px-2 py-3 text-sm font-bold text-primary-color md:px-4"
+        className="flex items-center gap-2 px-2 text-sm font-bold text-primary-color md:px-4 md:py-3"
         aria-expanded={openMenu === 'user'}
       >
         <Gravatar email={user.email} size={28} className="h-7 w-7" />

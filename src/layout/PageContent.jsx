@@ -1,4 +1,5 @@
-import { Route, Switch } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Route, Switch, useHistory, useLocation } from 'react-router-dom'
 import Header from './Header.jsx'
 import Footer from './Footer.jsx'
 import ProtectedRoute from '../components/ProtectedRoute.jsx'
@@ -16,6 +17,14 @@ import OrdersPage from '../pages/OrdersPage.jsx'
 
 // Layout container: one Header, one Footer, and all route definitions
 function PageContent({ authChecked }) {
+  const { pathname } = useLocation()
+  const history = useHistory()
+
+  // A new page opens at the top; the browser back button keeps its own position
+  useEffect(() => {
+    if (history.action !== 'POP') window.scrollTo(0, 0)
+  }, [pathname, history])
+
   return (
     <div className="flex min-h-screen w-full flex-col overflow-x-hidden bg-light-background-color font-montserrat text-text-color">
       <Header />

@@ -12,7 +12,7 @@ function CartDropdown({ onNavigate }) {
   return (
     <div className="flex w-[min(360px,calc(100vw-96px))] flex-col gap-4 rounded-md border border-light-gray-1 bg-white p-4 text-left text-text-color shadow-xl">
       <p className="text-sm font-bold">
-        My Cart <span className="font-normal text-second-text-color">({itemCount} items)</span>
+        My Cart <span className="font-normal text-second-text-color">({itemCount} {itemCount === 1 ? 'item' : 'items'})</span>
       </p>
 
       {cart.length === 0 ? (

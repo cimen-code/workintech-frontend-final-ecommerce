@@ -36,7 +36,7 @@ function CartPage() {
       <div className="mx-auto flex w-full min-w-0 max-w-[1200px] flex-col gap-8 lg:flex-row lg:items-start">
         <div className="flex w-full min-w-0 flex-col gap-4">
           <h1 className="text-2xl font-bold text-text-color">
-            My Cart <span className="text-base font-normal text-second-text-color">({cart.length} products)</span>
+            My Cart <span className="text-base font-normal text-second-text-color">({cart.length} {cart.length === 1 ? 'product' : 'products'})</span>
           </h1>
 
           <div className="relative w-full overflow-x-auto rounded-md border border-[#ECECEC] bg-white">
