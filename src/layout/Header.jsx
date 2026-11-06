@@ -35,10 +35,10 @@ function CategoryMenu({ categories, onNavigate }) {
   const preservedSearch = new URLSearchParams({ ...(filter && { filter }), ...(sort && { sort }) }).toString()
 
   return (
-    <div className="flex gap-12 rounded-md bg-white px-8 py-6 text-left shadow-xl">
+    <div className="flex border border-[#ECECEC] bg-white px-5 pb-4 pt-3 text-left lg:border-t-0">
       {groups.map((group) => (
-        <div key={group.title} className="flex min-w-[120px] flex-col gap-4">
-          <p className="text-base font-bold text-text-color">{group.title}</p>
+        <div key={group.title} className="flex w-[116px] flex-col gap-[13px] lg:w-[155px]">
+          <p className="pb-3.5 text-sm font-bold text-text-color">{group.title}</p>
           {group.items.map((category) => (
             <Link
               key={category.id}
@@ -55,6 +55,31 @@ function CategoryMenu({ categories, onNavigate }) {
   )
 }
 
+// Mounted only while the mobile menu is open, so it always opens collapsed
+function MobileCategories({ categories, onNavigate }) {
+  const [open, setOpen] = useState(false)
+
+  if (categories.length === 0) return null
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setOpen((current) => !current)}
+        aria-expanded={open}
+        className="flex items-center gap-2 text-base font-bold text-second-text-color"
+      >
+        Shop categories <ChevronDown size={16} className={open ? 'rotate-180' : ''} />
+      </button>
+      {open && (
+        <div className="flex w-full justify-center px-6">
+          <CategoryMenu categories={categories} onNavigate={onNavigate} />
+        </div>
+      )}
+    </>
+  )
+}
+
 function Header() {
   const dispatch = useDispatch()
   const history = useHistory()
@@ -63,7 +88,6 @@ function Header() {
   const categories = useSelector((state) => state.product.categories)
   const cart = useSelector((state) => state.shoppingCart.cart)
   const [openMenu, setOpenMenu] = useState(null)
-  const [showMobileCategories, setShowMobileCategories] = useState(false)
   const headerRef = useRef(null)
 
   const isLoggedIn = Boolean(user?.email)
@@ -96,7 +120,7 @@ function Header() {
       <button
         type="button"
         onClick={() => toggle('user')}
-        className="flex items-center gap-2 px-2 text-sm font-bold text-primary-color md:px-4 md:py-3 lg:py-[9px]"
+        className="flex items-center gap-1 text-sm font-bold text-primary-color min-[375px]:gap-2 min-[375px]:px-2 md:px-4 md:py-3 lg:py-[9px]"
         aria-expanded={openMenu === 'user'}
       >
         <Gravatar email={user.email} size={28} className="h-7 w-7" />
@@ -104,7 +128,7 @@ function Header() {
         <ChevronDown size={14} />
       </button>
       {openMenu === 'user' && (
-        <div className="absolute right-0 top-full z-50 flex w-48 flex-col rounded-md bg-white py-2 text-sm font-bold text-text-color shadow-xl">
+        <div className="absolute -right-8 top-full z-50 flex w-48 flex-col rounded-md bg-white py-2 text-sm font-bold text-text-color shadow-xl min-[375px]:right-0">
           <p className="truncate px-4 py-2.5 sm:hidden">{user.name}</p>
           <Link to="/orders" onClick={close} className="flex items-center gap-2 px-4 py-2.5 hover:bg-light-gray-1">
             <Package size={16} /> Previous Orders
@@ -152,7 +176,7 @@ function Header() {
       </div>
 
       {/* Main navigation */}
-      <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between pb-[39px] pl-4 pr-4 pt-[38px] min-[414px]:pl-[37px] min-[414px]:pr-9 md:px-7 md:py-5 lg:pb-3.5 lg:pl-10 lg:pr-[19px] lg:pt-[18px]">
+      <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between pb-[39px] pl-3 pr-3 pt-[38px] min-[375px]:pl-4 min-[375px]:pr-4 min-[414px]:pl-[37px] min-[414px]:pr-9 md:px-7 md:py-5 lg:pb-3.5 lg:pl-10 lg:pr-[19px] lg:pt-[18px]">
         <Link to="/" onClick={close} className="-mb-[3px] text-2xl font-bold leading-8 tracking-[0.1px] text-text-color md:mb-0 lg:-ml-px lg:mt-1">
           Bandage
         </Link>
@@ -172,7 +196,7 @@ function Header() {
                   <ChevronDown size={16} />
                 </button>
                 {openMenu === 'shop' && (
-                  <div className="absolute left-0 top-full z-50 flex pt-2">
+                  <div className="absolute -left-1 top-full z-50 flex pt-[25px]">
                     <CategoryMenu categories={categories} onNavigate={close} />
                   </div>
                 )}
@@ -192,7 +216,7 @@ function Header() {
           )}
         </nav>
 
-        <div className="flex items-center gap-5 text-text-color md:gap-2 lg:gap-0 lg:text-primary-color">
+        <div className="flex items-center gap-2 text-text-color min-[375px]:gap-5 md:gap-2 lg:gap-0 lg:text-primary-color">
           {userArea}
 
           <button type="button" aria-label="Search" onClick={() => { close(); history.push('/shop') }} className="flex p-0 md:p-3.5">
@@ -227,7 +251,7 @@ function Header() {
             aria-label="Menu"
             aria-expanded={openMenu === 'mobile'}
             onClick={() => toggle('mobile')}
-            className="ml-2.5 flex p-0 md:ml-0 md:p-2 lg:hidden"
+            className="flex p-0 min-[375px]:ml-2.5 md:ml-0 md:p-2 lg:hidden"
           >
             {openMenu === 'mobile' ? <X className="h-7 w-7 md:h-6 md:w-6" /> : <TextAlignEnd strokeWidth={1.7} className="h-7 w-7 md:h-6 md:w-6" />}
           </button>
@@ -255,21 +279,7 @@ function Header() {
               <Link to={signupLink} onClick={close}>Register</Link>
             </div>
           )}
-          {categories.length > 0 && (
-            <button
-              type="button"
-              onClick={() => setShowMobileCategories((current) => !current)}
-              aria-expanded={showMobileCategories}
-              className="flex items-center gap-2 text-base font-bold text-second-text-color"
-            >
-              Shop categories <ChevronDown size={16} className={showMobileCategories ? 'rotate-180' : ''} />
-            </button>
-          )}
-          {categories.length > 0 && showMobileCategories && (
-            <div className="flex w-full justify-center px-6">
-              <CategoryMenu categories={categories} onNavigate={close} />
-            </div>
-          )}
+          <MobileCategories categories={categories} onNavigate={close} />
         </nav>
       )}
     </header>

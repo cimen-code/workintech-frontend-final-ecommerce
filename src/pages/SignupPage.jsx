@@ -26,7 +26,6 @@ function SignupPage() {
     getValues,
     formState: { errors, isSubmitting },
   } = useForm({
-    mode: 'onTouched',
     defaultValues: { name: '', email: '', password: '', confirmPassword: '', role_id: '' },
   })
 
@@ -213,7 +212,7 @@ function SignupPage() {
 
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || roles.length === 0}
             className="mt-2 flex items-center justify-center gap-3 rounded-md bg-primary-color px-6 py-3.5 text-sm font-bold text-white hover:opacity-90 disabled:cursor-not-allowed disabled:bg-disabled-element-color"
           >
             {isSubmitting && <Spinner size="sm" className="border-white border-t-transparent" />}

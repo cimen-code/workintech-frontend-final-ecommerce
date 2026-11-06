@@ -9,6 +9,22 @@ import {
 } from '../store/actions/shoppingCartActions.js'
 import { calculateOrderSummary, formatPrice, productImage, productPath } from '../utils/helpers.js'
 
+function QuantityControl({ item, onChange }) {
+  const buttonClass = 'flex w-6 items-center justify-center bg-light-gray-1 text-primary-color disabled:cursor-not-allowed disabled:text-muted-color min-[360px]:w-7 sm:w-9'
+
+  return (
+    <div className="flex h-8 w-fit items-stretch overflow-hidden rounded-md border border-[#DDDDDD] sm:h-10">
+      <button type="button" aria-label="Decrease quantity" onClick={() => onChange(item.product.id, -1)} disabled={item.count <= 1} className={buttonClass}>
+        <Minus size={14} />
+      </button>
+      <span className="flex w-7 items-center justify-center border-x border-[#DDDDDD] text-sm min-[360px]:w-8 sm:w-11">{item.count}</span>
+      <button type="button" aria-label="Increase quantity" onClick={() => onChange(item.product.id, 1)} className={buttonClass}>
+        <Plus size={14} />
+      </button>
+    </div>
+  )
+}
+
 // T18: shopping cart data table, T19: order summary box
 function CartPage() {
   const dispatch = useDispatch()
@@ -18,6 +34,7 @@ function CartPage() {
 
   const summary = calculateOrderSummary(cart)
   const checkedCount = cart.filter((item) => item.checked).length
+  const changeCount = (productId, delta) => dispatch(changeCartItemCount(productId, delta))
 
   if (cart.length === 0) {
     return (
@@ -32,21 +49,20 @@ function CartPage() {
   }
 
   return (
-    <section className="flex w-full bg-light-gray-1 px-4 py-12">
+    <section className="flex w-full bg-white px-4 py-12">
       <div className="mx-auto flex w-full min-w-0 max-w-[1200px] flex-col gap-8 lg:flex-row lg:items-start">
         <div className="flex w-full min-w-0 flex-col gap-4">
           <h1 className="text-2xl font-bold text-text-color">
-            My Cart <span className="text-base font-normal text-second-text-color">({cart.length} {cart.length === 1 ? 'product' : 'products'})</span>
+            My Cart <span className="text-base font-normal text-second-text-color">({cart.length} {cart.length === 1 ? 'Product' : 'Products'})</span>
           </h1>
 
-          <div className="relative w-full overflow-x-auto rounded-md border border-[#ECECEC] bg-white">
-            <table className="w-full text-left text-sm sm:min-w-[640px]">
+          <div className="w-full overflow-hidden rounded-md border border-[#ECECEC] bg-white">
+            <table className="w-full text-left text-sm">
               <thead className="bg-light-gray-1 text-xs uppercase text-second-text-color">
                 <tr>
                   <th className="px-2 py-3 sm:px-4"><span className="sr-only sm:not-sr-only">Select</span></th>
                   <th className="px-2 py-3 sm:px-4">Product</th>
-                  <th className="hidden px-4 py-3 sm:table-cell">Price</th>
-                  <th className="px-2 py-3 sm:px-4">Quantity</th>
+                  <th className="hidden px-4 py-3 sm:table-cell">Quantity</th>
                   <th className="px-2 py-3 sm:px-4">Total</th>
                   <th className="px-1 py-3 sm:px-4"><span className="sr-only">Remove</span></th>
                 </tr>
@@ -63,39 +79,32 @@ function CartPage() {
                         className="h-5 w-5 accent-primary-color"
                       />
                     </td>
-                    <td className="px-2 py-4 sm:px-4">
-                      <Link to={productPath(item.product, categories)} className="flex items-center gap-2 sm:gap-3">
-                        <img src={productImage(item.product)} alt={item.product.name} className="h-14 w-10 rounded object-cover min-[414px]:h-16 min-[414px]:w-12 sm:h-20 sm:w-16" />
-                        <div className="flex max-w-[260px] flex-col gap-1">
-                          <span className="font-bold text-text-color">{item.product.name}</span>
-                          <span className="hidden text-xs text-second-text-color sm:line-clamp-2">{item.product.description}</span>
+                    {/* w-full + max-w-0: the cell takes the free width and its long text truncates instead of widening the table */}
+                    <td className="w-full max-w-0 px-2 py-4 sm:px-4">
+                      <div className="flex items-center gap-2 sm:gap-4">
+                        <Link
+                          to={productPath(item.product, categories)}
+                          tabIndex={-1}
+                          className="flex h-[88px] w-10 shrink-0 overflow-hidden rounded-md border border-[#ECECEC] min-[360px]:w-14 sm:h-[104px] sm:w-[72px]"
+                        >
+                          <img src={productImage(item.product)} alt={item.product.name} className="h-full w-full object-cover" />
+                        </Link>
+                        <div className="flex min-w-0 flex-1 flex-col gap-1">
+                          <Link to={productPath(item.product, categories)} className="line-clamp-2 font-bold text-text-color sm:line-clamp-1">
+                            {item.product.name}
+                          </Link>
+                          <p className="truncate text-xs text-second-text-color">{item.product.description}</p>
+                          {/* T18 sample: on a phone the quantity sits under the name so the table needs no side scrolling */}
+                          <div className="pt-1 sm:hidden">
+                            <QuantityControl item={item} onChange={changeCount} />
+                          </div>
                         </div>
-                      </Link>
-                    </td>
-                    <td className="hidden px-4 py-4 font-bold text-text-color sm:table-cell">{formatPrice(item.product.price)}</td>
-                    <td className="px-2 py-4 sm:px-4">
-                      <div className="flex w-fit items-center rounded-md border border-[#DDDDDD]">
-                        <button
-                          type="button"
-                          aria-label="Decrease quantity"
-                          onClick={() => dispatch(changeCartItemCount(item.product.id, -1))}
-                          disabled={item.count <= 1}
-                          className="flex p-1 text-primary-color disabled:text-muted-color sm:p-2"
-                        >
-                          <Minus size={16} />
-                        </button>
-                        <span className="w-6 text-center font-bold sm:w-8">{item.count}</span>
-                        <button
-                          type="button"
-                          aria-label="Increase quantity"
-                          onClick={() => dispatch(changeCartItemCount(item.product.id, 1))}
-                          className="flex p-1 text-primary-color sm:p-2"
-                        >
-                          <Plus size={16} />
-                        </button>
                       </div>
                     </td>
-                    <td className="px-2 py-4 font-bold text-alert-color sm:px-4">{formatPrice(item.product.price * item.count)}</td>
+                    <td className="hidden px-4 py-4 sm:table-cell">
+                      <QuantityControl item={item} onChange={changeCount} />
+                    </td>
+                    <td className="px-2 py-4 font-bold text-alert-color sm:px-4 sm:text-lg">{formatPrice(item.product.price * item.count)}</td>
                     <td className="px-1 py-4 sm:px-4">
                       <button
                         type="button"
@@ -111,10 +120,12 @@ function CartPage() {
               </tbody>
               <tfoot>
                 <tr className="border-t border-[#ECECEC] bg-light-gray-1">
-                  <td colSpan={4} className="px-2 py-4 text-right font-bold text-text-color sm:px-4">
-                    Selected ({checkedCount}) total
+                  <td colSpan={5} className="px-2 py-4 sm:px-4">
+                    <div className="flex items-center justify-end gap-4 font-bold text-text-color">
+                      <span>Selected ({checkedCount}) total</span>
+                      <span className="text-base text-primary-color">{formatPrice(summary.productsTotal)}</span>
+                    </div>
                   </td>
-                  <td colSpan={2} className="px-2 py-4 text-base font-bold text-primary-color sm:px-4">{formatPrice(summary.productsTotal)}</td>
                 </tr>
               </tfoot>
             </table>

@@ -35,7 +35,7 @@ function Pagination({ page, pageCount, onChange }) {
       <button
         type="button"
         onClick={() => onChange(page + 1)}
-        disabled={page === pageCount}
+        disabled={page >= pageCount}
         className={`${base} bg-white px-6 text-primary-color disabled:text-muted-color`}
       >
         Next

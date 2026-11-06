@@ -12,7 +12,7 @@ function CardForm({ initialValues, onSubmit, onCancel }) {
   const formRef = useRef(null)
 
   useEffect(() => {
-    if (initialValues?.id) formRef.current?.scrollIntoView({ block: 'center' })
+    if (initialValues?.id) formRef.current?.scrollIntoView({ block: 'start' })
   }, [initialValues?.id])
 
   const {
@@ -20,7 +20,6 @@ function CardForm({ initialValues, onSubmit, onCancel }) {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm({
-    mode: 'onChange',
     defaultValues: {
       card_no: initialValues?.card_no || '',
       expire_month: initialValues?.expire_month || '',
@@ -39,8 +38,8 @@ function CardForm({ initialValues, onSubmit, onCancel }) {
     })
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit(submit)} noValidate className="flex flex-col gap-4 rounded-md border border-primary-color/40 bg-white p-5">
-      <h3 className="text-base font-bold text-text-color">{initialValues?.id ? 'Update Card' : 'Add New Card'}</h3>
+    <form ref={formRef} onSubmit={handleSubmit(submit)} noValidate className="flex scroll-mt-4 flex-col gap-4">
+      <h4 className="text-sm font-bold text-second-text-color">{initialValues?.id ? 'Update Card' : 'Add New Card'}</h4>
       <FormField id="card-no" label="Card Number" error={errors.card_no}>
         <input
           id="card-no"
@@ -54,7 +53,7 @@ function CardForm({ initialValues, onSubmit, onCancel }) {
           })}
         />
       </FormField>
-      <div className="flex flex-col gap-4 sm:flex-row">
+      <div className="flex gap-3">
         <FormField id="card-month" label="Expire Month" error={errors.expire_month}>
           <select id="card-month" className={inputClass} {...register('expire_month', { required: 'Month is required' })}>
             <option value="">Month</option>
@@ -84,9 +83,11 @@ function CardForm({ initialValues, onSubmit, onCancel }) {
         />
       </FormField>
       <div className="flex justify-end gap-3">
-        <button type="button" onClick={onCancel} className="rounded-md border border-[#DDDDDD] px-5 py-2.5 text-sm font-bold text-second-text-color">
-          Cancel
-        </button>
+        {onCancel && (
+          <button type="button" onClick={onCancel} className="rounded-md border border-[#DDDDDD] px-5 py-2.5 text-sm font-bold text-second-text-color">
+            Cancel
+          </button>
+        )}
         <button type="submit" disabled={isSubmitting} className="rounded-md bg-primary-color px-5 py-2.5 text-sm font-bold text-white disabled:bg-disabled-element-color">
           {isSubmitting ? 'Saving...' : 'Save'}
         </button>

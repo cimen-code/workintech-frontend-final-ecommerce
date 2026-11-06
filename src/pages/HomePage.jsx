@@ -22,7 +22,7 @@ function HomePage() {
       <Slider
         slides={heroSlides}
         arrowClassName="top-[343px] min-[414px]:top-[333px] lg:top-[265px]"
-        renderSlide={(slide) => (
+        renderSlide={(slide, isActive) => (
           <div
             className="flex min-h-[753px] w-full items-start bg-[#00B5E2] bg-[url('/images/home/hero-new-collection.jpg')] bg-cover bg-center lg:min-h-[716px]"
           >
@@ -34,6 +34,7 @@ function HomePage() {
               <p className="max-w-[291px] text-xl leading-[30px] tracking-[0.2px] lg:max-w-[376px]">{slide.text}</p>
               <Link
                 to="/shop"
+                tabIndex={isActive ? undefined : -1}
                 className="flex h-[62px] w-[220px] items-center justify-center rounded-md bg-success-color text-2xl font-bold leading-8 tracking-[0.1px] hover:opacity-90"
               >
                 {slide.cta}
@@ -101,7 +102,7 @@ function HomePage() {
       <Slider
         slides={vitaSlides}
         arrowClassName="top-[571px] lg:top-[383px]"
-        renderSlide={(slide) => (
+        renderSlide={(slide, isActive) => (
           <div className="flex w-full overflow-hidden bg-secondary-color-1">
             <div className="mx-auto flex w-full max-w-[1050px] flex-col items-center gap-[29px] px-10 pt-[208px] text-center text-white lg:h-[709px] lg:flex-row lg:items-end lg:justify-between lg:gap-8 lg:px-20 lg:pt-0 lg:text-left xl:pl-[15px] xl:pr-5">
               <div className="flex flex-col items-center gap-9 lg:items-start lg:gap-8 lg:self-start lg:pt-[171px]">
@@ -115,7 +116,7 @@ function HomePage() {
                 </p>
                 <div className="flex flex-col items-center gap-[19px] lg:-mt-0.5 lg:flex-row lg:gap-[30px]">
                   <span className="text-2xl font-bold leading-8 tracking-[0.1px]">{formatPrice(slide.price)}</span>
-                  <Link to="/shop" className="flex h-[52px] w-[180px] items-center justify-center rounded-md bg-success-color text-sm font-bold leading-[22px] tracking-[0.2px] hover:opacity-90 lg:w-[181px]">
+                  <Link to="/shop" tabIndex={isActive ? undefined : -1} className="flex h-[52px] w-[180px] items-center justify-center rounded-md bg-success-color text-sm font-bold leading-[22px] tracking-[0.2px] hover:opacity-90 lg:w-[181px]">
                     ADD TO CART
                   </Link>
                 </div>

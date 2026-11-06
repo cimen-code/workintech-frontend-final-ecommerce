@@ -3,7 +3,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 
-// T02: Swiper slider, driven by the arrow and indicator buttons. Each slide is rendered by `renderSlide`.
+// T02: Swiper slider, driven by the arrow and indicator buttons. Each slide is rendered by `renderSlide(slide, isActive)`.
 function Slider({ slides, renderSlide, className = '', arrowClassName = 'top-1/2 -translate-y-1/2' }) {
   const [swiper, setSwiper] = useState(null)
   const [current, setCurrent] = useState(0)
@@ -21,7 +21,7 @@ function Slider({ slides, renderSlide, className = '', arrowClassName = 'top-1/2
         >
           {slides.map((slide, index) => (
             <SwiperSlide key={slide.id ?? index} aria-hidden={index !== current}>
-              {renderSlide(slide, index)}
+              {renderSlide(slide, index === current)}
             </SwiperSlide>
           ))}
         </Swiper>

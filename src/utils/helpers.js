@@ -58,7 +58,15 @@ export const calculateOrderSummary = (cart) => {
   }
 }
 
+// T21 sample: 4242 42** **** 4242
 export const maskCardNumber = (cardNo = '') => {
   const digits = String(cardNo)
-  return `${digits.slice(0, 4)} **** **** ${digits.slice(-4)}`
+  return `${digits.slice(0, 4)} ${digits.slice(4, 6)}** **** ${digits.slice(-4)}`
+}
+
+// T20 sample: (500) *** ** 33. Anything that is not a normal phone number is shown as stored.
+export const maskPhone = (phone = '') => {
+  const value = String(phone)
+  const match = value.replace(/[\s()-]/g, '').match(/^(?:\+?90|0)?([2-5]\d{2})\d{5}(\d{2})$/)
+  return match ? `(${match[1]}) *** ** ${match[2]}` : value
 }

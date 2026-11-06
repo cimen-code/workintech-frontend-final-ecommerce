@@ -10,8 +10,8 @@ function AddressForm({ initialValues, onSubmit, onCancel }) {
   const formRef = useRef(null)
 
   useEffect(() => {
-    if (initialValues?.id) formRef.current?.scrollIntoView({ block: 'center' })
-  }, [initialValues?.id])
+    formRef.current?.scrollIntoView({ block: 'start' })
+  }, [])
 
   const {
     register,
@@ -40,7 +40,7 @@ function AddressForm({ initialValues, onSubmit, onCancel }) {
   }
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit(submit)} noValidate className="flex flex-col gap-4 rounded-md border border-primary-color/40 bg-white p-5">
+    <form ref={formRef} onSubmit={handleSubmit(submit)} noValidate className="flex scroll-mt-4 flex-col gap-4 rounded-md border border-primary-color/40 bg-white p-5">
       <h3 className="text-base font-bold text-text-color">{initialValues?.id ? 'Update Address' : 'Add New Address'}</h3>
       <FormField id="addr-title" label="Address Title" error={errors.title}>
         <input id="addr-title" className={inputClass} placeholder="ev adresi" {...register('title', required('Address title'))} />

@@ -133,7 +133,7 @@ function ProductDetailPage() {
           )}
 
           {!isLoading && fetchState === FETCH_STATES.FAILED && (
-            <p className="py-20 text-center text-danger-color">Product could not be found.</p>
+            <p className="py-20 text-center text-danger-color">Product could not be loaded.</p>
           )}
 
           {!isLoading && fetchState === FETCH_STATES.FETCHED && product && (

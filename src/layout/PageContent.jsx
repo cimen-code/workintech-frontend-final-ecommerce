@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom'
 import Header from './Header.jsx'
 import Footer from './Footer.jsx'
+import GuestRoute from '../components/GuestRoute.jsx'
 import ProtectedRoute from '../components/ProtectedRoute.jsx'
 import HomePage from '../pages/HomePage.jsx'
 import ShopPage from '../pages/ShopPage.jsx'
@@ -38,8 +39,8 @@ function PageContent({ authChecked }) {
           <Route path="/contact" component={ContactPage} />
           <Route path="/team" component={TeamPage} />
           <Route path="/about" component={AboutPage} />
-          <Route path="/signup" component={SignupPage} />
-          <Route path="/login" component={LoginPage} />
+          <GuestRoute path="/signup" component={SignupPage} authChecked={authChecked} />
+          <GuestRoute path="/login" component={LoginPage} authChecked={authChecked} />
           <Route path="/cart" component={CartPage} />
           <ProtectedRoute exact path="/order" component={CreateOrderPage} authChecked={authChecked} />
           <ProtectedRoute exact path="/orders" component={OrdersPage} authChecked={authChecked} />

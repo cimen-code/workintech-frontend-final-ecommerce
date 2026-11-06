@@ -63,6 +63,25 @@ function ShopFilterForm({ filter, onFilterChange, initialSort, onApplySort }) {
 // Query of the list now in the store, so Back from a product can keep it and its scroll position
 let lastListQuery = ''
 
+// Keeps the offset of a typed huge page number a number the API accepts; it then goes to the last page
+const MAX_PAGE = 1000000
+
+// Only positive whole numbers are pages, anything else counts as page 1
+const parsePage = (value) => {
+  const page = /^\d+$/.test(value || '') ? Number(value) : 0
+  return page > 0 ? Math.min(page, MAX_PAGE) : 1
+}
+
+const urlWith = (location, changes) => {
+  const params = new URLSearchParams(location.search)
+  Object.entries(changes).forEach(([key, value]) => {
+    if (value) params.set(key, value)
+    else params.delete(key)
+  })
+  const query = params.toString()
+  return `${location.pathname}${query ? `?${query}` : ''}`
+}
+
 function ShopPage() {
   const dispatch = useDispatch()
   const history = useHistory()
@@ -74,27 +93,32 @@ function ShopPage() {
   const searchParams = new URLSearchParams(location.search)
   const sort = searchParams.get('sort') || ''
   const filter = searchParams.get('filter') || ''
-  const page = Math.max(1, Number(searchParams.get('page')) || 1)
+  const page = parsePage(searchParams.get('page'))
   const offset = (page - 1) * limit
   const pageCount = Math.ceil(total / limit)
+  const listQuery = JSON.stringify({ categoryId, filter, sort, limit, offset })
+  // The total of the list in the store may belong to another query until this one has answered
+  const [answeredQuery, setAnsweredQuery] = useState(null)
+  const pastLastPage = pageCount > 0 && page > pageCount
 
   // T13/T14/T15: any change of category, filter, sort or page re-fetches while keeping the others
   useEffect(() => {
     dispatch(setOffset(offset))
-    const query = JSON.stringify({ categoryId, filter, sort, limit, offset })
-    if (history.action === 'POP' && query === lastListQuery) return
-    lastListQuery = query
-    dispatch(fetchProducts({ category: categoryId, filter, sort, limit, offset }))
-  }, [dispatch, history, categoryId, filter, sort, limit, offset])
+    if (history.action === 'POP' && listQuery === lastListQuery) return
+    lastListQuery = listQuery
+    dispatch(fetchProducts({ category: categoryId, filter, sort, limit, offset })).then(() => setAnsweredQuery(listQuery))
+  }, [dispatch, history, listQuery, categoryId, filter, sort, limit, offset])
+
+  // A page past the end goes to the last page once the total is known; an empty filter result has no pages
+  useEffect(() => {
+    if (answeredQuery !== listQuery || !pastLastPage) return
+    history.replace(urlWith(location, { page: pageCount > 1 ? String(pageCount) : '' }))
+  }, [history, location, answeredQuery, listQuery, pastLastPage, pageCount])
 
   const updateQuery = (changes, { replace = false } = {}) => {
-    const params = new URLSearchParams(location.search)
-    Object.entries(changes).forEach(([key, value]) => {
-      if (value) params.set(key, value)
-      else params.delete(key)
-    })
-    const query = params.toString()
-    const url = `${location.pathname}${query ? `?${query}` : ''}`
+    const url = urlWith(location, changes)
+    // Same URL: nothing to do, a push would only add a duplicate history entry
+    if (url === urlWith(location, {})) return
     if (replace) history.replace(url)
     else history.push(url)
   }
@@ -168,7 +192,7 @@ function ShopPage() {
       {/* Product list */}
       <section className="flex w-full bg-white">
         <div className="mx-auto flex w-full max-w-[1048px] flex-col items-center gap-12 px-[43px] pb-20 pt-11 lg:px-0 lg:pb-[46px] lg:pt-12">
-          {fetchState === FETCH_STATES.FETCHING && (
+          {(fetchState === FETCH_STATES.FETCHING || pastLastPage) && (
             <div className="flex min-h-[400px] items-center justify-center">
               <Spinner size="lg" />
             </div>
@@ -178,7 +202,7 @@ function ShopPage() {
             <p className="py-20 text-center text-danger-color">Products could not be loaded. Please try again.</p>
           )}
 
-          {fetchState === FETCH_STATES.FETCHED && productList.length === 0 && (
+          {fetchState === FETCH_STATES.FETCHED && !pastLastPage && productList.length === 0 && (
             <p className="py-20 text-center text-second-text-color">No products found for these filters.</p>
           )}
 
@@ -199,7 +223,7 @@ function ShopPage() {
             </div>
           )}
 
-          {fetchState === FETCH_STATES.FETCHED && <Pagination page={page} pageCount={pageCount} onChange={changePage} />}
+          {fetchState === FETCH_STATES.FETCHED && !pastLastPage && <Pagination page={page} pageCount={pageCount} onChange={changePage} />}
         </div>
       </section>
 
