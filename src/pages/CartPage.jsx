@@ -5,7 +5,6 @@ import OrderSummary from '../components/OrderSummary.jsx'
 import {
   changeCartItemCount,
   removeFromCart,
-  toggleAllCartItems,
   toggleCartItem,
 } from '../store/actions/shoppingCartActions.js'
 import { calculateOrderSummary, formatPrice, productImage, productPath } from '../utils/helpers.js'
@@ -18,7 +17,6 @@ function CartPage() {
   const categories = useSelector((state) => state.product.categories)
 
   const summary = calculateOrderSummary(cart)
-  const allChecked = cart.length > 0 && cart.every((item) => item.checked)
   const checkedCount = cart.filter((item) => item.checked).length
 
   if (cart.length === 0) {
@@ -37,22 +35,11 @@ function CartPage() {
     <section className="flex w-full bg-light-gray-1 px-4 py-12">
       <div className="mx-auto flex w-full min-w-0 max-w-[1200px] flex-col gap-8 lg:flex-row lg:items-start">
         <div className="flex w-full min-w-0 flex-col gap-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-text-color">
-              My Cart <span className="text-base font-normal text-second-text-color">({cart.length} products)</span>
-            </h1>
-            <label className="flex items-center gap-2 text-sm font-bold text-second-text-color">
-              <input
-                type="checkbox"
-                checked={allChecked}
-                onChange={(event) => dispatch(toggleAllCartItems(event.target.checked))}
-                className="h-4 w-4 accent-primary-color"
-              />
-              Select all
-            </label>
-          </div>
+          <h1 className="text-2xl font-bold text-text-color">
+            My Cart <span className="text-base font-normal text-second-text-color">({cart.length} products)</span>
+          </h1>
 
-          <div className="w-full overflow-x-auto rounded-md border border-[#ECECEC] bg-white">
+          <div className="relative w-full overflow-x-auto rounded-md border border-[#ECECEC] bg-white">
             <table className="w-full min-w-[640px] text-left text-sm">
               <thead className="bg-light-gray-1 text-xs uppercase text-second-text-color">
                 <tr>
@@ -66,7 +53,7 @@ function CartPage() {
               </thead>
               <tbody>
                 {cart.map((item) => (
-                  <tr key={item.product.id} className={`border-t border-[#ECECEC] ${item.checked ? '' : 'opacity-60'}`}>
+                  <tr key={item.product.id} className="border-t border-[#ECECEC]">
                     <td className="px-4 py-4">
                       <input
                         type="checkbox"

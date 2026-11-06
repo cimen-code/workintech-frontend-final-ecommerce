@@ -1,41 +1,30 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/css'
 
-// Lightweight, dependency-free slider. Each slide is rendered by `renderSlide`.
-function Slider({ slides, renderSlide, autoPlayMs = 6000, className = '' }) {
+// T02: Swiper slider, driven by the arrow and indicator buttons. Each slide is rendered by `renderSlide`.
+function Slider({ slides, renderSlide, className = '', arrowClassName = 'top-1/2 -translate-y-1/2' }) {
+  const [swiper, setSwiper] = useState(null)
   const [current, setCurrent] = useState(0)
   const count = slides.length
 
-  const goTo = (index) => setCurrent((index + count) % count)
-
-  useEffect(() => {
-    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
-    if (!autoPlayMs || count < 2 || reduceMotion) return undefined
-    const timer = setInterval(() => setCurrent((prev) => (prev + 1) % count), autoPlayMs)
-    return () => clearInterval(timer)
-  }, [autoPlayMs, count])
-
   return (
     <div className={`relative w-full overflow-hidden ${className}`}>
-      <div className="relative w-full">
-        {slides.map((slide, index) => {
-          const positionClass =
-            index === current
-              ? 'relative translate-x-0'
-              : index < current
-                ? 'pointer-events-none absolute inset-0 -translate-x-full'
-                : 'pointer-events-none absolute inset-0 translate-x-full'
-
-          return (
-            <div
-              key={slide.id ?? index}
-              className={`flex w-full transition-transform duration-700 ease-in-out motion-reduce:transition-none ${positionClass}`}
-              aria-hidden={index !== current}
-            >
+      {/* z-0 keeps Swiper's own z-index below the arrow and indicator buttons */}
+      <div className="relative z-0 w-full">
+        <Swiper
+          rewind
+          speed={700}
+          onSwiper={setSwiper}
+          onSlideChange={(instance) => setCurrent(instance.activeIndex)}
+        >
+          {slides.map((slide, index) => (
+            <SwiperSlide key={slide.id ?? index} aria-hidden={index !== current}>
               {renderSlide(slide, index)}
-            </div>
-          )
-        })}
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
 
       {count > 1 && (
@@ -43,16 +32,16 @@ function Slider({ slides, renderSlide, autoPlayMs = 6000, className = '' }) {
           <button
             type="button"
             aria-label="Previous slide"
-            onClick={() => goTo(current - 1)}
-            className="absolute left-3 top-1/2 flex -translate-y-1/2 text-white"
+            onClick={() => swiper?.slidePrev()}
+            className={`absolute left-3 flex text-white ${arrowClassName}`}
           >
             <ChevronLeft size={80} strokeWidth={0.9} />
           </button>
           <button
             type="button"
             aria-label="Next slide"
-            onClick={() => goTo(current + 1)}
-            className="absolute right-1.5 top-1/2 flex -translate-y-1/2 text-white"
+            onClick={() => swiper?.slideNext()}
+            className={`absolute right-[3px] flex text-white lg:right-1.5 ${arrowClassName}`}
           >
             <ChevronRight size={80} strokeWidth={0.9} />
           </button>
@@ -63,7 +52,7 @@ function Slider({ slides, renderSlide, autoPlayMs = 6000, className = '' }) {
                 key={slide.id ?? index}
                 type="button"
                 aria-label={`Go to slide ${index + 1}`}
-                onClick={() => goTo(index)}
+                onClick={() => swiper?.slideTo(index)}
                 className={`h-2.5 w-16 ${index === current ? 'bg-white' : 'bg-white/50'}`}
               />
             ))}

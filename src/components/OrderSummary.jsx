@@ -1,7 +1,7 @@
 import { formatPrice } from '../utils/helpers.js'
 
 // T19: products total + shipping - discount = grand total
-function OrderSummary({ summary, buttonLabel, onButtonClick, buttonDisabled = false, buttonLoading = false, children }) {
+function OrderSummary({ summary, buttonLabel, onButtonClick, buttonDisabled = false, buttonLoading = false }) {
   const rows = [
     { label: 'Products Total', value: formatPrice(summary.productsTotal) },
     { label: 'Shipping', value: formatPrice(summary.shipping) },
@@ -29,17 +29,11 @@ function OrderSummary({ summary, buttonLabel, onButtonClick, buttonDisabled = fa
             <span className={`font-bold ${row.className || 'text-text-color'}`}>{row.value}</span>
           </div>
         ))}
-        {summary.discount > 0 && (
-          <p className="rounded bg-success-color/10 px-3 py-2 text-xs font-bold text-secondary-color-1">
-            Free shipping on orders of $150 and above
-          </p>
-        )}
         <hr className="border-[#ECECEC]" />
         <div className="flex items-center justify-between text-base font-bold text-text-color">
           <span>Grand Total</span>
           <span className="text-primary-color">{formatPrice(summary.grandTotal)}</span>
         </div>
-        {children}
       </div>
       {button}
     </aside>

@@ -24,7 +24,7 @@ function OrdersPage() {
       .then((res) => {
         if (!active) return
         const list = Array.isArray(res.data) ? res.data : []
-        setOrders([...list].sort((a, b) => new Date(b.order_date) - new Date(a.order_date)))
+        setOrders(list)
         setStatus('done')
       })
       .catch(() => {
@@ -52,7 +52,7 @@ function OrdersPage() {
         )}
 
         {status === 'done' && orders.length > 0 && (
-          <div className="w-full overflow-x-auto rounded-md border border-[#ECECEC] bg-white">
+          <div className="relative w-full overflow-x-auto rounded-md border border-[#ECECEC] bg-white">
             <table className="w-full min-w-[600px] text-left text-sm">
               <thead className="bg-light-gray-1 text-xs uppercase text-second-text-color">
                 <tr>

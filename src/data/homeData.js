@@ -15,16 +15,29 @@ export const heroSlides = [
 ]
 
 export const editorsPick = [
-  { id: 'men', label: 'MEN', image: '/images/home/editors-men.png', to: '/shop' },
-  { id: 'women', label: 'WOMEN', image: '/images/home/editors-women.png', to: '/shop' },
-  { id: 'accessories', label: 'ACCESSORIES', image: '/images/home/editors-accessories.png', to: '/shop' },
-  { id: 'kids', label: 'KIDS', image: '/images/home/editors-kids.png', to: '/shop' },
+  { id: 'men', label: 'MEN', image: '/images/home/editors-men.png', mobileImage: '/images/home/mobile-editor-men.jpg', to: '/shop' },
+  { id: 'women', label: 'WOMEN', image: '/images/home/editors-women.png', mobileImage: '/images/home/mobile-editor-women.jpg', to: '/shop' },
+  { id: 'accessories', label: 'ACCESSORIES', image: '/images/home/editors-accessories.png', mobileImage: '/images/home/mobile-editor-accessories.jpg', to: '/shop' },
+  { id: 'kids', label: 'KIDS', image: '/images/home/editors-kids.png', mobileImage: '/images/home/mobile-editor-kids.jpg', to: '/shop' },
 ]
 
 // BESTSELLER PRODUCTS: the eight static demo cards of Figma "desktop-product-cards-10" (2984:7008),
 // in Figma order (product-1..8.jpg are the Figma images in the same order)
+// T04/T16: each card opens the detail page of a real product (same URL format as productPath)
+const bestsellerPaths = [
+  '/shop/kadin/tisort/1/siyah-100-pamuk/2',
+  '/shop/kadin/tisort/1/beyaz-100-pamuk/3',
+  '/shop/kadin/tisort/1/cocuk-kirmizi-turk/4',
+  '/shop/kadin/tisort/1/unisex-cocuk-ataturk/5',
+  '/shop/kadin/tisort/1/ataturk-baskili-t-shirt/6',
+  '/shop/kadin/tisort/1/cocuk-sari/7',
+  '/shop/kadin/tisort/1/cocuk-kirmizi-turk/8',
+  '/shop/kadin/tisort/1/unisex-cocuk-ataturk/9',
+]
+
 export const bestsellerProducts = Array.from({ length: 8 }, (_, index) => ({
   id: `bestseller-${index + 1}`,
+  to: bestsellerPaths[index],
   title: 'Graphic Design',
   department: 'English Department',
   oldPrice: 16.48,
@@ -48,9 +61,9 @@ export const vitaSlides = [
 ]
 
 export const featuredPosts = [
-  { id: 1, image: '/images/home/blog-1.png', mobileImage: '/images/home/mobile-blog-1.jpg' },
-  { id: 2, image: '/images/home/blog-2.png', mobileImage: '/images/home/mobile-blog-2.jpg' },
-  { id: 3, image: '/images/home/blog-3.png', mobileImage: '/images/home/mobile-blog-3.jpg' },
+  { id: 1, image: '/images/home/blog-desktop-1.jpg', mobileImage: '/images/home/mobile-blog-1.jpg' },
+  { id: 2, image: '/images/home/blog-desktop-2.jpg', mobileImage: '/images/home/mobile-blog-2.jpg' },
+  { id: 3, image: '/images/home/blog-desktop-3.jpg', mobileImage: '/images/home/mobile-blog-3.jpg' },
 ].map((post) => ({
   ...post,
   tags: ['Google', 'Trending', 'New'],

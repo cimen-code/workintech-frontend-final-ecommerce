@@ -1,7 +1,6 @@
 import { useForm } from 'react-hook-form'
 import FormField, { inputClass } from './FormField.jsx'
 import { cities } from '../data/cities.js'
-import { isValidTurkishPhone } from '../utils/validators.js'
 
 const EMPTY_ADDRESS = { title: '', name: '', surname: '', phone: '', city: '', district: '', neighborhood: '', address: '' }
 
@@ -53,10 +52,7 @@ function AddressForm({ initialValues, onSubmit, onCancel }) {
           type="tel"
           placeholder="05XX XXX XX XX"
           className={inputClass}
-          {...register('phone', {
-            required: 'Phone is required',
-            validate: (value) => isValidTurkishPhone(value) || 'Please enter a valid Türkiye phone number',
-          })}
+          {...register('phone', required('Phone'))}
         />
       </FormField>
       <div className="flex flex-col gap-4 sm:flex-row">

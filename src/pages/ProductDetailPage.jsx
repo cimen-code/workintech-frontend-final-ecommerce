@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
-import { toast } from 'react-toastify'
 import { ArrowLeft, ChevronLeft, ChevronRight, Eye, Heart, ShoppingCart, Star } from 'lucide-react'
 import api from '../api/axiosInstance.js'
 import Breadcrumb from '../components/Breadcrumb.jsx'
@@ -10,7 +9,7 @@ import ProductCard from '../components/ProductCard.jsx'
 import Spinner from '../components/Spinner.jsx'
 import { FETCH_STATES, fetchProduct } from '../store/actions/productActions.js'
 import { addToCart } from '../store/actions/shoppingCartActions.js'
-import { categoryPath, formatPrice, productImage, productPath } from '../utils/helpers.js'
+import { formatPrice, productImage, productPath } from '../utils/helpers.js'
 
 // T04: third description column of the Figma product detail frame — two headings whose bullet
 // lists hold 4 and 3 identical items (read from review/full-project/figma-raw/product_desktop.png)
@@ -20,7 +19,7 @@ const DESCRIPTION_LIST_SIZES = [4, 3]
 
 function RatingStars({ rating }) {
   return (
-    <div className="flex items-center gap-1.5" aria-label={`Rating ${rating} of 5`}>
+    <div className="flex items-center gap-[5px]" aria-label={`Rating ${rating} of 5`}>
       {[1, 2, 3, 4, 5].map((value) => (
         <Star
           key={value}
@@ -39,27 +38,23 @@ function ImageGallery({ images, name }) {
   const move = (delta) => setActive((current) => (current + delta + list.length) % list.length)
 
   return (
-    <div className="flex w-full flex-col gap-5 lg:w-1/2">
-      <div className="relative flex aspect-[506/450] w-full overflow-hidden rounded-md bg-white">
-        <img src={list[active].url} alt={name} className="h-full w-full object-contain" />
-        {list.length > 1 && (
-          <>
-            <button type="button" aria-label="Previous image" onClick={() => move(-1)} className="absolute left-4 top-1/2 flex -translate-y-1/2 text-text-color">
-              <ChevronLeft size={40} />
-            </button>
-            <button type="button" aria-label="Next image" onClick={() => move(1)} className="absolute right-4 top-1/2 flex -translate-y-1/2 text-text-color">
-              <ChevronRight size={40} />
-            </button>
-          </>
-        )}
+    <div className="flex w-full flex-col gap-[42px] px-px lg:w-[506px] lg:shrink-0 lg:gap-[21px] lg:px-0">
+      <div className="relative flex aspect-[348/277] w-full overflow-hidden bg-white lg:aspect-[506/450]">
+        <img src={list[active].url} alt={name} className="h-full w-full object-cover object-top" />
+        <button type="button" aria-label="Previous image" onClick={() => move(-1)} className="absolute left-3 top-[97px] flex text-white lg:left-[11px] lg:top-[241px]">
+          <ChevronLeft size={80} strokeWidth={0.9} />
+        </button>
+        <button type="button" aria-label="Next image" onClick={() => move(1)} className="absolute right-[6px] top-[97px] flex text-white lg:top-[241px]">
+          <ChevronRight size={80} strokeWidth={0.9} />
+        </button>
       </div>
-      <div className="flex gap-5">
+      <div className="flex gap-[19px]">
         {list.map((image, index) => (
           <button
             key={image.url}
             type="button"
             onClick={() => setActive(index)}
-            className={`flex h-[75px] w-[100px] overflow-hidden rounded bg-white ${index === active ? 'opacity-100 ring-2 ring-primary-color' : 'opacity-60'}`}
+            className={`flex h-[75px] w-[100px] overflow-hidden bg-white ${index === active ? 'opacity-100' : 'opacity-60'}`}
           >
             <img src={image.url} alt={`${name} ${index + 1}`} className="h-full w-full object-contain" />
           </button>
@@ -75,7 +70,6 @@ function ProductDetailPage() {
   const { productId, categoryId } = useParams()
   const { selectedProduct: product, selectedProductFetchState: fetchState, categories } = useSelector((state) => state.product)
   const [related, setRelated] = useState([])
-  const [activeTab, setActiveTab] = useState('description')
 
   // T16: fetch product by thunk and keep it in product reducer
   useEffect(() => {
@@ -105,32 +99,32 @@ function ProductDetailPage() {
 
   const handleAddToCart = () => {
     dispatch(addToCart(product))
-    toast.success(`${product.name} added to cart`)
   }
 
   const isLoading = fetchState === FETCH_STATES.FETCHING || fetchState === FETCH_STATES.NOT_FETCHED || (product && String(product.id) !== String(productId) && fetchState !== FETCH_STATES.FAILED)
-  const category = categories.find((item) => String(item.id) === String(categoryId))
 
   return (
     <div className="flex w-full flex-col">
       <section className="flex w-full bg-light-gray-1">
-        <div className="mx-auto flex w-full max-w-[1050px] flex-col gap-6 px-8 pb-12 pt-6 lg:px-0">
-          <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="mx-auto flex w-full max-w-[1050px] flex-col gap-[72px] px-8 pb-[72px] pt-6 lg:gap-6 lg:px-0 lg:pb-[52px]">
+          <div className="relative flex justify-end min-[375px]:justify-center lg:justify-start">
             <button
               type="button"
               onClick={handleBack}
-              className="flex items-center gap-2 rounded-md border border-primary-color px-4 py-2 text-sm font-bold text-primary-color hover:bg-primary-color hover:text-white"
+              className="absolute left-0 top-0 flex items-center gap-2 rounded-md border border-primary-color px-4 py-2 text-sm font-bold text-primary-color hover:bg-primary-color hover:text-white lg:left-auto lg:right-0"
             >
               <ArrowLeft size={16} /> Back
             </button>
-            <Breadcrumb
-              items={[
-                { label: 'Home', to: '/' },
-                { label: 'Shop', to: '/shop' },
-                ...(category ? [{ label: category.title, to: categoryPath(category) }] : []),
-                { label: product && !isLoading ? product.name : 'Product' },
-              ]}
-            />
+            <div className="flex lg:pl-[9px]">
+              <Breadcrumb
+                gapClassName="gap-4 lg:gap-[13px]"
+                lastClassName="text-second-text-color lg:text-muted-color"
+                items={[
+                  { label: 'Home', to: '/' },
+                  { label: 'Shop', to: '/shop' },
+                ]}
+              />
+            </div>
           </div>
 
           {isLoading && (
@@ -144,10 +138,10 @@ function ProductDetailPage() {
           )}
 
           {!isLoading && fetchState === FETCH_STATES.FETCHED && product && (
-            <div className="flex flex-col gap-8 lg:flex-row lg:gap-8">
+            <div className="flex flex-col gap-10 lg:flex-row lg:gap-[50px]">
               <ImageGallery key={product.id} images={product.images || []} name={product.name} />
 
-              <div className="flex w-full flex-col gap-3 px-2 pt-3 lg:w-1/2">
+              <div className="flex w-full flex-col gap-3 px-[25px] lg:flex-1 lg:px-2 lg:pt-2.5">
                 <h1 className="text-xl leading-[30px] tracking-[0.2px] text-text-color">{product.name}</h1>
                 <div className="flex items-center gap-2.5">
                   <RatingStars rating={product.rating} />
@@ -155,37 +149,34 @@ function ProductDetailPage() {
                     {product.rating} · {product.sell_count} sold
                   </span>
                 </div>
-                <p className="pt-2 text-2xl font-bold leading-8 tracking-[0.1px] text-text-color">{formatPrice(product.price)}</p>
-                <p className="text-sm font-bold leading-6 tracking-[0.2px] text-second-text-color">
-                  Availability :{' '}
-                  <span className={product.stock > 0 ? 'text-primary-color' : 'text-danger-color'}>
-                    {product.stock > 0 ? `In Stock (${product.stock})` : 'Out of Stock'}
-                  </span>
+                <p className="pt-[11px] text-2xl font-bold leading-8 tracking-[0.1px] text-text-color">{formatPrice(product.price)}</p>
+                <p className="-mt-2 text-sm font-bold leading-6 tracking-[0.2px] text-second-text-color">
+                  Availability&nbsp; :{' '}
+                  <span className="text-primary-color">{product.stock > 0 ? 'In Stock' : 'Out of Stock'}</span>
                 </p>
-                <p className="pt-4 text-sm leading-5 tracking-[0.2px] text-[#858585]">{product.description}</p>
-                <hr className="my-4 border-[#BDBDBD]" />
-                <div className="flex gap-2.5">
+                <p className="min-h-[119px] pt-[19px] text-sm leading-5 tracking-[0.2px] text-[#858585] lg:min-h-[79px]">{product.description}</p>
+                <hr className="ml-[5px] mt-1 w-[283px] border-[#BDBDBD] lg:ml-0 lg:mt-[15px] lg:w-[446px]" />
+                <div className="mt-1.5 flex gap-2.5 lg:mt-4">
                   {['bg-primary-color', 'bg-success-color', 'bg-alert-color', 'bg-dark-background-color'].map((color) => (
                     <span key={color} className={`h-[30px] w-[30px] rounded-full ${color}`} />
                   ))}
                 </div>
-                <div className="flex flex-wrap items-center gap-2.5 pt-12">
+                <div className="flex flex-wrap items-center gap-2.5 pt-9 lg:pt-[55px]">
                   <button
                     type="button"
                     onClick={handleAddToCart}
-                    disabled={product.stock <= 0}
-                    className="rounded-md bg-primary-color px-5 py-2.5 text-sm font-bold leading-6 tracking-[0.2px] text-white hover:opacity-90 disabled:bg-disabled-element-color"
+                    className="mr-px h-11 w-[148px] rounded-[5px] bg-primary-color text-sm font-bold leading-6 tracking-[0.2px] text-white hover:opacity-90"
                   >
                     Add to Cart
                   </button>
                   <button type="button" aria-label="Add to favorites" className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E8E8E8] bg-white">
-                    <Heart size={20} />
+                    <Heart size={20} strokeWidth={1.5} />
                   </button>
                   <button type="button" aria-label="Add to cart" onClick={handleAddToCart} className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E8E8E8] bg-white">
-                    <ShoppingCart size={20} />
+                    <ShoppingCart size={20} strokeWidth={1.5} />
                   </button>
                   <button type="button" aria-label="Quick view" className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E8E8E8] bg-white">
-                    <Eye size={20} />
+                    <Eye size={20} fill="currentColor" className="text-black [&>circle]:fill-white" />
                   </button>
                 </div>
               </div>
@@ -196,76 +187,56 @@ function ProductDetailPage() {
 
       {!isLoading && product && (
         <section className="flex w-full bg-white">
-          <div className="mx-auto flex w-full max-w-[1050px] flex-col px-8 lg:px-0">
-            <div className="flex justify-center gap-2 border-b border-[#ECECEC] py-6">
-              {[
-                ['description', 'Description'],
-                ['info', 'Additional Information'],
-                ['reviews', 'Reviews (0)'],
-              ].map(([key, label]) => (
-                <button
-                  key={key}
-                  type="button"
-                  onClick={() => setActiveTab(key)}
-                  className={`px-4 py-2 text-sm font-bold leading-6 tracking-[0.2px] ${activeTab === key ? 'text-text-color underline underline-offset-8' : 'text-second-text-color'}`}
-                >
-                  {label}
-                </button>
-              ))}
+          <div className="mx-auto flex w-full max-w-[1050px] flex-col px-[41px] lg:px-0">
+            <div className="-ml-3.5 -mr-10 flex flex-wrap pt-[35px] text-sm font-bold leading-6 tracking-[0.2px] text-second-text-color lg:mx-0 lg:justify-center lg:border-b lg:border-[#ECECEC] lg:pb-[26px] lg:pr-1">
+              <span className="pr-2 underline underline-offset-4 lg:px-6 lg:no-underline">Description</span>
+              <span className="pr-4 lg:px-6">Additional Information</span>
+              <span className="lg:-ml-1 lg:px-6">Reviews&nbsp; <span className="text-secondary-color-1">(0)</span></span>
             </div>
-            <div className="flex flex-col gap-8 py-12 lg:flex-row">
-              <img src="/images/product/description.png" alt="Product lifestyle" className="w-full rounded-md object-cover shadow-md lg:w-[316px]" />
-              {activeTab === 'description' && (
-                <>
-                  <div className="flex flex-col gap-6 lg:flex-1">
-                    <h3 className="text-2xl font-bold leading-8 tracking-[0.1px] text-text-color">{product.name}</h3>
-                    <p className="text-sm leading-5 tracking-[0.2px] text-second-text-color">{product.description}</p>
-                    <p className="text-sm leading-5 tracking-[0.2px] text-second-text-color">
-                      Met minim Mollie non desert Alamo est sit cliquey dolor do met sent. RELIT official consequent door ENIM RELIT Mollie. Excitation venial consequent sent nostrum met.
-                    </p>
+            <div className="flex flex-col gap-[77px] pb-[21px] pt-14 lg:flex-row lg:gap-8 lg:pb-[39px] lg:pt-[46px] xl:gap-0">
+              <picture className="flex w-full max-w-[321px] lg:max-w-none lg:w-[316px] lg:shrink-0 xl:-ml-[3px]">
+                <source media="(max-width: 1023px)" srcSet="/images/product/mobile-description.jpg" />
+                <img src="/images/product/description-desktop.jpg" alt="Product lifestyle" className="w-full rounded-[5px] object-cover shadow-[5px_9px_0_2px_#F3F3F3] lg:h-[372px] lg:shadow-[10px_8px_0_2px_#F3F3F3]" />
+              </picture>
+              <div className="flex flex-col gap-5 lg:flex-1 xl:ml-[46px] xl:w-[332px] xl:flex-none">
+                <h3 className="mb-[9px] text-2xl font-bold leading-8 tracking-[0.1px] text-text-color">{product.name}</h3>
+                <p className="min-h-[100px] text-sm leading-5 tracking-[0.2px] text-second-text-color">{product.description}</p>
+                {[0, 1].map((key) => (
+                  <p key={key} className="text-sm leading-5 tracking-[0.2px] text-second-text-color">
+                    Met minim Mollie non desert Alamo est sit cliquey dolor do met sent. RELIT official consequent door ENIM RELIT Mollie. Excitation venial consequent sent nostrum met.
+                  </p>
+                ))}
+              </div>
+              <div className="-mt-[19px] flex flex-col gap-[29px] lg:mt-0 lg:flex-1 xl:ml-[30px]">
+                {DESCRIPTION_LIST_SIZES.map((size) => (
+                  <div key={size} className="flex flex-col gap-[30px] lg:gap-[31px]">
+                    <h3 className="text-2xl font-bold leading-8 tracking-[0.1px] text-text-color">{DESCRIPTION_HEADING}</h3>
+                    <ul className="flex flex-col gap-3.5">
+                      {Array.from({ length: size }, (_, index) => (
+                        <li key={index} className="flex items-center gap-5 text-sm font-bold leading-5 tracking-[0.2px] text-second-text-color">
+                          <ChevronRight strokeWidth={1.1} className="-mx-[10.5px] -my-[5px] h-[30px] w-[30px] shrink-0 -translate-y-[5px] text-muted-color" />
+                          {DESCRIPTION_BULLET}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <div className="flex flex-col gap-8 lg:flex-1">
-                    {DESCRIPTION_LIST_SIZES.map((size) => (
-                      <div key={size} className="flex flex-col gap-5">
-                        <h3 className="text-2xl font-bold leading-8 tracking-[0.1px] text-text-color">{DESCRIPTION_HEADING}</h3>
-                        <ul className="flex flex-col gap-2.5">
-                          {Array.from({ length: size }, (_, index) => (
-                            <li key={index} className="flex items-center gap-2.5 text-sm font-bold leading-5 tracking-[0.2px] text-second-text-color">
-                              <ChevronRight size={16} className="shrink-0 text-muted-color" />
-                              {DESCRIPTION_BULLET}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )}
-              {activeTab === 'info' && (
-                <ul className="flex flex-col gap-3 text-sm font-bold text-second-text-color lg:w-1/2">
-                  <li>Product ID: {product.id}</li>
-                  <li>Category ID: {product.category_id}</li>
-                  <li>Store ID: {product.store_id}</li>
-                  <li>Stock: {product.stock}</li>
-                  <li>Sell count: {product.sell_count}</li>
-                </ul>
-              )}
-              {activeTab === 'reviews' && <p className="text-sm text-second-text-color lg:w-1/2">There are no reviews yet.</p>}
+                ))}
+              </div>
             </div>
           </div>
         </section>
       )}
 
       {related.length > 0 && (
-        <section className="flex w-full bg-light-gray-1">
-          <div className="mx-auto flex w-full max-w-[1050px] flex-col gap-6 px-8 py-12 lg:px-0">
-            <h3 className="border-b border-[#ECECEC] pb-6 text-2xl font-bold leading-8 tracking-[0.1px] text-text-color">BESTSELLER PRODUCTS</h3>
-            <div className="flex flex-col gap-[30px] md:flex-row md:flex-wrap">
+        <section className="flex w-full bg-light-gray-1 xl:pl-[73px]">
+          <div className="mx-auto flex w-full max-w-[1049px] flex-col gap-[23px] px-[41px] pb-12 pt-[49px] lg:gap-6 lg:px-0 lg:pb-[49px]">
+            <h3 className="border-b-2 border-[#ECECEC] pb-[22px] pl-[18px] text-2xl font-bold leading-8 tracking-[0.1px] text-text-color lg:pb-[23px] lg:pl-0 xl:ml-1 xl:mr-[3px] xl:pl-[3px]">BESTSELLER PRODUCTS</h3>
+            <div className="flex flex-col gap-[30px] md:flex-row md:flex-wrap lg:gap-y-6 xl:gap-x-[31px]">
               {related
                 .filter((item) => String(item.id) !== String(productId))
                 .slice(0, 8)
-                .map((item) => (
-                  <div key={item.id} className="flex w-full md:w-[calc(50%-15px)] lg:w-[calc(25%-23px)]">
+                .map((item, index) => (
+                  <div key={item.id} className={`w-full md:flex md:w-[calc(50%-15px)] lg:w-[calc(25%-23px)] xl:w-[239px] ${index < 4 ? 'flex' : 'hidden'}`}>
                     <ProductCard
                       to={productPath(item, categories)}
                       image={productImage(item)}
@@ -273,7 +244,8 @@ function ProductDetailPage() {
                       department={item.description}
                       price={item.price}
                       colors={[]}
-                      imageClassName="aspect-[239/280]"
+                      alignLeft
+                      imageClassName="aspect-[332/427] lg:aspect-[239/280]"
                     />
                   </div>
                 ))}
@@ -282,7 +254,7 @@ function ProductDetailPage() {
         </section>
       )}
 
-      <ClientsLogos />
+      <ClientsLogos className="pb-[161px] pt-40 md:py-[50px]" />
     </div>
   )
 }

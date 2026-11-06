@@ -1,10 +1,10 @@
 // Single source of truth for the site menu (desktop + mobile header, footer)
 export const navLinks = [
-  { label: 'Home', path: '/' },
-  { label: 'Shop', path: '/shop', hasDropdown: true },
-  { label: 'About', path: '/about' },
-  { label: 'Team', path: '/team' },
-  { label: 'Contact', path: '/contact' },
+  { label: 'Home', path: '/', navClassName: 'w-[63px]' },
+  { label: 'Shop', path: '/shop', hasDropdown: true, navClassName: 'w-[72px]' },
+  { label: 'About', path: '/about', navClassName: 'w-[57px]' },
+  { label: 'Team', path: '/team', navClassName: 'w-[51px]' },
+  { label: 'Contact', path: '/contact', navClassName: '' },
 ]
 
 export const contactInfo = {

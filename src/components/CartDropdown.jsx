@@ -6,7 +6,6 @@ import { formatPrice, productImage } from '../utils/helpers.js'
 function CartDropdown({ onNavigate }) {
   const cart = useSelector((state) => state.shoppingCart.cart)
   const itemCount = cart.reduce((sum, item) => sum + item.count, 0)
-  const total = cart.reduce((sum, item) => sum + item.count * item.product.price, 0)
 
   // The dropdown is right-aligned to the cart button, so it may only grow leftwards: at mobile
   // widths the controls after that button take 76px, hence the 100vw-96px clamp (20px cushion).
@@ -32,11 +31,6 @@ function CartDropdown({ onNavigate }) {
           ))}
         </ul>
       )}
-
-      <div className="flex items-center justify-between text-sm font-bold">
-        <span>Total</span>
-        <span className="text-secondary-color-1">{formatPrice(total)}</span>
-      </div>
 
       <div className="flex gap-2">
         <Link

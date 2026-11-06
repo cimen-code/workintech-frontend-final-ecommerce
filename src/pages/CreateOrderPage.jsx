@@ -73,7 +73,7 @@ function AddressCard({ address, selected, onSelect, onEdit, onDelete, name }) {
       </p>
       <p className="text-xs leading-5 text-second-text-color">
         {address.neighborhood}, {address.address ? `${address.address}, ` : ''}
-        {address.district} / <span className="capitalize">{address.city}</span>
+        {address.district} / <span lang="tr" className="capitalize">{address.city}</span>
       </p>
     </div>
   )
@@ -95,7 +95,7 @@ function CreateOrderPage() {
   const [cardForm, setCardForm] = useState(null)
   const [ccv, setCcv] = useState('')
   const [submitting, setSubmitting] = useState(false)
-  const [completedOrder, setCompletedOrder] = useState(null)
+  const [orderCompleted, setOrderCompleted] = useState(false)
 
   useEffect(() => {
     dispatch(fetchAddressList())
@@ -115,31 +115,21 @@ function CreateOrderPage() {
 
   const saveAddress = (payload) =>
     dispatch(payload.id ? updateAddress(payload) : addAddress(payload))
-      .then(() => {
-        toast.success(payload.id ? 'Address updated' : 'Address added')
-        setAddressForm(null)
-      })
+      .then(() => setAddressForm(null))
       .catch((error) => toast.error(apiError(error, 'Address could not be saved.')))
 
   const removeAddress = (address) => {
-    if (!window.confirm(`Delete "${address.title}"?`)) return
     dispatch(deleteAddress(address.id))
-      .then(() => toast.success('Address deleted'))
       .catch((error) => toast.error(apiError(error, 'Address could not be deleted.')))
   }
 
   const saveCard = (payload) =>
     dispatch(payload.id ? updateCreditCard(payload) : addCreditCard(payload))
-      .then(() => {
-        toast.success(payload.id ? 'Card updated' : 'Card added')
-        setCardForm(null)
-      })
+      .then(() => setCardForm(null))
       .catch((error) => toast.error(apiError(error, 'Card could not be saved.')))
 
   const removeCard = (card) => {
-    if (!window.confirm(`Delete card ${maskCardNumber(card.card_no)}?`)) return
     dispatch(deleteCreditCard(card.id))
-      .then(() => toast.success('Card deleted'))
       .catch((error) => toast.error(apiError(error, 'Card could not be deleted.')))
   }
 
@@ -182,10 +172,9 @@ function CreateOrderPage() {
     setSubmitting(true)
     dispatch(setPayment({ card_id: selectedCard.id }))
     try {
-      const result = await dispatch(createOrder(payload))
-      setCompletedOrder({ id: result?.id, price: payload.price, itemCount: payload.products.length })
+      await dispatch(createOrder(payload))
+      setOrderCompleted(true)
       setCcv('')
-      toast.success('Your order has been created!')
       window.scrollTo(0, 0)
     } catch (error) {
       toast.error(apiError(error, 'Order could not be created.'))
@@ -195,23 +184,12 @@ function CreateOrderPage() {
   }
 
   // T22: congratulate the client after a successful order
-  if (completedOrder) {
+  if (orderCompleted) {
     return (
       <section className="flex w-full flex-col items-center gap-6 bg-light-gray-1 px-6 py-28 text-center">
         <CircleCheck size={80} className="text-success-color" />
         <h1 className="text-3xl font-bold text-text-color">Congratulations! 🎉</h1>
-        <p className="max-w-[480px] text-base text-second-text-color">
-          Your order{completedOrder.id ? ` #${completedOrder.id}` : ''} with {completedOrder.itemCount} product(s) totalling{' '}
-          <strong className="text-text-color">{formatPrice(completedOrder.price)}</strong> has been received.
-        </p>
-        <div className="flex flex-wrap justify-center gap-3">
-          <Link to="/orders" className="rounded-md bg-primary-color px-8 py-3 text-sm font-bold text-white">
-            View My Orders
-          </Link>
-          <Link to="/shop" className="rounded-md border border-primary-color px-8 py-3 text-sm font-bold text-primary-color">
-            Continue Shopping
-          </Link>
-        </div>
+        <p className="max-w-[480px] text-base text-second-text-color">Your order has been received.</p>
       </section>
     )
   }

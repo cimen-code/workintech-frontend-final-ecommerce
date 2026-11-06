@@ -25,11 +25,3 @@ export const isValidIban = (value = '') => {
 }
 
 export const isValidCardNumber = (value = '') => /^\d{16}$/.test(value.replace(/\s+/g, ''))
-
-// A card is valid through the last day of its expiry month
-export const isCardExpired = (month, year, now = new Date()) => {
-  const m = Number(month)
-  const y = Number(year)
-  if (!m || !y) return false
-  return y < now.getFullYear() || (y === now.getFullYear() && m < now.getMonth() + 1)
-}

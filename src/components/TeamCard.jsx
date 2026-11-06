@@ -12,21 +12,13 @@ function TeamCard({ member }) {
           </div>
         )}
       </div>
-      <div className="flex flex-col items-center gap-2.5 p-8 text-center">
+      <div className="flex flex-col items-center gap-2.5 px-8 pt-8 text-center">
         <h5 className="text-base font-bold leading-6 tracking-[0.1px] text-text-color">{member.name}</h5>
-        <p className="text-sm font-bold leading-6 tracking-[0.2px] text-second-text-color">{member.role}</p>
-        <div className="flex items-center gap-5 text-primary-color">
-          {member.github ? (
-            <a href={member.github} target="_blank" rel="noreferrer" className="text-sm font-bold hover:underline">
-              GitHub
-            </a>
-          ) : (
-            <>
-              <FacebookIcon size={24} />
-              <InstagramIcon size={24} />
-              <TwitterIcon size={24} />
-            </>
-          )}
+        <p className="-mt-0.5 text-sm font-bold leading-6 tracking-[0.2px] text-second-text-color">{member.role}</p>
+        <div className="mt-2 flex items-center gap-5 lg:mt-0">
+          <FacebookIcon size={24} className="text-[#335BF5] lg:text-primary-color" />
+          <InstagramIcon size={24} className="text-[#E61F5A] lg:text-primary-color" />
+          <TwitterIcon size={24} className="text-[#21A6DF] lg:text-primary-color" />
         </div>
       </div>
     </div>

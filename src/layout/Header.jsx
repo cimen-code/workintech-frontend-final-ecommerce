@@ -105,6 +105,7 @@ function Header() {
       </button>
       {openMenu === 'user' && (
         <div className="absolute right-0 top-full z-50 flex w-52 flex-col rounded-md bg-white py-2 text-sm font-bold text-text-color shadow-xl">
+          <p className="truncate px-4 py-2.5 sm:hidden">{user.name}</p>
           <Link to="/orders" onClick={close} className="flex items-center gap-2 px-4 py-2.5 hover:bg-light-gray-1">
             <Package size={16} /> Previous Orders
           </Link>
@@ -116,8 +117,8 @@ function Header() {
     </div>
   ) : (
     // Figma 414px header shows only search/cart/menu; logged-out users reach Login/Register in the expanded menu
-    <div className="hidden items-center gap-1 px-4 py-3 text-sm font-bold text-primary-color lg:flex">
-      <UserRound size={16} />
+    <div className="hidden items-center gap-[5px] px-4 py-3 text-sm font-bold text-primary-color lg:flex">
+      <UserRound size={16} className="-mr-0.5" />
       <Link to={loginLink} className="hover:underline">Login</Link>
       <span>/</span>
       <Link to={signupLink} className="hover:underline">Register</Link>
@@ -128,20 +129,20 @@ function Header() {
     <header ref={headerRef} className="relative z-40 flex w-full flex-col bg-white">
       {/* Top bar (desktop) */}
       <div className="hidden w-full bg-dark-background-color text-white lg:flex">
-        <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between px-[37px] py-[17px] text-sm font-bold leading-6 tracking-[0.2px]">
-          <div className="flex items-center gap-7">
-            <a href={contactInfo.phoneHref} className="flex items-center gap-1.5">
+        <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between pb-3.5 pl-9 pr-10 pt-5 text-sm font-bold leading-6 tracking-[0.2px]">
+          <div className="flex items-center gap-8">
+            <a href={contactInfo.phoneHref} className="flex items-center gap-[5px]">
               <Phone size={16} />
               <span>{contactInfo.phone}</span>
             </a>
-            <a href={`mailto:${contactInfo.email}`} className="flex items-center gap-1.5">
+            <a href={`mailto:${contactInfo.email}`} className="flex items-center gap-[5px]">
               <Mail size={16} />
               <span>{contactInfo.email}</span>
             </a>
           </div>
-          <p>Follow Us and get a chance to win 80% off</p>
-          <div className="flex items-center gap-2.5">
-            <span>Follow Us :</span>
+          <p className="pl-1">Follow Us&nbsp; and get a chance to win 80% off</p>
+          <div className="flex items-center gap-[15px]">
+            <span className="mr-0.5">Follow Us&nbsp;:</span>
             <a href="https://www.instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram"><InstagramIcon /></a>
             <a href="https://www.youtube.com" target="_blank" rel="noreferrer" aria-label="YouTube"><YoutubeIcon /></a>
             <a href="https://www.facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook"><FacebookIcon /></a>
@@ -151,25 +152,24 @@ function Header() {
       </div>
 
       {/* Main navigation */}
-      <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between px-7 py-5 lg:px-10 lg:py-4">
-        <Link to="/" onClick={close} className="text-2xl font-bold leading-8 tracking-[0.1px] text-text-color">
+      <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between pb-[39px] pl-4 pr-4 pt-[38px] min-[414px]:pl-[37px] min-[414px]:pr-9 md:px-7 md:py-5 lg:pb-3.5 lg:pl-10 lg:pr-[19px] lg:pt-[18px]">
+        <Link to="/" onClick={close} className="-mb-[3px] text-2xl font-bold leading-8 tracking-[0.1px] text-text-color md:mb-0 lg:-ml-px lg:mt-1">
           Bandage
         </Link>
 
-        <nav className="hidden items-center gap-4 lg:ml-24 lg:mr-auto lg:flex">
+        <nav className="hidden items-center lg:ml-[113px] lg:mr-auto lg:flex">
           {navLinks.map((link) =>
             link.hasDropdown ? (
-              <div key={link.path} className="relative flex items-center">
+              <div key={link.path} className={`relative flex items-center ${link.navClassName}`}>
                 <NavLink
                   to={link.path}
                   onClick={close}
-                  className="text-sm font-bold leading-6 tracking-[0.2px] text-second-text-color hover:text-text-color"
-                  activeClassName="text-text-color"
+                  className="w-10 text-sm leading-6 tracking-[0.2px] text-text-color"
                 >
                   {link.label}
                 </NavLink>
                 <button type="button" aria-label="Open categories" onClick={() => toggle('shop')} className="flex p-1 text-text-color">
-                  <ChevronDown size={14} />
+                  <ChevronDown size={16} />
                 </button>
                 {openMenu === 'shop' && (
                   <div className="absolute left-0 top-full z-50 flex pt-2">
@@ -183,8 +183,8 @@ function Header() {
                 exact={link.path === '/'}
                 to={link.path}
                 onClick={close}
-                className="text-sm font-bold leading-6 tracking-[0.2px] text-second-text-color hover:text-text-color"
-                activeClassName="text-text-color"
+                className={`text-sm font-bold leading-6 tracking-[0.2px] text-second-text-color hover:text-text-color ${link.navClassName}`}
+                activeClassName={link.path === '/' ? '' : 'text-text-color'}
               >
                 {link.label}
               </NavLink>
@@ -192,11 +192,11 @@ function Header() {
           )}
         </nav>
 
-        <div className="flex items-center gap-2 text-text-color lg:gap-0 lg:text-primary-color">
+        <div className="flex items-center gap-5 text-text-color md:gap-2 lg:gap-0 lg:text-primary-color">
           {userArea}
 
-          <button type="button" aria-label="Search" onClick={() => history.push('/shop')} className="flex p-2 md:p-3.5">
-            <Search size={24} className="lg:h-4 lg:w-4" />
+          <button type="button" aria-label="Search" onClick={() => history.push('/shop')} className="flex p-0 md:p-3.5">
+            <Search strokeWidth={1.7} className="h-[29px] w-[29px] md:h-6 md:w-6 lg:h-[18px] lg:w-[18px]" />
           </button>
 
           <div className="relative flex">
@@ -204,10 +204,10 @@ function Header() {
               type="button"
               aria-label="Shopping cart"
               onClick={() => toggle('cart')}
-              className="flex items-center gap-1 p-2 md:p-3.5"
+              className="flex items-center gap-1 p-0 md:p-3.5"
               aria-expanded={openMenu === 'cart'}
             >
-              <ShoppingCart size={24} className="lg:h-4 lg:w-4" />
+              <ShoppingCart strokeWidth={1.3} className="h-[25px] w-[25px] md:h-6 md:w-6 lg:h-4 lg:w-4" />
               <span className={`text-xs ${cartCount === 0 ? 'hidden lg:inline' : ''}`}>{cartCount}</span>
             </button>
             {openMenu === 'cart' && (
@@ -227,16 +227,16 @@ function Header() {
             aria-label="Menu"
             aria-expanded={openMenu === 'mobile'}
             onClick={() => toggle('mobile')}
-            className="flex p-2 lg:hidden"
+            className="ml-2.5 flex p-0 md:ml-0 md:p-2 lg:hidden"
           >
-            {openMenu === 'mobile' ? <X size={24} /> : <TextAlignEnd size={24} />}
+            {openMenu === 'mobile' ? <X className="h-7 w-7 md:h-6 md:w-6" /> : <TextAlignEnd strokeWidth={1.7} className="h-7 w-7 md:h-6 md:w-6" />}
           </button>
         </div>
       </div>
 
       {/* Mobile navigation (same navLinks source) */}
       {openMenu === 'mobile' && (
-        <nav className="flex flex-col items-center gap-[30px] pb-24 pt-20 lg:hidden">
+        <nav className="flex flex-col items-center gap-[30px] pb-24 pt-[59px] md:pt-20 lg:hidden">
           {navLinks.map((link) => (
             <Link
               key={link.path}
@@ -254,11 +254,6 @@ function Header() {
               <span>/</span>
               <Link to={signupLink} onClick={close}>Register</Link>
             </div>
-          )}
-          {isLoggedIn && (
-            <Link to="/orders" onClick={close} className="text-3xl leading-[45px] text-primary-color">
-              Previous Orders
-            </Link>
           )}
           {categories.length > 0 && (
             <button

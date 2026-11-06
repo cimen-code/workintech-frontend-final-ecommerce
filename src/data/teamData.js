@@ -14,6 +14,5 @@ export const teamMembers = [
     role: 'Full Stack Developer',
     initials: 'HÇ',
     avatarClass: 'bg-primary-color',
-    github: 'https://github.com/cimen-code',
   },
 ]

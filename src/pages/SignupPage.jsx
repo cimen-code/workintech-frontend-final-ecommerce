@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useHistory, useLocation } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import api from '../api/axiosInstance.js'
 import FormField, { inputClass } from '../components/FormField.jsx'
@@ -85,12 +85,6 @@ function SignupPage() {
       <div className="mx-auto flex w-full max-w-[520px] flex-col gap-6 rounded-md bg-white p-6 shadow-md sm:p-10">
         <div className="flex flex-col gap-2 text-center">
           <h1 className="text-2xl font-bold leading-8 tracking-[0.1px] text-text-color">Create an account</h1>
-          <p className="text-sm text-second-text-color">
-            Already have an account?{' '}
-            <Link to={{ pathname: '/login', state: location.state }} className="font-bold text-primary-color">
-              Login
-            </Link>
-          </p>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-4">
@@ -149,7 +143,6 @@ function SignupPage() {
 
           <FormField id="role_id" label="Role" error={errors.role_id}>
             <select id="role_id" className={inputClass} {...register('role_id', { required: 'Role is required' })}>
-              {roles.length === 0 && <option value="">Loading roles...</option>}
               {roles.map((role) => (
                 <option key={role.id} value={role.id}>
                   {role.name}

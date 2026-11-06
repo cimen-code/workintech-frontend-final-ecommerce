@@ -1,9 +1,8 @@
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
-import { Link, useHistory, useLocation } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import FormField, { inputClass } from '../components/FormField.jsx'
-import Spinner from '../components/Spinner.jsx'
 import { loginUser } from '../store/actions/clientActions.js'
 import { EMAIL_PATTERN } from '../utils/validators.js'
 
@@ -15,13 +14,12 @@ function LoginPage() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm({ defaultValues: { email: '', password: '', rememberMe: false } })
 
   const onSubmit = async (data) => {
     try {
-      const user = await dispatch(loginUser(data))
-      toast.success(`Welcome, ${user.name}!`)
+      await dispatch(loginUser(data))
       // back to the previous page, or home if there is none
       history.replace(location.state?.from || '/')
     } catch (error) {
@@ -34,12 +32,6 @@ function LoginPage() {
       <div className="mx-auto flex w-full max-w-[440px] flex-col gap-6 rounded-md bg-white p-6 shadow-md sm:p-10">
         <div className="flex flex-col gap-2 text-center">
           <h1 className="text-2xl font-bold leading-8 tracking-[0.1px] text-text-color">Login</h1>
-          <p className="text-sm text-second-text-color">
-            No account yet?{' '}
-            <Link to={{ pathname: '/signup', state: location.state }} className="font-bold text-primary-color">
-              Sign up
-            </Link>
-          </p>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-4">
@@ -67,11 +59,9 @@ function LoginPage() {
 
           <button
             type="submit"
-            disabled={isSubmitting}
-            className="mt-2 flex items-center justify-center gap-3 rounded-md bg-primary-color px-6 py-3.5 text-sm font-bold text-white hover:opacity-90 disabled:cursor-not-allowed disabled:bg-disabled-element-color"
+            className="mt-2 flex items-center justify-center rounded-md bg-primary-color px-6 py-3.5 text-sm font-bold text-white hover:opacity-90"
           >
-            {isSubmitting && <Spinner size="sm" className="border-white border-t-transparent" />}
-            {isSubmitting ? 'Logging in...' : 'Login'}
+            Login
           </button>
         </form>
       </div>
