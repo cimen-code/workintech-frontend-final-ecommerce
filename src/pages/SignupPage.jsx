@@ -67,7 +67,7 @@ function SignupPage() {
       toast.warning(ACTIVATION_MESSAGE, { autoClose: 8000 })
       const from = location.state?.from
       if (from) history.push(from)
-      else if (history.length > 1) history.goBack()
+      else if (history.location.key) history.goBack()
       else history.push('/')
     } catch (error) {
       const message =
@@ -191,7 +191,7 @@ function SignupPage() {
                 />
               </FormField>
 
-              <FormField id="store-iban" label="Store Bank Account (IBAN)" error={errors.store?.bank_account}>
+              <FormField id="store-iban" label="Store Bank Account" error={errors.store?.bank_account}>
                 <input
                   id="store-iban"
                   placeholder="TR00 0000 0000 0000 0000 0000 00"

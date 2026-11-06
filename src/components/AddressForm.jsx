@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import FormField, { inputClass } from './FormField.jsx'
 import { cities } from '../data/cities.js'
@@ -6,6 +7,12 @@ const EMPTY_ADDRESS = { title: '', name: '', surname: '', phone: '', city: '', d
 
 // T20: field names match the backend exactly
 function AddressForm({ initialValues, onSubmit, onCancel }) {
+  const formRef = useRef(null)
+
+  useEffect(() => {
+    if (initialValues?.id) formRef.current?.scrollIntoView({ block: 'center' })
+  }, [initialValues?.id])
+
   const {
     register,
     handleSubmit,
@@ -33,7 +40,7 @@ function AddressForm({ initialValues, onSubmit, onCancel }) {
   }
 
   return (
-    <form onSubmit={handleSubmit(submit)} noValidate className="flex flex-col gap-4 rounded-md border border-primary-color/40 bg-white p-5">
+    <form ref={formRef} onSubmit={handleSubmit(submit)} noValidate className="flex flex-col gap-4 rounded-md border border-primary-color/40 bg-white p-5">
       <h3 className="text-base font-bold text-text-color">{initialValues?.id ? 'Update Address' : 'Add New Address'}</h3>
       <FormField id="addr-title" label="Address Title" error={errors.title}>
         <input id="addr-title" className={inputClass} placeholder="ev adresi" {...register('title', required('Address title'))} />

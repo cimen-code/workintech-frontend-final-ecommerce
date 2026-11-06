@@ -12,7 +12,7 @@ import { addToCart } from '../store/actions/shoppingCartActions.js'
 import { formatPrice, productImage, productPath } from '../utils/helpers.js'
 
 // T04: third description column of the Figma product detail frame — two headings whose bullet
-// lists hold 4 and 3 identical items (read from review/full-project/figma-raw/product_desktop.png)
+// lists hold 4 and 3 identical items
 const DESCRIPTION_HEADING = 'the quick fox jumps over'
 const DESCRIPTION_BULLET = 'the quick fox jumps over the lazy dog'
 const DESCRIPTION_LIST_SIZES = [4, 3]
@@ -92,7 +92,7 @@ function ProductDetailPage() {
   }, [categoryId])
 
   const handleBack = () => {
-    if (history.length > 1) history.goBack()
+    if (history.location.key) history.goBack()
     else history.push('/shop')
   }
 
@@ -110,7 +110,7 @@ function ProductDetailPage() {
             <button
               type="button"
               onClick={handleBack}
-              className="absolute left-0 top-0 flex items-center gap-2 rounded-md border border-primary-color px-4 py-2 text-sm font-bold text-primary-color hover:bg-primary-color hover:text-white lg:left-auto lg:right-0"
+              className="absolute left-0 top-0 flex items-center gap-2 rounded-md border border-primary-color px-3 py-2 text-sm font-bold text-primary-color hover:bg-primary-color hover:text-white min-[414px]:px-4 lg:left-auto lg:right-0"
             >
               <ArrowLeft size={16} /> Back
             </button>

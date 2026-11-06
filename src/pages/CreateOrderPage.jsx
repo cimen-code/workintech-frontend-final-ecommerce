@@ -5,6 +5,7 @@ import { toast } from 'react-toastify'
 import { CircleCheck, CreditCard, MapPin, Pencil, Plus, Trash2 } from 'lucide-react'
 import AddressForm from '../components/AddressForm.jsx'
 import CardForm from '../components/CardForm.jsx'
+import { cityLabel } from '../data/cities.js'
 import OrderSummary from '../components/OrderSummary.jsx'
 import Spinner from '../components/Spinner.jsx'
 import {
@@ -73,7 +74,7 @@ function AddressCard({ address, selected, onSelect, onEdit, onDelete, name }) {
       </p>
       <p className="text-xs leading-5 text-second-text-color">
         {address.neighborhood}, {address.address ? `${address.address}, ` : ''}
-        {address.district} / <span lang="tr" className="capitalize">{address.city}</span>
+        {address.district} / {cityLabel(address.city)}
       </p>
     </div>
   )
@@ -120,6 +121,7 @@ function CreateOrderPage() {
 
   const removeAddress = (address) => {
     dispatch(deleteAddress(address.id))
+      .then(() => setAddressForm((current) => (current?.id === address.id ? null : current)))
       .catch((error) => toast.error(apiError(error, 'Address could not be deleted.')))
   }
 
@@ -130,6 +132,7 @@ function CreateOrderPage() {
 
   const removeCard = (card) => {
     dispatch(deleteCreditCard(card.id))
+      .then(() => setCardForm((current) => (current?.id === card.id ? null : current)))
       .catch((error) => toast.error(apiError(error, 'Card could not be deleted.')))
   }
 
@@ -213,7 +216,7 @@ function CreateOrderPage() {
             <StepTab
               number={1}
               title="Address Information"
-              subtitle={selectedShipping ? `${selectedShipping.title} · ${selectedShipping.district} / ${selectedShipping.city}` : 'Select a shipping address'}
+              subtitle={selectedShipping ? `${selectedShipping.title} · ${selectedShipping.district} / ${cityLabel(selectedShipping.city)}` : 'Select a shipping address'}
               active={step === 1}
               done={step === 2}
               onClick={() => setStep(1)}

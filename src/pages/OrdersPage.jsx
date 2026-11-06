@@ -53,14 +53,14 @@ function OrdersPage() {
 
         {status === 'done' && orders.length > 0 && (
           <div className="relative w-full overflow-x-auto rounded-md border border-[#ECECEC] bg-white">
-            <table className="w-full min-w-[600px] text-left text-sm">
+            <table className="w-full text-left text-sm sm:min-w-[600px]">
               <thead className="bg-light-gray-1 text-xs uppercase text-second-text-color">
                 <tr>
-                  <th className="px-4 py-3">Order</th>
-                  <th className="px-4 py-3">Date</th>
-                  <th className="px-4 py-3">Products</th>
-                  <th className="px-4 py-3">Total</th>
-                  <th className="px-4 py-3"><span className="sr-only">Details</span></th>
+                  <th className="px-2 py-3 sm:px-4">Order</th>
+                  <th className="px-2 py-3 sm:px-4">Date</th>
+                  <th className="hidden px-4 py-3 sm:table-cell">Products</th>
+                  <th className="px-2 py-3 sm:px-4">Total</th>
+                  <th className="px-2 py-3 sm:px-4"><span className="sr-only">Details</span></th>
                 </tr>
               </thead>
               <tbody>
@@ -70,11 +70,11 @@ function OrdersPage() {
                   return (
                     <Fragment key={order.id}>
                       <tr className="border-t border-[#ECECEC]">
-                        <td className="px-4 py-4 font-bold text-text-color">#{order.id}</td>
-                        <td className="px-4 py-4 text-second-text-color">{formatDate(order.order_date)}</td>
-                        <td className="px-4 py-4 text-second-text-color">{products.length}</td>
-                        <td className="px-4 py-4 font-bold text-primary-color">{formatPrice(order.price)}</td>
-                        <td className="px-4 py-4 text-right">
+                        <td className="px-2 py-4 font-bold text-text-color sm:px-4">#{order.id}</td>
+                        <td className="px-2 py-4 text-xs text-second-text-color sm:px-4 sm:text-sm">{formatDate(order.order_date)}</td>
+                        <td className="hidden px-4 py-4 text-second-text-color sm:table-cell">{products.length}</td>
+                        <td className="px-2 py-4 font-bold text-primary-color sm:px-4">{formatPrice(order.price)}</td>
+                        <td className="px-2 py-4 text-right sm:px-4">
                           <button
                             type="button"
                             onClick={() => setOpenId(isOpen ? null : order.id)}
@@ -90,14 +90,14 @@ function OrdersPage() {
                           <td colSpan={5} className="px-4 py-4">
                             <div className="flex flex-col gap-3">
                               <p className="text-xs text-second-text-color">
-                                Address ID: {order.address_id} · Card: {order.card_name || '-'}
+                                {order.address_id ? `Address ID: ${order.address_id} · ` : ''}Card: {order.card_name || '-'}
                               </p>
                               {products.map((item, index) => (
                                 <div key={`${order.id}-${item.id ?? item.product_id ?? index}`} className="flex items-center gap-3 rounded-md bg-white p-3">
                                   {item.images && <img src={productImage(item)} alt={item.name} className="h-16 w-12 rounded object-cover" />}
                                   <div className="flex flex-1 flex-col">
                                     <span className="font-bold text-text-color">{item.name || `Product #${item.product_id ?? item.id}`}</span>
-                                    <span className="text-xs text-second-text-color">{item.detail}</span>
+                                    <span className="text-xs text-second-text-color">{item.detail || item.description}</span>
                                   </div>
                                   <span className="text-sm text-second-text-color">x{item.count}</span>
                                   {item.price !== undefined && <span className="font-bold text-text-color">{formatPrice(item.price)}</span>}

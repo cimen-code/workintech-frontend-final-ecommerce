@@ -78,8 +78,8 @@ function Header() {
         setOpenMenu(null)
       }
     }
-    document.addEventListener('mousedown', handleClick)
-    return () => document.removeEventListener('mousedown', handleClick)
+    document.addEventListener('pointerdown', handleClick)
+    return () => document.removeEventListener('pointerdown', handleClick)
   }, [])
 
   const handleLogout = () => {
@@ -96,7 +96,7 @@ function Header() {
       <button
         type="button"
         onClick={() => toggle('user')}
-        className="flex items-center gap-2 px-2 text-sm font-bold text-primary-color md:px-4 md:py-3"
+        className="flex items-center gap-2 px-2 text-sm font-bold text-primary-color md:px-4 md:py-3 lg:py-[9px]"
         aria-expanded={openMenu === 'user'}
       >
         <Gravatar email={user.email} size={28} className="h-7 w-7" />
@@ -104,7 +104,7 @@ function Header() {
         <ChevronDown size={14} />
       </button>
       {openMenu === 'user' && (
-        <div className="absolute right-0 top-full z-50 flex w-52 flex-col rounded-md bg-white py-2 text-sm font-bold text-text-color shadow-xl">
+        <div className="absolute right-0 top-full z-50 flex w-48 flex-col rounded-md bg-white py-2 text-sm font-bold text-text-color shadow-xl">
           <p className="truncate px-4 py-2.5 sm:hidden">{user.name}</p>
           <Link to="/orders" onClick={close} className="flex items-center gap-2 px-4 py-2.5 hover:bg-light-gray-1">
             <Package size={16} /> Previous Orders
@@ -119,9 +119,9 @@ function Header() {
     // Figma 414px header shows only search/cart/menu; logged-out users reach Login/Register in the expanded menu
     <div className="hidden items-center gap-[5px] px-4 py-3 text-sm font-bold text-primary-color lg:flex">
       <UserRound size={16} className="-mr-0.5" />
-      <Link to={loginLink} className="hover:underline">Login</Link>
+      <Link to={loginLink} onClick={close} className="hover:underline">Login</Link>
       <span>/</span>
-      <Link to={signupLink} className="hover:underline">Register</Link>
+      <Link to={signupLink} onClick={close} className="hover:underline">Register</Link>
     </div>
   )
 
@@ -195,7 +195,7 @@ function Header() {
         <div className="flex items-center gap-5 text-text-color md:gap-2 lg:gap-0 lg:text-primary-color">
           {userArea}
 
-          <button type="button" aria-label="Search" onClick={() => history.push('/shop')} className="flex p-0 md:p-3.5">
+          <button type="button" aria-label="Search" onClick={() => { close(); history.push('/shop') }} className="flex p-0 md:p-3.5">
             <Search strokeWidth={1.7} className="h-[29px] w-[29px] md:h-6 md:w-6 lg:h-[18px] lg:w-[18px]" />
           </button>
 
@@ -217,7 +217,7 @@ function Header() {
             )}
           </div>
 
-          <button type="button" aria-label="Favorites" className="hidden items-center gap-1 p-3.5 lg:flex">
+          <button type="button" aria-label="Favorites" onClick={close} className="hidden items-center gap-1 p-3.5 lg:flex">
             <Heart size={16} />
             <span className="text-xs">0</span>
           </button>

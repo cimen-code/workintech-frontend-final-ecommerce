@@ -5,7 +5,7 @@ function OrderSummary({ summary, buttonLabel, onButtonClick, buttonDisabled = fa
   const rows = [
     { label: 'Products Total', value: formatPrice(summary.productsTotal) },
     { label: 'Shipping', value: formatPrice(summary.shipping) },
-    { label: 'Discount', value: `-${formatPrice(summary.discount)}`, className: 'text-alert-color' },
+    { label: 'Discount', value: `${summary.discount > 0 ? '-' : ''}${formatPrice(summary.discount)}`, className: 'text-alert-color' },
   ]
 
   const button = buttonLabel && (

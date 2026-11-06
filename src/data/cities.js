@@ -20,3 +20,5 @@ export const cities = CITY_NAMES.map((name) => ({
     .normalize('NFD')
     .replace(/[̀-ͯ]/g, ''),
 }))
+
+export const cityLabel = (value) => cities.find((city) => city.value === value)?.label || value

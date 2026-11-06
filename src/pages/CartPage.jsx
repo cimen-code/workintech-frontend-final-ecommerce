@@ -40,21 +40,21 @@ function CartPage() {
           </h1>
 
           <div className="relative w-full overflow-x-auto rounded-md border border-[#ECECEC] bg-white">
-            <table className="w-full min-w-[640px] text-left text-sm">
+            <table className="w-full text-left text-sm sm:min-w-[640px]">
               <thead className="bg-light-gray-1 text-xs uppercase text-second-text-color">
                 <tr>
-                  <th className="px-4 py-3">Select</th>
-                  <th className="px-4 py-3">Product</th>
-                  <th className="px-4 py-3">Price</th>
-                  <th className="px-4 py-3">Quantity</th>
-                  <th className="px-4 py-3">Total</th>
-                  <th className="px-4 py-3"><span className="sr-only">Remove</span></th>
+                  <th className="px-2 py-3 sm:px-4"><span className="sr-only sm:not-sr-only">Select</span></th>
+                  <th className="px-2 py-3 sm:px-4">Product</th>
+                  <th className="hidden px-4 py-3 sm:table-cell">Price</th>
+                  <th className="px-2 py-3 sm:px-4">Quantity</th>
+                  <th className="px-2 py-3 sm:px-4">Total</th>
+                  <th className="px-1 py-3 sm:px-4"><span className="sr-only">Remove</span></th>
                 </tr>
               </thead>
               <tbody>
                 {cart.map((item) => (
                   <tr key={item.product.id} className="border-t border-[#ECECEC]">
-                    <td className="px-4 py-4">
+                    <td className="px-2 py-4 sm:px-4">
                       <input
                         type="checkbox"
                         aria-label={`Select ${item.product.name}`}
@@ -63,45 +63,45 @@ function CartPage() {
                         className="h-5 w-5 accent-primary-color"
                       />
                     </td>
-                    <td className="px-4 py-4">
-                      <Link to={productPath(item.product, categories)} className="flex items-center gap-3">
-                        <img src={productImage(item.product)} alt={item.product.name} className="h-20 w-16 rounded object-cover" />
+                    <td className="px-2 py-4 sm:px-4">
+                      <Link to={productPath(item.product, categories)} className="flex items-center gap-2 sm:gap-3">
+                        <img src={productImage(item.product)} alt={item.product.name} className="h-14 w-10 rounded object-cover min-[414px]:h-16 min-[414px]:w-12 sm:h-20 sm:w-16" />
                         <div className="flex max-w-[260px] flex-col gap-1">
                           <span className="font-bold text-text-color">{item.product.name}</span>
-                          <span className="line-clamp-2 text-xs text-second-text-color">{item.product.description}</span>
+                          <span className="hidden text-xs text-second-text-color sm:line-clamp-2">{item.product.description}</span>
                         </div>
                       </Link>
                     </td>
-                    <td className="px-4 py-4 font-bold text-text-color">{formatPrice(item.product.price)}</td>
-                    <td className="px-4 py-4">
+                    <td className="hidden px-4 py-4 font-bold text-text-color sm:table-cell">{formatPrice(item.product.price)}</td>
+                    <td className="px-2 py-4 sm:px-4">
                       <div className="flex w-fit items-center rounded-md border border-[#DDDDDD]">
                         <button
                           type="button"
                           aria-label="Decrease quantity"
                           onClick={() => dispatch(changeCartItemCount(item.product.id, -1))}
                           disabled={item.count <= 1}
-                          className="flex p-2 text-primary-color disabled:text-muted-color"
+                          className="flex p-1 text-primary-color disabled:text-muted-color sm:p-2"
                         >
                           <Minus size={16} />
                         </button>
-                        <span className="w-8 text-center font-bold">{item.count}</span>
+                        <span className="w-6 text-center font-bold sm:w-8">{item.count}</span>
                         <button
                           type="button"
                           aria-label="Increase quantity"
                           onClick={() => dispatch(changeCartItemCount(item.product.id, 1))}
-                          className="flex p-2 text-primary-color"
+                          className="flex p-1 text-primary-color sm:p-2"
                         >
                           <Plus size={16} />
                         </button>
                       </div>
                     </td>
-                    <td className="px-4 py-4 font-bold text-alert-color">{formatPrice(item.product.price * item.count)}</td>
-                    <td className="px-4 py-4">
+                    <td className="px-2 py-4 font-bold text-alert-color sm:px-4">{formatPrice(item.product.price * item.count)}</td>
+                    <td className="px-1 py-4 sm:px-4">
                       <button
                         type="button"
                         aria-label={`Remove ${item.product.name}`}
                         onClick={() => dispatch(removeFromCart(item.product.id))}
-                        className="flex p-2 text-second-text-color hover:text-danger-color"
+                        className="flex p-1 text-second-text-color hover:text-danger-color sm:p-2"
                       >
                         <Trash2 size={18} />
                       </button>
@@ -111,10 +111,10 @@ function CartPage() {
               </tbody>
               <tfoot>
                 <tr className="border-t border-[#ECECEC] bg-light-gray-1">
-                  <td colSpan={4} className="px-4 py-4 text-right font-bold text-text-color">
+                  <td colSpan={4} className="px-2 py-4 text-right font-bold text-text-color sm:px-4">
                     Selected ({checkedCount}) total
                   </td>
-                  <td colSpan={2} className="px-4 py-4 text-base font-bold text-primary-color">{formatPrice(summary.productsTotal)}</td>
+                  <td colSpan={2} className="px-2 py-4 text-base font-bold text-primary-color sm:px-4">{formatPrice(summary.productsTotal)}</td>
                 </tr>
               </tfoot>
             </table>

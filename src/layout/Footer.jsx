@@ -11,7 +11,7 @@ function Footer() {
       <div className={`flex w-full ${pathname === '/' ? 'bg-light-gray-1' : 'bg-white'}`}>
         <div className="mx-auto flex h-[173px] w-full max-w-[1050px] flex-col md:h-[142px] md:px-4 xl:px-0">
           <div className="flex flex-col gap-[22px] pl-12 pt-[55px] md:flex-row md:items-start md:justify-between md:pl-0">
-            <Link to="/" className="text-2xl font-bold leading-8 tracking-[0.1px] text-text-color">
+            <Link to="/" onClick={() => window.scrollTo(0, 0)} className="text-2xl font-bold leading-8 tracking-[0.1px] text-text-color">
               Bandage
             </Link>
             <div className="-ml-1 flex items-center gap-5 text-primary-color md:ml-0 md:mt-0.5 xl:mr-[62px]">
@@ -32,7 +32,7 @@ function Footer() {
               <ul className="flex flex-col gap-2.5">
                 {column.links.map((link) => (
                   <li key={link.label} className="flex">
-                    <Link to={link.path} className="text-sm font-bold leading-6 tracking-[0.2px] text-second-text-color hover:text-primary-color">
+                    <Link to={link.path} onClick={() => window.scrollTo(0, 0)} className="text-sm font-bold leading-6 tracking-[0.2px] text-second-text-color hover:text-primary-color">
                       {link.label}
                     </Link>
                   </li>

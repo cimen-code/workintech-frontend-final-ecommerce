@@ -54,7 +54,7 @@ function LoginPage() {
 
           <label className="flex items-center gap-2 text-sm text-second-text-color">
             <input type="checkbox" className="h-4 w-4 accent-primary-color" {...register('rememberMe')} />
-            Remember me
+            Remember Me
           </label>
 
           <button

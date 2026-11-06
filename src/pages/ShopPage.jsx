@@ -28,7 +28,7 @@ function ShopFilterForm({ filter, onFilterChange, initialSort, onApplySort }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-wrap items-center justify-center -mt-px mr-0.5 gap-x-[15px] gap-y-3.5 lg:ml-auto lg:mr-0 lg:mt-0 lg:gap-x-3.5">
+    <form onSubmit={handleSubmit} className="flex flex-wrap items-center justify-center -mt-px mr-0.5 gap-x-[15px] gap-y-3.5 lg:ml-auto lg:mr-0 lg:mt-0 lg:flex-nowrap lg:gap-x-3.5">
       <label htmlFor="shop-filter" className="sr-only">Filter products</label>
       <input
         id="shop-filter"
@@ -44,7 +44,7 @@ function ShopFilterForm({ filter, onFilterChange, initialSort, onApplySort }) {
           id="shop-sort"
           value={sort}
           onChange={(event) => setSort(event.target.value)}
-          className="h-[50px] min-w-[141px] appearance-none rounded-[5px] border border-[#DDDDDD] bg-[#F9F9F9] pl-[19px] pr-[46px] text-sm tracking-[0.2px] text-second-text-color outline-none [field-sizing:content] focus:border-primary-color lg:min-w-[142px]"
+          className="h-[50px] min-w-[141px] appearance-none rounded-[5px] border border-[#DDDDDD] bg-[#F9F9F9] pl-3 pr-9 text-sm min-[414px]:pl-[19px] min-[414px]:pr-[46px] tracking-[0.2px] text-second-text-color outline-none [field-sizing:content] focus:border-primary-color lg:min-w-[142px]"
         >
           <option value="">Popularity</option>
           {SORT_OPTIONS.map((option) => (
@@ -59,6 +59,9 @@ function ShopFilterForm({ filter, onFilterChange, initialSort, onApplySort }) {
     </form>
   )
 }
+
+// Query of the list now in the store, so Back from a product can keep it and its scroll position
+let lastListQuery = ''
 
 function ShopPage() {
   const dispatch = useDispatch()
@@ -78,8 +81,11 @@ function ShopPage() {
   // T13/T14/T15: any change of category, filter, sort or page re-fetches while keeping the others
   useEffect(() => {
     dispatch(setOffset(offset))
+    const query = JSON.stringify({ categoryId, filter, sort, limit, offset })
+    if (history.action === 'POP' && query === lastListQuery) return
+    lastListQuery = query
     dispatch(fetchProducts({ category: categoryId, filter, sort, limit, offset }))
-  }, [dispatch, categoryId, filter, sort, limit, offset])
+  }, [dispatch, history, categoryId, filter, sort, limit, offset])
 
   const updateQuery = (changes, { replace = false } = {}) => {
     const params = new URLSearchParams(location.search)
