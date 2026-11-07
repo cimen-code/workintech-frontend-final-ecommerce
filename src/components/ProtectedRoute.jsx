@@ -2,7 +2,6 @@ import { useSelector } from 'react-redux'
 import { Redirect, Route } from 'react-router-dom'
 import Spinner from './Spinner.jsx'
 
-// React Router v5 protected route: unauthenticated users go to /login
 function ProtectedRoute({ component: Component, authChecked, ...rest }) {
   const user = useSelector((state) => state.client.user)
   const isLoggedIn = Boolean(user?.email)

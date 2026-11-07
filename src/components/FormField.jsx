@@ -1,4 +1,3 @@
-// Small presentational wrapper for label + input + validation message
 function FormField({ id, label, error, children }) {
   return (
     <div className="flex w-full flex-col gap-1.5">

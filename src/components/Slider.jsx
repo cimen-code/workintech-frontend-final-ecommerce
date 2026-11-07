@@ -3,14 +3,13 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 
-// T02: Swiper slider, driven by the arrow and indicator buttons. Each slide is rendered by `renderSlide(slide, isActive)`.
-function Slider({ slides, renderSlide, className = '', arrowClassName = 'top-1/2 -translate-y-1/2' }) {
+function Slider({ slides, renderSlide, arrowClassName }) {
   const [swiper, setSwiper] = useState(null)
   const [current, setCurrent] = useState(0)
   const count = slides.length
 
   return (
-    <div className={`relative w-full overflow-hidden ${className}`}>
+    <div className="relative w-full overflow-hidden">
       {/* z-0 keeps Swiper's own z-index below the arrow and indicator buttons */}
       <div className="relative z-0 w-full">
         <Swiper

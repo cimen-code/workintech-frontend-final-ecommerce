@@ -1,4 +1,5 @@
 import {
+  DEFAULT_LIMIT,
   FETCH_STATES,
   SET_CATEGORIES,
   SET_FETCH_STATE,
@@ -15,11 +16,10 @@ const initialState = {
   categories: [],
   productList: [],
   total: 0,
-  limit: 25,
+  limit: DEFAULT_LIMIT,
   offset: 0,
   filter: '',
   fetchState: FETCH_STATES.NOT_FETCHED,
-  // T16 extension (not listed in T09): product shown on the detail page
   selectedProduct: null,
   selectedProductFetchState: FETCH_STATES.NOT_FETCHED,
 }

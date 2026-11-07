@@ -78,14 +78,13 @@ function TileHeading({ id, name, label, checked, onSelect, editLabel, onEdit, de
   )
 }
 
-// T20: the Add tile first, then one tile per saved address (flex wrap: two columns from md, one below)
 function AddressTiles({ name, addresses, selectedId, showAdd, onAdd, onSelect, onEdit, onDelete }) {
   return (
     <div className="flex flex-wrap gap-x-5 gap-y-4">
       {showAdd && (
         <div className="flex w-full flex-col gap-2 md:w-[calc(50%-10px)]">
           {/* same height as the heading above an address tile, so the two boxes in a row line up */}
-          <div className="hidden min-h-6 md:block" />
+          <div className="hidden min-h-6 md:flex" />
           <button
             type="button"
             onClick={onAdd}
@@ -136,7 +135,6 @@ function AddressTiles({ name, addresses, selectedId, showAdd, onAdd, onSelect, o
   )
 }
 
-// T21: name on card above the tile; brand at the top, masked number and expiry at the bottom right
 function CardTile({ card, selected, onSelect, onEdit, onDelete }) {
   const id = `card-${card.id}`
 
@@ -269,7 +267,6 @@ function CreateOrderPage() {
     }
   }
 
-  // T22: congratulate the client after a successful order
   if (orderCompleted) {
     return (
       <section className="flex w-full flex-col items-center gap-6 bg-light-gray-1 px-6 py-28 text-center">
@@ -316,7 +313,7 @@ function CreateOrderPage() {
             <StepTab
               title="Payment Options"
               active={step === 2}
-              onClick={step === 1 ? () => selectedShipping && setStep(2) : undefined}
+              onClick={step === 1 ? () => selectedShipping && goToPayment() : undefined}
             >
               <span className="text-xs text-second-text-color">You can pay safely with your debit or credit card</span>
             </StepTab>
@@ -475,7 +472,7 @@ function CreateOrderPage() {
           summary={summary}
           buttonLabel={step === 1 ? 'Save and Continue' : 'Complete Order'}
           onButtonClick={step === 1 ? goToPayment : completeOrder}
-          buttonDisabled={step === 1 ? !selectedShipping : !selectedCard}
+          buttonDisabled={step === 1 ? !selectedShipping : !selectedCard || Boolean(cardForm)}
           buttonLoading={submitting}
         />
       </div>

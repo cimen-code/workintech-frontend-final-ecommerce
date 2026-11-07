@@ -1,4 +1,3 @@
-// Single source of truth for the site menu (desktop + mobile header, footer)
 export const navLinks = [
   { label: 'Home', path: '/', navClassName: 'w-[63px]' },
   { label: 'Shop', path: '/shop', hasDropdown: true, navClassName: 'w-[72px]' },

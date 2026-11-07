@@ -29,7 +29,6 @@ function SignupPage() {
     defaultValues: { name: '', email: '', password: '', confirmPassword: '', role_id: '' },
   })
 
-  // T09: roles are fetched only when this form needs them
   useEffect(() => {
     dispatch(fetchRolesIfNeeded())
       .then((list) => {

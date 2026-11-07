@@ -11,14 +11,13 @@ const stats = [
   { value: '100+', label: 'Top Partners' },
 ]
 
-// Figma: "desktop-about-1" (2865:3805) / "mobile-about-1" (2865:3876)
 function AboutPage() {
   return (
     <div className="flex w-full flex-col">
       <section className="flex w-full">
         <div className="mx-auto flex w-full max-w-[1050px] flex-col items-center gap-[219px] pt-[152px] lg:flex-row lg:justify-between lg:gap-10 lg:pt-[27px] xl:h-[670px] xl:items-start">
           <div className="flex flex-col items-center gap-10 text-center lg:items-start lg:gap-[35px] lg:text-left xl:pt-[100px]">
-            <h5 className="hidden text-base font-bold leading-6 tracking-[0.1px] text-text-color lg:block">ABOUT COMPANY</h5>
+            <h5 className="hidden text-base font-bold leading-6 tracking-[0.1px] text-text-color lg:flex">ABOUT COMPANY</h5>
             <h1 className="text-[40px] font-bold leading-[50px] tracking-[0.2px] text-text-color lg:text-[58px] lg:leading-[80px]">ABOUT US</h1>
             <p className="max-w-[272px] text-xl leading-[30px] tracking-[0.2px] text-second-text-color lg:-mt-px lg:max-w-[376px]">
               We know how large objects will act, but things on a small scale<span className="lg:hidden"> just do not act that way.</span>
@@ -108,7 +107,7 @@ function AboutPage() {
             Button
           </Link>
         </div>
-        <img src="/images/about/work-desktop.jpg" alt="Woman in a pink sweater" className="hidden h-[636px] w-[40.97%] object-cover lg:block" />
+        <img src="/images/about/work-desktop.jpg" alt="Woman in a pink sweater" className="hidden h-[636px] w-[40.97%] object-cover lg:flex" />
       </section>
     </div>
   )

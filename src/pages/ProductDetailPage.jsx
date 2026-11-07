@@ -11,8 +11,6 @@ import { FETCH_STATES, fetchProduct } from '../store/actions/productActions.js'
 import { addToCart } from '../store/actions/shoppingCartActions.js'
 import { formatPrice, productImage, productPath } from '../utils/helpers.js'
 
-// T04: third description column of the Figma product detail frame — two headings whose bullet
-// lists hold 4 and 3 identical items
 const DESCRIPTION_HEADING = 'the quick fox jumps over'
 const DESCRIPTION_BULLET = 'the quick fox jumps over the lazy dog'
 const DESCRIPTION_LIST_SIZES = [4, 3]
@@ -71,7 +69,6 @@ function ProductDetailPage() {
   const { selectedProduct: product, selectedProductFetchState: fetchState, categories } = useSelector((state) => state.product)
   const [related, setRelated] = useState([])
 
-  // T16: fetch product by thunk and keep it in product reducer
   useEffect(() => {
     dispatch(fetchProduct(productId))
   }, [dispatch, productId])
@@ -154,7 +151,7 @@ function ProductDetailPage() {
                   <span className="text-primary-color">{product.stock > 0 ? 'In Stock' : 'Out of Stock'}</span>
                 </p>
                 <p className="min-h-[119px] pt-[19px] text-sm leading-5 tracking-[0.2px] text-[#858585] lg:min-h-[79px]">{product.description}</p>
-                <hr className="ml-[5px] mt-1 w-[283px] border-[#BDBDBD] lg:ml-0 lg:mt-[15px] lg:w-[446px]" />
+                <hr className="ml-[5px] mt-1 w-[283px] border-[#BDBDBD] max-[374px]:ml-0 max-[374px]:w-full lg:ml-0 lg:mt-[15px] lg:w-[446px]" />
                 <div className="mt-1.5 flex gap-2.5 lg:mt-4">
                   {['bg-primary-color', 'bg-success-color', 'bg-alert-color', 'bg-dark-background-color'].map((color) => (
                     <span key={color} className={`h-[30px] w-[30px] rounded-full ${color}`} />

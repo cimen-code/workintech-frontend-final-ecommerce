@@ -1,6 +1,5 @@
 import { formatPrice } from '../utils/helpers.js'
 
-// T19: products total + shipping - discount = grand total
 function OrderSummary({ summary, buttonLabel, onButtonClick, buttonDisabled = false, buttonLoading = false }) {
   const rows = [
     { label: 'Products Total', value: formatPrice(summary.productsTotal) },

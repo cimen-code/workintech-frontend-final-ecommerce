@@ -1,7 +1,3 @@
-// Static Home content taken from Figma "ecommerce-desktop-1" (2984:6640) / "ecommerce-mobile-1" (2984:6638)
-
-// Figma shows prev/next arrows and a two-position indicator on the hero, but content for only one slide.
-// Both positions therefore render the same canonical Figma slide; no extra copy is invented.
 const heroSlide = {
   tag: 'SUMMER 2020',
   title: 'NEW COLLECTION',
@@ -21,9 +17,6 @@ export const editorsPick = [
   { id: 'kids', label: 'KIDS', image: '/images/home/editors-kids.png', mobileImage: '/images/home/mobile-editor-kids.jpg', to: '/shop' },
 ]
 
-// BESTSELLER PRODUCTS: the eight static demo cards of Figma "desktop-product-cards-10" (2984:7008),
-// in Figma order (product-1..8.jpg are the Figma images in the same order)
-// T04/T16: each card opens the detail page of a real product (same URL format as productPath)
 const bestsellerPaths = [
   '/shop/kadin/tisort/1/siyah-100-pamuk/2',
   '/shop/kadin/tisort/1/beyaz-100-pamuk/3',
@@ -46,7 +39,6 @@ export const bestsellerProducts = Array.from({ length: 8 }, (_, index) => ({
   ...(index >= 4 && { mobileImage: `/images/home/mobile-product-${index + 1}.jpg` }),
 }))
 
-// Second carousel: same situation as the hero (arrows + two-position indicator, one canonical slide in Figma)
 const vitaSlide = {
   tag: 'SUMMER 2020',
   title: 'Vita Classic Product',

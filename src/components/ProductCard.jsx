@@ -3,7 +3,6 @@ import { formatPrice } from '../utils/helpers.js'
 
 const DEFAULT_COLORS = ['bg-primary-color', 'bg-secondary-color-1', 'bg-alert-color', 'bg-secondary-color-1']
 
-// Reusable product card (Home bestseller, Shop list, Product detail bestseller)
 function ProductCard({ to, image, mobileImage, title, department, oldPrice, price, colors = DEFAULT_COLORS, imageClassName = 'aspect-[239/300]', imageLoading = 'lazy', alignLeft = false }) {
   return (
     <Link

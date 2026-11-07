@@ -2,7 +2,6 @@ import { useSelector } from 'react-redux'
 import { Redirect, Route } from 'react-router-dom'
 import Spinner from './Spinner.jsx'
 
-// Login and sign up are for logged out users: a logged in user goes back to where they came from
 function GuestRoute({ component: Component, authChecked, ...rest }) {
   const user = useSelector((state) => state.client.user)
   const isLoggedIn = Boolean(user?.email)

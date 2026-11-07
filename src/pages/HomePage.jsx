@@ -18,7 +18,6 @@ function SectionTitle({ tag, title, text }) {
 function HomePage() {
   return (
     <div className="flex w-full flex-col">
-      {/* Hero slider */}
       <Slider
         slides={heroSlides}
         arrowClassName="top-[343px] min-[414px]:top-[333px] lg:top-[265px]"
@@ -44,7 +43,6 @@ function HomePage() {
         )}
       />
 
-      {/* Editor's pick */}
       <section className="flex w-full bg-light-gray-1 py-20">
         <div className="mx-auto flex w-full max-w-[1050px] flex-col items-center gap-12 md:px-11 lg:px-0">
           <div className="max-w-[210px] md:max-w-none">
@@ -79,7 +77,6 @@ function HomePage() {
         </div>
       </section>
 
-      {/* Bestseller products */}
       <section className="flex w-full bg-white py-20 xl:pl-[73px]">
         <div className="mx-auto flex w-full max-w-[1049px] flex-col items-center gap-12 px-[43px] lg:gap-20 lg:px-0">
           <div className="flex flex-col items-center gap-2.5 text-center">
@@ -98,7 +95,6 @@ function HomePage() {
         </div>
       </section>
 
-      {/* Second carousel */}
       <Slider
         slides={vitaSlides}
         arrowClassName="top-[571px] lg:top-[383px]"
@@ -127,7 +123,6 @@ function HomePage() {
         )}
       />
 
-      {/* Part of the Neural Universe */}
       <section className="flex w-full bg-white">
         <div className="mx-auto flex w-full max-w-[1200px] flex-col-reverse items-center gap-[34px] px-[13px] pt-[120px] lg:max-w-[1176px] lg:flex-row lg:gap-10 lg:px-10 lg:py-0 xl:gap-[111px] xl:px-0">
           <picture className="mr-[9px] flex w-full max-w-[379px] lg:mr-0 lg:w-1/2 lg:max-w-none xl:w-[624px] xl:shrink-0">
@@ -153,7 +148,6 @@ function HomePage() {
         </div>
       </section>
 
-      {/* Featured posts */}
       <section className="flex w-full bg-white pb-20 pt-[81px] lg:pb-28 lg:pt-[115px]">
         <div className="mx-auto flex w-full max-w-[1066px] flex-col items-center gap-20 px-[41px] lg:px-0">
           <div className="flex flex-col items-center gap-2.5 text-center">

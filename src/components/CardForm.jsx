@@ -7,9 +7,10 @@ const currentYear = new Date().getFullYear()
 const MONTHS = Array.from({ length: 12 }, (_, index) => index + 1)
 const YEARS = Array.from({ length: 12 }, (_, index) => currentYear + index)
 
-// T21: field names match the backend exactly
 function CardForm({ initialValues, onSubmit, onCancel }) {
   const formRef = useRef(null)
+  const savedYear = Number(initialValues?.expire_year)
+  const years = savedYear && !YEARS.includes(savedYear) ? [savedYear, ...YEARS] : YEARS
 
   useEffect(() => {
     if (initialValues?.id) formRef.current?.scrollIntoView({ block: 'start' })
@@ -65,7 +66,7 @@ function CardForm({ initialValues, onSubmit, onCancel }) {
         <FormField id="card-year" label="Expire Year" error={errors.expire_year}>
           <select id="card-year" className={inputClass} {...register('expire_year', { required: 'Year is required' })}>
             <option value="">Year</option>
-            {YEARS.map((year) => (
+            {years.map((year) => (
               <option key={year} value={year}>{year}</option>
             ))}
           </select>

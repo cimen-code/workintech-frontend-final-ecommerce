@@ -16,7 +16,6 @@ import CartPage from '../pages/CartPage.jsx'
 import CreateOrderPage from '../pages/CreateOrderPage.jsx'
 import OrdersPage from '../pages/OrdersPage.jsx'
 
-// Layout container: one Header, one Footer, and all route definitions
 function PageContent({ authChecked }) {
   const { pathname } = useLocation()
   const history = useHistory()

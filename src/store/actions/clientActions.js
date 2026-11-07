@@ -7,7 +7,6 @@ export const SET_LANGUAGE = 'client/SET_LANGUAGE'
 export const SET_ADDRESS_LIST = 'client/SET_ADDRESS_LIST'
 export const SET_CREDIT_CARDS = 'client/SET_CREDIT_CARDS'
 
-// Basic action creators
 export const setUser = (user) => ({ type: SET_USER, payload: user })
 export const setRoles = (roles) => ({ type: SET_ROLES, payload: roles })
 export const setTheme = (theme) => ({ type: SET_THEME, payload: theme })
@@ -15,7 +14,6 @@ export const setLanguage = (language) => ({ type: SET_LANGUAGE, payload: languag
 export const setAddressList = (addressList) => ({ type: SET_ADDRESS_LIST, payload: addressList })
 export const setCreditCards = (creditCards) => ({ type: SET_CREDIT_CARDS, payload: creditCards })
 
-// Thunk: roles are fetched only in case of need (when not already in store)
 export const fetchRolesIfNeeded = () => (dispatch, getState) => {
   const { roles } = getState().client
   if (roles.length > 0) return Promise.resolve(roles)
@@ -26,7 +24,6 @@ export const fetchRolesIfNeeded = () => (dispatch, getState) => {
   })
 }
 
-// The session header always gets the current token; localStorage keeps it only with "Remember me"
 export const storeToken = (token, remember) => {
   setAuthToken(token)
   if (remember) {
@@ -36,7 +33,6 @@ export const storeToken = (token, remember) => {
   }
 }
 
-// T10: login via thunk. Resolves with user on success, rejects on failure.
 export const loginUser = ({ email, password, rememberMe }) => (dispatch) =>
   api.post('/login', { email, password }).then((res) => {
     const { token, ...user } = res.data
@@ -45,7 +41,6 @@ export const loginUser = ({ email, password, rememberMe }) => (dispatch) =>
     return user
   })
 
-// T11: auto login with token saved in localStorage
 export const verifyToken = () => (dispatch) => {
   const token = localStorage.getItem(TOKEN_KEY)
   if (!token) return Promise.resolve(null)
@@ -61,9 +56,11 @@ export const verifyToken = () => (dispatch) => {
       dispatch(setUser(user))
       return user
     })
-    .catch(() => {
-      localStorage.removeItem(TOKEN_KEY)
-      setAuthToken(null)
+    .catch((error) => {
+      if ([401, 403].includes(error.response?.status)) {
+        localStorage.removeItem(TOKEN_KEY)
+        setAuthToken(null)
+      }
       return null
     })
 }
@@ -76,7 +73,6 @@ export const logoutUser = () => (dispatch) => {
   dispatch(setCreditCards([]))
 }
 
-// T20: address thunks
 export const fetchAddressList = () => (dispatch) =>
   api.get('/user/address').then((res) => {
     dispatch(setAddressList(res.data))
@@ -92,7 +88,6 @@ export const updateAddress = (address) => (dispatch) =>
 export const deleteAddress = (addressId) => (dispatch) =>
   api.delete(`/user/address/${addressId}`).then(() => dispatch(fetchAddressList()))
 
-// T21: credit card thunks
 export const fetchCreditCards = () => (dispatch) =>
   api.get('/user/card').then((res) => {
     dispatch(setCreditCards(res.data))

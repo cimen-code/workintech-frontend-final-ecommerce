@@ -1,4 +1,3 @@
-// T15: page based pagination built on limit/offset
 function Pagination({ page, pageCount, onChange }) {
   if (pageCount <= 1) return null
 

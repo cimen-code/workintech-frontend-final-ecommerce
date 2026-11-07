@@ -66,7 +66,6 @@ let lastListQuery = ''
 // Keeps the offset of a typed huge page number a number the API accepts; it then goes to the last page
 const MAX_PAGE = 1000000
 
-// Only positive whole numbers are pages, anything else counts as page 1
 const parsePage = (value) => {
   const page = /^\d+$/.test(value || '') ? Number(value) : 0
   return page > 0 ? Math.min(page, MAX_PAGE) : 1
@@ -101,12 +100,14 @@ function ShopPage() {
   const [answeredQuery, setAnsweredQuery] = useState(null)
   const pastLastPage = pageCount > 0 && page > pageCount
 
-  // T13/T14/T15: any change of category, filter, sort or page re-fetches while keeping the others
   useEffect(() => {
     dispatch(setOffset(offset))
     if (history.action === 'POP' && listQuery === lastListQuery) return
     lastListQuery = listQuery
-    dispatch(fetchProducts({ category: categoryId, filter, sort, limit, offset })).then(() => setAnsweredQuery(listQuery))
+    dispatch(fetchProducts({ category: categoryId, filter, sort, limit, offset })).then((result) => {
+      if (result === false) lastListQuery = ''
+      setAnsweredQuery(listQuery)
+    })
   }, [dispatch, history, listQuery, categoryId, filter, sort, limit, offset])
 
   // A page past the end goes to the last page once the total is known; an empty filter result has no pages
@@ -117,7 +118,6 @@ function ShopPage() {
 
   const updateQuery = (changes, { replace = false } = {}) => {
     const url = urlWith(location, changes)
-    // Same URL: nothing to do, a push would only add a duplicate history entry
     if (url === urlWith(location, {})) return
     if (replace) history.replace(url)
     else history.push(url)
@@ -137,7 +137,6 @@ function ShopPage() {
 
   return (
     <div className="flex w-full flex-col">
-      {/* Shop header */}
       <section className="flex w-full bg-light-gray-1">
         <div className="mx-auto flex w-full max-w-[1088px] flex-col px-[41px] pb-10 pt-[50px] md:gap-6 md:px-8 md:py-6 lg:pb-12 lg:px-4 xl:px-0">
           <div className="flex flex-col items-center gap-[54px] pb-[46px] md:flex-row md:justify-between md:gap-4 md:py-6 lg:py-0 xl:pl-[21px] xl:pr-5">
@@ -170,7 +169,6 @@ function ShopPage() {
         </div>
       </section>
 
-      {/* Filter row */}
       <section ref={filterRowRef} className="flex w-full bg-white">
         <div className="mx-auto flex w-full max-w-[1048px] flex-col items-center gap-6 px-8 pt-[25px] lg:flex-row lg:gap-0 lg:px-0 lg:pb-6 lg:pt-6">
           <p className="text-sm font-bold leading-6 tracking-[0.2px] text-second-text-color lg:w-[395px]">
@@ -189,7 +187,6 @@ function ShopPage() {
         </div>
       </section>
 
-      {/* Product list */}
       <section className="flex w-full bg-white">
         <div className="mx-auto flex w-full max-w-[1048px] flex-col items-center gap-12 px-[43px] pb-20 pt-11 lg:px-0 lg:pb-[46px] lg:pt-12">
           {(fetchState === FETCH_STATES.FETCHING || pastLastPage) && (

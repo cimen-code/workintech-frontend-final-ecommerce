@@ -8,7 +8,6 @@ export const setCart = (cart) => ({ type: SET_CART, payload: cart })
 export const setPayment = (payment) => ({ type: SET_PAYMENT, payload: payment })
 export const setAddress = (address) => ({ type: SET_ADDRESS, payload: address })
 
-// T17: same product increases count, new product is added as checked
 export const addToCart = (product) => (dispatch, getState) => {
   const { cart } = getState().shoppingCart
   const existing = cart.find((item) => item.product.id === product.id)
@@ -22,7 +21,6 @@ export const addToCart = (product) => (dispatch, getState) => {
   dispatch(setCart(nextCart))
 }
 
-// T18 helpers
 export const changeCartItemCount = (productId, delta) => (dispatch, getState) => {
   const { cart } = getState().shoppingCart
   const nextCart = cart
@@ -50,7 +48,6 @@ export const toggleCartItem = (productId) => (dispatch, getState) => {
   )
 }
 
-// T22: create order, then reset the current shopping cart
 export const createOrder = (orderPayload) => (dispatch) =>
   api.post('/order', orderPayload).then((res) => {
     dispatch(setCart([]))

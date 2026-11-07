@@ -1,7 +1,6 @@
 import { SET_ADDRESS, SET_CART, SET_PAYMENT } from '../actions/shoppingCartActions.js'
 
 const initialState = {
-  // [{ count: 1, checked: true, product: { id, ... } }]
   cart: [],
   payment: {},
   address: {},

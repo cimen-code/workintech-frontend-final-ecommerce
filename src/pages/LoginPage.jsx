@@ -20,7 +20,6 @@ function LoginPage() {
   const onSubmit = async (data) => {
     try {
       await dispatch(loginUser(data))
-      // back to the previous page, or home if there is none
       history.replace(location.state?.from || '/')
     } catch (error) {
       toast.error(error.response?.data?.message || 'Login failed. Please try again.')

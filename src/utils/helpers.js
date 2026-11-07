@@ -11,11 +11,9 @@ export const genderSlug = (gender) => (gender === 'e' ? 'erkek' : 'kadin')
 
 export const genderLabel = (gender) => (gender === 'e' ? 'Erkek' : 'Kadın')
 
-// shop/:gender/:categoryName/:categoryId
 export const categoryPath = (category) =>
   `/shop/${genderSlug(category.gender)}/${slugify(category.code.split(':')[1] || category.title)}/${category.id}`
 
-// shop/:gender/:categoryName/:categoryId/:productNameSlug/:productId
 export const productPath = (product, categories = []) => {
   const category = categories.find((item) => item.id === product.category_id)
   const base = category ? categoryPath(category) : `/shop/urun/kategori/${product.category_id}`
@@ -37,12 +35,10 @@ export const gravatarUrl = async (email = '', size = 64) => {
   return `https://www.gravatar.com/avatar/${hash}?s=${size}&d=identicon`
 }
 
-// Values from the canonical T19 sample image ("Sipariş Özeti"): "Kargo Toplam 29,99" and
-// "150 TL ve Üzeri Kargo Bedava (Satıcı Karşılar) -29,99" (repeated in the T20/T21 samples)
+// T19 sample: shipping 29,99, free from 150
 export const SHIPPING_PRICE = 29.99
 export const FREE_SHIPPING_LIMIT = 150
 
-// T19: products total + shipping - discount = grand total (checked items only)
 export const calculateOrderSummary = (cart) => {
   const productsTotal = cart
     .filter((item) => item.checked)
@@ -58,13 +54,11 @@ export const calculateOrderSummary = (cart) => {
   }
 }
 
-// T21 sample: 4242 42** **** 4242
 export const maskCardNumber = (cardNo = '') => {
   const digits = String(cardNo)
   return `${digits.slice(0, 4)} ${digits.slice(4, 6)}** **** ${digits.slice(-4)}`
 }
 
-// T20 sample: (500) *** ** 33. Anything that is not a normal phone number is shown as stored.
 export const maskPhone = (phone = '') => {
   const value = String(phone)
   const match = value.replace(/[\s()-]/g, '').match(/^(?:\+?90|0)?([2-5]\d{2})\d{5}(\d{2})$/)

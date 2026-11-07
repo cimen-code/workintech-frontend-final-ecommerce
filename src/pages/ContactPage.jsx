@@ -8,7 +8,6 @@ const offices = [
   { id: 'mail', Icon: Mail, MobileIcon: Send, dark: false },
 ]
 
-// Figma: "desktop-contact-1" (2879:7582) / "mobile-contact-1" (2879:7782)
 function ContactPage() {
   return (
     <div className="flex w-full flex-col">
@@ -33,7 +32,7 @@ function ContactPage() {
               <LinkedinIcon size={30} />
             </div>
           </div>
-          <picture className="mr-3.5 flex w-full max-w-[362px] lg:mr-0 lg:w-1/2 lg:max-w-[614px] xl:-mr-[110px] xl:w-[614px] xl:shrink-0">
+          <picture className="mr-3.5 flex w-full max-w-[362px] max-[374px]:mr-0 lg:mr-0 lg:w-1/2 lg:max-w-[614px] xl:-mr-[110px] xl:w-[614px] xl:shrink-0">
             <source media="(max-width: 1023px)" srcSet="/images/contact/mobile-hero.jpg" />
             <img src="/images/contact/hero.png" alt="Family carrying shopping bags" className="w-full object-contain" />
           </picture>
@@ -55,7 +54,7 @@ function ContactPage() {
                 className={`flex w-full max-w-[329px] flex-col items-center gap-3.5 px-10 text-center lg:w-1/3 lg:pb-20 lg:pt-[77px] xl:w-[329px] ${dark ? 'bg-dark-background-color pb-20 pt-[77px] text-white' : 'bg-white pb-[50px] pt-[47px] text-text-color'}`}
               >
                 {MobileIcon && <MobileIcon size={80} strokeWidth={1.5} className="-my-px text-primary-color lg:hidden" />}
-                <Icon size={filled ? 74 : 80} strokeWidth={1.5} fill={filled ? 'currentColor' : 'none'} className={`text-primary-color ${filled ? 'my-0.5 [&>circle]:fill-dark-background-color' : '-my-px'} ${MobileIcon ? 'hidden lg:block' : ''}`} />
+                <Icon size={filled ? 74 : 80} strokeWidth={1.5} fill={filled ? 'currentColor' : 'none'} className={`text-primary-color ${filled ? 'my-0.5 [&>circle]:fill-dark-background-color' : '-my-px'} ${MobileIcon ? 'hidden lg:flex' : ''}`} />
                 <div className="flex flex-col text-sm font-bold leading-6 tracking-[0.2px]">
                   <span>georgia.young@example.com</span>
                   <span>georgia.young@ple.com</span>
@@ -74,7 +73,6 @@ function ContactPage() {
       </section>
 
       <section className="flex w-full flex-col items-center gap-2 px-10 pb-28 pt-10 text-center lg:gap-[17px] lg:pb-[81px] lg:pt-14">
-        {/* Decorative arrow of the Figma contact frame (exported from the saved reference at its native 64px) */}
         <img src="/images/contact/arrow.png" alt="" aria-hidden="true" className="mr-5 h-16 w-16 lg:mr-[27px]" />
         <h6 className="text-base font-bold leading-6 tracking-[0.1px] text-text-color">WE Can&apos;t WAIT TO MEET YOU</h6>
         <h2 className="mt-6 text-[58px] font-bold leading-[80px] tracking-[0.2px] text-text-color lg:-mt-px">Let’s Talk</h2>

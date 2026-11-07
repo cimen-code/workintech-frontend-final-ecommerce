@@ -11,11 +11,6 @@ const rootReducer = combineReducers({
   shoppingCart: shoppingCartReducer,
 })
 
-const middlewares = [thunk]
-if (import.meta.env.DEV) {
-  middlewares.push(createLogger({ collapsed: true }))
-}
-
-const store = createStore(rootReducer, applyMiddleware(...middlewares))
+const store = createStore(rootReducer, applyMiddleware(thunk, createLogger({ collapsed: true })))
 
 export default store

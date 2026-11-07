@@ -1,4 +1,3 @@
-// Figma "mobile-clients-3" stacks the six logos; tablet keeps the single row image; 1280 and up places each logo as drawn
 const logos = [
   { name: 'Hooli', image: '/images/clients/hooli.png', desktopClass: 'xl:w-[103px]' },
   { name: 'Lyft', image: '/images/clients/lyft.png', desktopClass: 'xl:ml-[86px] xl:w-[84px]' },
@@ -8,7 +7,7 @@ const logos = [
   { name: 'Reddit', image: '/images/clients/reddit.png', desktopClass: 'xl:ml-[90px] xl:w-[77px]' },
 ]
 
-function ClientsLogos({ className = 'py-12' }) {
+function ClientsLogos({ className }) {
   return (
     <section className={`flex w-full bg-light-gray-1 ${className}`}>
       <div className="mx-auto flex w-full max-w-[1050px] justify-center px-8 xl:px-0">
@@ -20,7 +19,7 @@ function ClientsLogos({ className = 'py-12' }) {
         <img
           src="/images/clients/logos.png"
           alt="Hooli, Lyft, Robinhood, Stripe, AWS and Reddit logos"
-          className="hidden w-full object-contain md:block xl:hidden"
+          className="hidden w-full object-contain md:flex xl:hidden"
         />
       </div>
     </section>

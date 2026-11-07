@@ -1,5 +1,3 @@
-// T06: solo Workintech final project — the team is the project manager and the student.
-// Neutral initials avatars are used (no scraped profile photos).
 export const teamMembers = [
   {
     id: 1,

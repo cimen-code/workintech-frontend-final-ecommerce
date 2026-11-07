@@ -11,7 +11,6 @@ const formatDate = (value) => {
   return Number.isNaN(date.getTime()) ? value : date.toLocaleString('tr-TR')
 }
 
-// T23: previous orders of the logged in user (protected route)
 function OrdersPage() {
   const [orders, setOrders] = useState([])
   const [status, setStatus] = useState('loading')

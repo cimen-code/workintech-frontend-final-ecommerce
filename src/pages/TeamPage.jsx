@@ -12,7 +12,6 @@ const galleryTiles = [
   { src: '/images/team/hero-4-desktop.jpg', mobileSrc: '/images/team/mobile-hero-4.jpg', order: 'order-4' },
 ]
 
-// Figma: "desktop-team-1" (2874:4077) / "mobile-team-1" (2874:4338)
 function TeamPage() {
   return (
     <div className="flex w-full flex-col">

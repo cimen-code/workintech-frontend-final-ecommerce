@@ -5,7 +5,6 @@ import { cities } from '../data/cities.js'
 
 const EMPTY_ADDRESS = { title: '', name: '', surname: '', phone: '', city: '', district: '', neighborhood: '', address: '' }
 
-// T20: field names match the backend exactly
 function AddressForm({ initialValues, onSubmit, onCancel }) {
   const formRef = useRef(null)
 

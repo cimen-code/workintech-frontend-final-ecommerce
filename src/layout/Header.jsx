@@ -28,7 +28,6 @@ function CategoryMenu({ categories, onNavigate }) {
     { title: 'Erkek', items: categories.filter((category) => category.gender === 'e') },
   ]
 
-  // T14: changing the category keeps the other parameters (same rule as the shop page category cards)
   const searchParams = new URLSearchParams(location.search)
   const sort = searchParams.get('sort') || ''
   const filter = searchParams.get('filter') || ''
@@ -151,7 +150,6 @@ function Header() {
 
   return (
     <header ref={headerRef} className="relative z-40 flex w-full flex-col bg-white">
-      {/* Top bar (desktop) */}
       <div className="hidden w-full bg-dark-background-color text-white lg:flex">
         <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between pb-3.5 pl-9 pr-10 pt-5 text-sm font-bold leading-6 tracking-[0.2px]">
           <div className="flex items-center gap-8">
@@ -175,7 +173,6 @@ function Header() {
         </div>
       </div>
 
-      {/* Main navigation */}
       <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between pb-[39px] pl-3 pr-3 pt-[38px] min-[375px]:pl-4 min-[375px]:pr-4 min-[414px]:pl-[37px] min-[414px]:pr-9 md:px-7 md:py-5 lg:pb-3.5 lg:pl-10 lg:pr-[19px] lg:pt-[18px]">
         <Link to="/" onClick={close} className="-mb-[3px] text-2xl font-bold leading-8 tracking-[0.1px] text-text-color md:mb-0 lg:-ml-px lg:mt-1">
           Bandage
@@ -258,7 +255,6 @@ function Header() {
         </div>
       </div>
 
-      {/* Mobile navigation (same navLinks source) */}
       {openMenu === 'mobile' && (
         <nav className="flex flex-col items-center gap-[30px] pb-24 pt-[59px] md:pt-20 lg:hidden">
           {navLinks.map((link) => (

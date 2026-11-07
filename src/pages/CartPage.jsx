@@ -25,7 +25,6 @@ function QuantityControl({ item, onChange }) {
   )
 }
 
-// T18: shopping cart data table, T19: order summary box
 function CartPage() {
   const dispatch = useDispatch()
   const history = useHistory()

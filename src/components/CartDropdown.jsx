@@ -2,7 +2,6 @@ import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { formatPrice, productImage } from '../utils/helpers.js'
 
-// T17: all cart items listed in a header dropdown
 function CartDropdown({ onNavigate }) {
   const cart = useSelector((state) => state.shoppingCart.cart)
 

@@ -1,14 +1,11 @@
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { footerColumns } from '../data/navigation.js'
 import { FacebookIcon, InstagramIcon, TwitterIcon } from '../components/SocialIcons.jsx'
 
 function Footer() {
-  const { pathname } = useLocation()
-
   return (
     <footer className="flex w-full flex-col bg-white">
-      {/* Figma draws this band #FAFAFA on the Home frame and white on the other frames */}
-      <div className={`flex w-full ${pathname === '/' ? 'bg-light-gray-1' : 'bg-white'}`}>
+      <div className="flex w-full bg-white">
         <div className="mx-auto flex h-[173px] w-full max-w-[1050px] flex-col md:h-[142px] md:px-4 xl:px-0">
           <div className="flex flex-col gap-[22px] pl-12 pt-[55px] md:flex-row md:items-start md:justify-between md:pl-0">
             <Link to="/" onClick={() => window.scrollTo(0, 0)} className="text-2xl font-bold leading-8 tracking-[0.1px] text-text-color">

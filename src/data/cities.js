@@ -1,4 +1,5 @@
-// 81 provinces of Türkiye (value = lower-case ascii slug, as in the T20 payload sample "istanbul")
+import { slugify } from '../utils/helpers.js'
+
 const CITY_NAMES = [
   'Adana', 'Adıyaman', 'Afyonkarahisar', 'Ağrı', 'Aksaray', 'Amasya', 'Ankara', 'Antalya', 'Ardahan', 'Artvin',
   'Aydın', 'Balıkesir', 'Bartın', 'Batman', 'Bayburt', 'Bilecik', 'Bingöl', 'Bitlis', 'Bolu', 'Burdur',
@@ -10,15 +11,6 @@ const CITY_NAMES = [
   'Şırnak', 'Sivas', 'Tekirdağ', 'Tokat', 'Trabzon', 'Tunceli', 'Uşak', 'Van', 'Yalova', 'Yozgat', 'Zonguldak',
 ]
 
-const TR_MAP = { ç: 'c', ğ: 'g', ı: 'i', i̇: 'i', ö: 'o', ş: 's', ü: 'u' }
-
-export const cities = CITY_NAMES.map((name) => ({
-  label: name,
-  value: name
-    .toLocaleLowerCase('tr-TR')
-    .replace(/[çğıöşü]/g, (ch) => TR_MAP[ch])
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, ''),
-}))
+export const cities = CITY_NAMES.map((name) => ({ label: name, value: slugify(name) }))
 
 export const cityLabel = (value) => cities.find((city) => city.value === value)?.label || value
